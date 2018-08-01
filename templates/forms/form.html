@@ -1,0 +1,17 @@
+{% extends "index.html" %}
+{% block content %}
+    <div class="container">
+        <div class="row" style="height: 450px">
+            <form method="post" action="" style="margin: auto">
+                <dl style="border: solid; padding: 20px; border-radius: 10px; border-width: 1px; border-color: grey">
+                    <h3>{{ form.name }}</h3>
+                    {% for field in form %}
+                        <dt>{{ field.label_tag }}</dt>
+                        <dd>{{ field }}</dd>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-primary">{{ form.name }}</button>
+                </dl>
+            </form>
+        </div>
+    </div>
+{% endblock %}
