@@ -1,12 +1,14 @@
 {% extends "index.html" %}
 {% load bootstrap %}
 {% block content %}
-    <div class="main">
-        <form method="post" action="">
-            {% csrf_token %}
-            <h3>Log in</h3>
-            {{ form|bootstrap }}
-            <button type="submit" class="btn btn-primary">Log In</button>
-        </form>
+    <div class="container">
+        <div class="main">
+            <form method="post" action="">
+                {% csrf_token %}
+                <h3>Log in</h3>
+                {{ form|bootstrap }}
+                <button type="submit" class="btn btn-primary">Log In</button>
+            </form>
+        </div>
     </div>
 {% endblock %}
