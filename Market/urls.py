@@ -1,11 +1,7 @@
-from django.contrib import admin
-from MarketApp import views
 from django.conf.urls import include, url
-
+from django.views.generic import TemplateView
 
 urlpatterns = [
-    url('^login', views.login),
-    url('home', views.index),
-    url('^signin', views.signin),
-    url('$', views.index),
+    url('^accounts/', include('registration.backends.hmac.urls')),
+    url('(^home$|^$)', TemplateView.as_view(template_name='index.html')),
 ]
