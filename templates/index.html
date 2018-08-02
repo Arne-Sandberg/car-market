@@ -15,7 +15,7 @@
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
     <!-- Custom styles for this template -->
-    <link rel="stylesheet" type="text/css" href="{% static 'MarketApp/style.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
 </head>
 
 <body>
@@ -59,12 +59,11 @@
 
             <div class="col-lg-3">
 
-                <h2 class="my-4">Categories:</h2>
+                <h2 class="my-4">Brands:</h2>
                 <div class="list-group">
-                    <a href="/" class="list-group-item">Compact car</a>
-                    <a href="/" class="list-group-item">Supercar</a>
-                    <a href="/" class="list-group-item">Grand tourer</a>
-                    <a href="/" class="list-group-item">Convertible</a>
+                    {% for brand in data %}
+                        <a href="/" class="list-group-item">{{ brand.name }}</a>
+                    {% endfor %}
                 </div>
 
             </div>
