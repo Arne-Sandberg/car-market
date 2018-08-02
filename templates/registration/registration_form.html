@@ -3,13 +3,14 @@
     <div class="container">
         <div class="row" style="height: 450px; padding: 10px">
             <form method="post" action="" style="margin: auto">
+                {% csrf_token %}
                 <dl style="border: solid; padding: 20px; border-radius: 10px; border-width: 1px; border-color: grey">
-                    <h3>Sign In</h3>
+                    <h3>Sign Up</h3>
                     {% for field in form %}
                         <dt>{{ field.label_tag }}</dt>
                         <dd>{{ field }}</dd>
                     {% endfor %}
-                    <button type="submit" class="btn btn-primary">Sign In</button>
+                    <button type="submit" class="btn btn-primary">Sign Up</button>
                 </dl>
             </form>
         </div>
