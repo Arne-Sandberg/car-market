@@ -24,7 +24,7 @@ SECRET_KEY = '6u2c4z_)9(2)9ntljhk=e^2#l$s#1v$-%#32y$h64b35rzvkxm'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'MarketApp.apps.MarketappConfig',
+    'bootstrapform',
 ]
 
 MIDDLEWARE = [
@@ -111,6 +112,10 @@ USE_L10N = True
 USE_TZ = True
 
 ACCOUNT_ACTIVATION_DAYS = 2
+
+LOGIN_REDIRECT_URL = '/home'
+
+LOGOUT_REDIRECT_URL = '/home'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
