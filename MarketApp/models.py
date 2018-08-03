@@ -6,3 +6,6 @@ from django.contrib.auth.models import User
 class Brand(models.Model):
     name = models.CharField(max_length=70, blank=False, null=False)
     owner = models.CharField(max_length=70)
+
+    def __str__(self):
+        return self.name + ' - ' + self.owner
