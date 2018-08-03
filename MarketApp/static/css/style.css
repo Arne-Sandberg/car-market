@@ -1,8 +1,12 @@
-.main {
-    padding: 15px;
-    min-height: 100vh;
+body {
+
 }
 
-body {
+.main {
     margin-top: 54px;
+    padding: 20px;
+    min-height: calc(95vh - 54px);
+}
+footer{
+    min-height: 5vh;
 }
