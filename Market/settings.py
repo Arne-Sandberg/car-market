@@ -117,6 +117,10 @@ LOGIN_REDIRECT_URL = '/home'
 
 LOGOUT_REDIRECT_URL = '/home'
 
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'MarketApp/static/images')
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
