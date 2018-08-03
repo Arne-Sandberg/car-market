@@ -2,11 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7eabb685-440f-4809-b9d8-878b4c8abe9b" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/templates/brands.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MarketApp/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/MarketApp/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MarketApp/migrations/0001_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/MarketApp/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/MarketApp/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Market/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/Market/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Market/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Market/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MarketApp/static/images/17_Chevrolet_Sonic_RS_Hatchback.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MarketApp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/MarketApp/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -65,18 +68,18 @@
           <entry key="cell" value="22" />
           <entry key="css" value="131" />
           <entry key="dummy" value="10" />
-          <entry key="html" value="1045" />
-          <entry key="py" value="2237" />
+          <entry key="html" value="2453" />
+          <entry key="py" value="3080" />
           <entry key="sql" value="4" />
-          <entry key="txt" value="298" />
+          <entry key="txt" value="337" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="CSS" value="131" />
-          <entry key="HTML" value="1045" />
-          <entry key="PLAIN_TEXT" value="308" />
-          <entry key="Python" value="2237" />
+          <entry key="HTML" value="2453" />
+          <entry key="PLAIN_TEXT" value="347" />
+          <entry key="Python" value="3080" />
           <entry key="SQL" value="4" />
           <entry key="Scratch" value="22" />
         </counts>
@@ -86,9 +89,9 @@
           <entry key="auth_permission" value="2" />
           <entry key="auth_user" value="14" />
           <entry key="css" value="2" />
-          <entry key="html" value="14" />
+          <entry key="html" value="16" />
           <entry key="marketapp_brand" value="8" />
-          <entry key="py" value="21" />
+          <entry key="py" value="23" />
           <entry key="sql" value="6" />
           <entry key="txt" value="2" />
         </counts>
@@ -97,9 +100,9 @@
         <counts>
           <entry key="CSS" value="2" />
           <entry key="Database Element" value="24" />
-          <entry key="HTML" value="14" />
+          <entry key="HTML" value="16" />
           <entry key="PLAIN_TEXT" value="2" />
-          <entry key="Python" value="21" />
+          <entry key="Python" value="23" />
           <entry key="SQL" value="6" />
         </counts>
       </usages-collector>
@@ -111,53 +114,28 @@
         <entry file="file://$PROJECT_DIR$/templates/index.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="488">
-              <caret line="73" column="18" selection-start-line="73" selection-start-column="18" selection-end-line="73" selection-end-column="18" />
+              <caret line="102" column="62" lean-forward="true" selection-start-line="102" selection-start-column="57" selection-end-line="102" selection-end-column="62" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Market/settings.py">
+        <entry file="file://$PROJECT_DIR$/Market/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="460">
-              <caret line="121" column="34" selection-start-line="121" selection-start-column="26" selection-end-line="121" selection-end-column="34" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/MarketApp/admin.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="4" column="17" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
+            <state relative-caret-position="135">
+              <caret line="9" column="36" lean-forward="true" selection-start-line="9" selection-start-column="36" selection-end-line="9" selection-end-column="36" />
               <folding>
-                <element signature="e#0#32#0" expanded="true" />
-                <marker date="1533284377647" expanded="true" signature="139:465" ph="..." />
-                <marker date="1533284377647" expanded="true" signature="426:465" ph="..." />
+                <element signature="e#0#41#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/MarketApp/models.py">
+        <entry file="file://$PROJECT_DIR$/templates/brands.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="420">
-              <caret line="28" lean-forward="true" selection-start-line="28" selection-end-line="28" />
-              <folding>
-                <element signature="e#0#28#0" expanded="true" />
-                <marker date="1533284832885" expanded="true" signature="128:129" ph="..." />
-                <marker date="1533284832885" expanded="true" signature="128:133" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="das://168079ca-c986-4b06-a58e-d10bf086a438/schema/main/table/marketapp_brand">
-          <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-            <state>
-              <filtering enabled="true" />
+            <state relative-caret-position="435">
+              <caret line="32" column="30" selection-start-line="32" selection-start-column="30" selection-end-line="32" selection-end-column="30" />
             </state>
           </provider>
         </entry>
@@ -165,20 +143,44 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/MarketApp/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="12" selection-start-line="12" selection-end-line="12" />
+            <state relative-caret-position="255">
+              <caret line="17" column="54" lean-forward="true" selection-start-line="17" selection-start-column="54" selection-end-line="17" selection-end-column="54" />
               <folding>
                 <element signature="e#0#45#0" expanded="true" />
+                <marker date="1533301271517" expanded="true" signature="376:377" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/registration/activate.html">
+        <entry file="file://$PROJECT_DIR$/templates/registration/login.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="6" column="14" selection-start-line="6" selection-start-column="14" selection-end-line="6" selection-end-column="14" />
+            <state relative-caret-position="120">
+              <caret line="8" column="16" lean-forward="true" selection-start-line="8" selection-start-column="16" selection-end-line="8" selection-end-column="16" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Market/settings.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="458">
+              <caret line="120" lean-forward="true" selection-start-line="120" selection-end-line="120" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/MarketApp/models.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="450">
+              <caret line="30" column="57" selection-start-line="30" selection-start-column="57" selection-end-line="30" selection-end-column="57" />
+              <folding>
+                <element signature="e#0#28#0" expanded="true" />
+                <marker date="1533300372554" expanded="true" signature="128:129" ph="..." />
+                <marker date="1533300372554" expanded="true" signature="128:133" ph="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -188,14 +190,16 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="HTML File" />
         <option value="CSS File" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
       <find>for</find>
+      <find>col-lg-4 col-md-6 mb-4</find>
+      <find>list</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -219,13 +223,14 @@
         <option value="$PROJECT_DIR$/templates/registration/registration_form.html" />
         <option value="168079ca-c986-4b06-a58e-d10bf086a438/schema/main/table/auth_user.sql" />
         <option value="168079ca-c986-4b06-a58e-d10bf086a438/schema/main/table/marketapp_brand.sql" />
-        <option value="$PROJECT_DIR$/MarketApp/views.py" />
-        <option value="$PROJECT_DIR$/Market/urls.py" />
         <option value="$PROJECT_DIR$/templates/registration/login.html" />
-        <option value="$PROJECT_DIR$/templates/index.html" />
-        <option value="$PROJECT_DIR$/Market/settings.py" />
         <option value="$PROJECT_DIR$/MarketApp/admin.py" />
+        <option value="$PROJECT_DIR$/Market/settings.py" />
+        <option value="$PROJECT_DIR$/Market/urls.py" />
+        <option value="$PROJECT_DIR$/templates/index.html" />
         <option value="$PROJECT_DIR$/MarketApp/models.py" />
+        <option value="$PROJECT_DIR$/MarketApp/views.py" />
+        <option value="$PROJECT_DIR$/templates/brands.html" />
       </list>
     </option>
   </component>
@@ -278,6 +283,13 @@
               <item name="Market" type="462c0819:PsiDirectoryNode" />
               <item name="MarketApp" type="462c0819:PsiDirectoryNode" />
               <item name="static" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Market" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Market" type="462c0819:PsiDirectoryNode" />
+              <item name="MarketApp" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="images" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Market" type="b2602c69:ProjectViewProjectNode" />
@@ -455,7 +467,14 @@
       <option name="project" value="LOCAL" />
       <updated>1533282976190</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="edited car model, added image model">
+      <created>1533285051645</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1533285051645</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TodoView">
@@ -471,12 +490,12 @@
     <frame x="0" y="-2" width="2048" height="1154" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16883117" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16883117" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32952693" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32617188" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32617188" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -484,7 +503,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="8" weight="0.32910156" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5003965" side_tool="true" weight="0.32626426" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="10" sideWeight="0.49960348" visible="true" weight="0.32421875" />
+      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.49960348" weight="0.32421875" />
       <window_info anchor="bottom" id="Python Console" order="11" weight="0.32617188" />
       <window_info anchor="bottom" id="Version Control" internal_type="SLIDING" order="12" type="SLIDING" weight="0.32952693" />
       <window_info anchor="bottom" id="Database Console" order="13" weight="0.33768353" />
@@ -560,7 +579,8 @@
     <MESSAGE value="added car brands on home page" />
     <MESSAGE value="added admin, updated 'req.txt'" />
     <MESSAGE value="added car model" />
-    <option name="LAST_COMMIT_MESSAGE" value="added car model" />
+    <MESSAGE value="edited car model, added image model" />
+    <option name="LAST_COMMIT_MESSAGE" value="edited car model, added image model" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/templates/forms/form.html" />
@@ -626,16 +646,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Market/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="das://168079ca-c986-4b06-a58e-d10bf086a438/schema/main/table/auth_user">
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state>
@@ -643,23 +653,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/registration/login.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="14" lean-forward="true" selection-start-line="15" selection-start-column="14" selection-end-line="15" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/MarketApp/tests.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/MarketApp/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" selection-start-line="12" selection-end-line="12" />
-          <folding>
-            <element signature="e#0#45#0" expanded="true" />
-          </folding>
+    <entry file="file://$PROJECT_DIR$/MarketApp/migrations/0003_auto_20180803_0737.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MarketApp/migrations/0002_car.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MarketApp/migrations/0001_initial.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="das://168079ca-c986-4b06-a58e-d10bf086a438/schema/main/table/marketapp_brand">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
         </state>
       </provider>
     </entry>
@@ -670,40 +679,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="das://168079ca-c986-4b06-a58e-d10bf086a438/schema/main/table/marketapp_brand">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MarketApp/migrations/0003_auto_20180803_0737.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MarketApp/migrations/0002_car.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="488">
-          <caret line="73" column="18" selection-start-line="73" selection-start-column="18" selection-end-line="73" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Market/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="460">
-          <caret line="121" column="34" selection-start-line="121" selection-start-column="26" selection-end-line="121" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MarketApp/migrations/0001_initial.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/MarketApp/admin.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="17" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
+        <state relative-caret-position="255">
+          <caret line="17" column="35" lean-forward="true" selection-start-line="17" selection-start-column="35" selection-end-line="17" selection-end-column="35" />
           <folding>
             <element signature="e#0#32#0" expanded="true" />
             <marker date="1533284377647" expanded="true" signature="139:465" ph="..." />
@@ -712,15 +691,64 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Market/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="36" lean-forward="true" selection-start-line="9" selection-start-column="36" selection-end-line="9" selection-end-column="36" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="488">
+          <caret line="102" column="62" lean-forward="true" selection-start-line="102" selection-start-column="57" selection-end-line="102" selection-end-column="62" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/MarketApp/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="28" lean-forward="true" selection-start-line="28" selection-end-line="28" />
+        <state relative-caret-position="450">
+          <caret line="30" column="57" selection-start-line="30" selection-start-column="57" selection-end-line="30" selection-end-column="57" />
           <folding>
             <element signature="e#0#28#0" expanded="true" />
-            <marker date="1533284832885" expanded="true" signature="128:129" ph="..." />
-            <marker date="1533284832885" expanded="true" signature="128:133" ph="..." />
+            <marker date="1533300372554" expanded="true" signature="128:129" ph="..." />
+            <marker date="1533300372554" expanded="true" signature="128:133" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MarketApp/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" column="54" lean-forward="true" selection-start-line="17" selection-start-column="54" selection-end-line="17" selection-end-column="54" />
+          <folding>
+            <element signature="e#0#45#0" expanded="true" />
+            <marker date="1533301271517" expanded="true" signature="376:377" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/registration/login.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="16" lean-forward="true" selection-start-line="8" selection-start-column="16" selection-end-line="8" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Market/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="458">
+          <caret line="120" lean-forward="true" selection-start-line="120" selection-end-line="120" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/brands.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="435">
+          <caret line="32" column="30" selection-start-line="32" selection-start-column="30" selection-end-line="32" selection-end-column="30" />
         </state>
       </provider>
     </entry>
