@@ -9,7 +9,7 @@
                         <div class="carousel-inner">
                             {% for im in car.image_set.all %}
                                 <div class="carousel-item {% if forloop.counter0 == 0 %} active {% endif %}">
-                                    <img class="d-block w-100" src="{% static im.image.url %}" alt="slide">
+                                    <img class="brand d-block w-100" src="{% static im.image.url %}" alt="slide">
                                 </div>
                             {% endfor %}
                         </div>

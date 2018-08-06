@@ -11,13 +11,16 @@ class IndexView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['brands'] = models.Brand.objects.all()
-        context['advertisement'] = models.Car.objects.filter(is_advertised=True).select_related('brand')
+        context['advertisement'] = models.Car.objects.filter(is_advertised=True).select_related(
+            'brand').prefetch_related('image_set')
         if len(context['advertisement']) == 0:
-            count = models.Car.objects.all().count()
+            count = len(models.Car.objects.all())
             size = count if count < 6 else 6
             rand_ids = sample(range(1, count + 1), size)
             print(rand_ids, count)
-            context['advertisement'] = models.Car.objects.filter(id__in=rand_ids).select_related('brand')
+            context['advertisement'] = models.Car.objects.filter(id__in=rand_ids).select_related(
+                'brand').prefetch_related('image_set')
+
         return context
 
 
