@@ -65,16 +65,15 @@
                         {% endfor %}
                     </div>
                 </div>
-                {% block product %}
-                    <div class="col-lg-9">
+                <div class="col-lg-9">
+                    {% block product %}
                         <div id="advertisement" class="carousel slide my-4" data-ride="carousel">
                             <div class="carousel-inner">
                                 {% for car in advertisement %}
                                     <div class="carousel-item {% if forloop.counter0 == 0 %} active {% endif %}">
-                                        <a href="/brand/{{ car.brand_id }}/{{ car.id }}">
-                                            <img class="advert d-inline-block w-100"
-                                                 src="{% static car.image_set.first.image.url %}"
-                                                 alt="slide">
+                                        <a href="/brand/{{ car.brand_id }}/{{ car.id }}"> <img
+                                                class="advert d-block w-100"
+                                                src="{% static car.image_set.first.image.url %}" alt="slide">
                                             <div class="carousel-caption d-none d-md-block">
                                                 <h5>{{ car }}</h5>
                                                 <p>{{ car.price }}$</p>
@@ -101,8 +100,8 @@
                                 <span class="sr-only">Next</span>
                             </a>
                         </div>
-                    </div>
-                {% endblock %}
+                    {% endblock %}
+                </div>
             </div>
         {% endblock %}
     </div>
