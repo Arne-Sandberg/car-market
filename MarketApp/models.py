@@ -12,7 +12,7 @@ class Brand(models.Model):
 
 
 class Car(models.Model):
-    REG_INDICATOR = (('N', 'New'), ('U', 'Used vehicle'), ('R', 'Re-registrations'), ('S', 'Scratch-built'))
+    REG_INDICATOR = (('New', 'N'), ('Used vehicle', 'U'), ('Re-registrated', 'R'), ('Scratch-built', 'S'))
 
     car_model = models.CharField(max_length=70, blank=False, null=False)
     car_type = models.CharField(max_length=70)
@@ -20,7 +20,7 @@ class Car(models.Model):
     registration_indicator = models.CharField(max_length=20, choices=REG_INDICATOR, default='N')
     number_of_seats = models.IntegerField()
     colour = models.CharField(max_length=70)
-    description = models.TextField(max_length=256)
+    description = models.TextField()
     stock_count = models.IntegerField()
     price = models.IntegerField()
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
