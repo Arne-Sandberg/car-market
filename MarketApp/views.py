@@ -1,6 +1,6 @@
 from django.views.generic import TemplateView
 from MarketApp import models
-from random import randint, sample
+from random import sample
 from django.views.generic.list import ListView
 from django.shortcuts import render
 

@@ -3,6 +3,7 @@
     padding: 20px;
     min-height: calc(95vh - 54px);
 }
-footer{
+
+footer {
     min-height: 5vh;
 }

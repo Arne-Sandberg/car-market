@@ -71,12 +71,15 @@
                             <div class="carousel-inner">
                                 {% for car in advertisement %}
                                     <div class="carousel-item {% if forloop.counter0 == 0 %} active {% endif %}">
-                                        <img class="d-block w-100" src="{% static car.image_set.first.image.url %}"
-                                             alt="slide">
-                                        <div class="carousel-caption d-none d-md-block">
-                                            <h5>{{ car }}</h5>
-                                            <p>{{ car.price }}$</p>
-                                        </div>
+                                        <a href="/brand/{{ car.brand_id }}/{{ car.id }}">
+                                            <img class="d-inline-block w-100"
+                                                 src="{% static car.image_set.first.image.url %}"
+                                                 alt="slide">
+                                            <div class="carousel-caption d-none d-md-block">
+                                                <h5>{{ car }}</h5>
+                                                <p>{{ car.price }}$</p>
+                                            </div>
+                                        </a>
                                     </div>
                                 {% endfor %}
                             </div>
