@@ -13,7 +13,7 @@ class Brand(models.Model):
 
 class Car(models.Model):
     car_model = models.CharField(max_length=70, blank=False, null=False)
-    car_type = models.CharField(max_length=70,)
+    car_type = models.CharField(max_length=70)
     year = models.IntegerField()
     registration_indicator = models.CharField(max_length=70)
     number_of_seats = models.IntegerField()
@@ -22,6 +22,7 @@ class Car(models.Model):
     stock_count = models.IntegerField()
     price = models.IntegerField()
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
+    is_advertised = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.brand) + ' - ' + self.car_model + ' ' + str(self.year) + ' - ' + self.car_type

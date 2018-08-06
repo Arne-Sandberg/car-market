@@ -1,5 +1,6 @@
 from django.views.generic import TemplateView
 from MarketApp import models
+from random import randint
 from django.views.generic.list import ListView
 from django.shortcuts import render
 
@@ -10,6 +11,7 @@ class IndexView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['brands'] = models.Brand.objects.all()
+        context['advertisement'] = models.Car.objects.filter(is_advertised=True).prefetch_related('image_set')
         return context
 
 
