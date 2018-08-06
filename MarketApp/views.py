@@ -1,6 +1,8 @@
 from django.views.generic import TemplateView
+from pip._vendor.msgpack.fallback import xrange
+
 from MarketApp import models
-from random import randint
+from random import randint, sample
 from django.views.generic.list import ListView
 from django.shortcuts import render
 
@@ -11,7 +13,13 @@ class IndexView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['brands'] = models.Brand.objects.all()
-        context['advertisement'] = models.Car.objects.filter(is_advertised=True).prefetch_related('image_set')
+        context['advertisement'] = models.Car.objects.filter(is_advertised=True).select_related('brand')
+        if len(context['advertisement']) == 0:
+            count = models.Car.objects.all().count()
+            size = count if count < 6 else 6
+            rand_ids = sample(xrange(1, count + 1), size)
+            print(rand_ids, count)
+            context['advertisement'] = models.Car.objects.filter(id__in=rand_ids).select_related('brand')
         return context
 
 
