@@ -59,14 +59,14 @@
         {% block content %}
             <div class="row">
                 <div class="col-lg-3">
-
                     <h2 class="my-4">Brands:</h2>
                     <div class="list-group">
                         {% for brand in brands %}
-                            <a href="/brand/{{ brand.name }}" class="list-group-item">{{ brand.name }}</a>
+                            <a href="/brand/{{ brand.id }}" class="list-group-item">{{ brand.name }}</a>
                         {% endfor %}
                     </div>
                 </div>
+            {% block product %}
                 <div class="col-lg-9">
                     <div id="carouselExampleIndicators" class="carousel slide my-4" data-ride="carousel">
                         <ol class="carousel-indicators">
@@ -103,6 +103,7 @@
                         </a>
                     </div>
                 </div>
+                {% endblock %}
             </div>
         {% endblock %}
     </div>

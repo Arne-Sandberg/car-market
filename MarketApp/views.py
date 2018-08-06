@@ -1,5 +1,6 @@
 from django.views.generic import TemplateView
 from MarketApp import models
+from django.views.generic.list import ListView
 from django.shortcuts import render
 
 
@@ -13,12 +14,16 @@ class IndexView(TemplateView):
 
 
 class BrandView(TemplateView):
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['cars'] = models.Car.objects.filter(brand__name=self.kwargs['brand_name'])
-        context['cars_names'] = []
-        for c in context['cars']:
-            print(c.image_set)
+        context['cars'] = models.Car.objects.filter(brand_id=self.kwargs['brand_id']).select_related(
+            'brand').prefetch_related('image_set')
+        return context
 
+
+class CarView(TemplateView):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['brands'] = models.Brand.objects.all()
+        context['car'] = models.Car.objects.prefetch_related('image_set').get(id=self.kwargs['car_id'])
         return context
