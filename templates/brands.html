@@ -3,20 +3,60 @@
 {% block content %}
     <div class="row">
         <div class="col-lg-2">
-            <h2 class="my-4">Filters:</h2>
-            ???
-            ???
-            ???
+            <h3 class="my-4" id="brandName">{{ brand_name }}</h3>
+            {#            <form method="post">#}
+            {#                {% csrf_token %}#}
+            <div class="form-group">
+                <div class="form-row">
+                    <div class="col">
+                        <label for="maxYearNumber">Max year</label>
+                        <input type="number" class="form-control form-control-sm" id="maxYearNumber" min="1800"
+                               value="2018">
+                    </div>
+                    <div class="col">
+                        <label for="minYearNumber">Min Year</label>
+                        <input type="number" class="form-control form-control-sm" id="minYearNumber" min="1800"
+                               value="2000">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="seatNumber">Number of seats</label>
+                <input type="number" class="form-control form-control-sm" id="seatNumber" min="1" value="4">
+            </div>
+            <div class="form-group">
+                <label for="colourSelect">Colour select</label>
+                <select class="form-control form-control-sm" id="colourSelect">
+                    <option>any colour</option>
+                    {% for car in cars %}
+                        <option>{{ car.colour }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="instockCheckbox">
+                    <label class="form-check-label" for="instockCheckbox">In stock only</label>
+                </div>
+            </div>
+            {#            <div class="form-group">#}
+            {#                <label for="maxpriceSlider">Example range</label>#}
+            {#                <input type="range" class="custom-range" min="0" max="5" step="0.5" id="maxpriceSlider">#}
+            {#                 <label for="maxpriceSlider">Example range</label>#}
+            {#                <input type="range" class="custom-range" min="0" max="5" step="0.5" id="minpriceSlider">#}
+            {#            </div>#}
+            <button type="submit" class="btn btn-primary" id="filterSubmit">Filter</button>
+            {#            </form>#}
         </div>
         <div class="col-lg-10">
-            <div class="row mt-4">
+            <div class="row my-4">
                 {% for car in cars %}
                     <div class="col-lg-4 col-md-6 mb-4">
                         <div class="card h-100">
                             <div id="car{{ car.id }}" class="carousel slide" data-ride="carousel">
                                 <div class="carousel-inner">
                                     {% for im in car.image_set.all %}
-                                        <div class="carousel-item {% if forloop.counter0 == 0 %} active {% endif %}">
+                                        <div class="carousel-item {% if not forloop.counter0 %} active {% endif %}">
                                             <a href="{{ car.id }}">
                                                 <img class="brand d-block w-100"
                                                      src="{% static im.image.url %}" alt="slide">
@@ -27,7 +67,7 @@
                                 <ol class="carousel-indicators">
                                     {% for im in car.image_set.all %}
                                         <li data-target="#car{{ car.id }}"
-                                            data-slide-to="{{ forloop.counter0 }}" {% if forloop.counter0 == 0 %}
+                                            data-slide-to="{{ forloop.counter0 }}" {% if not forloop.counter0 %}
                                             class="active"{% endif %}></li>
                                     {% endfor %}
                                 </ol>
