@@ -20,8 +20,8 @@ $("#filterSubmit").click(function () {
             'max_price': price[1]
         },
         dataType: 'json',
-        success: function (data) {
-            alert('success')
+        success: function () {
+            alert('ok')
         }
     });
 

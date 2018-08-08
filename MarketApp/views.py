@@ -1,8 +1,10 @@
+from django.http import JsonResponse, HttpResponseRedirect
+from django.shortcuts import render_to_response
 from django.views.generic import TemplateView, FormView
 from MarketApp import models
 from random import sample
 from MarketApp import forms
-
+from django.core.urlresolvers import resolve
 
 # Create your views here.
 
@@ -26,8 +28,11 @@ class IndexView(TemplateView):
 
 class BrandPageView(FormView):
     template_name = 'brand_content.html'
-    success_url = '/home'
     form_class = forms.FilterForm
+
+    def form_valid(self, form):
+
+        return HttpResponseRedirect(self.request.path)
 
     def get_context_data(self, **kwargs):
         context = super(BrandPageView, self).get_context_data(**kwargs)
@@ -54,8 +59,10 @@ class BrandPageView(FormView):
                            price__gte=int(data['min_price'][0].strip()),
                            price__lte=int(data['max_price'][0].strip())).select_related(
             'brand').prefetch_related('image_set')
-        print(len(cars))
-        return cars
+
+        # print(len(cars))
+
+        # return
 
 
 class CarPageView(TemplateView):
