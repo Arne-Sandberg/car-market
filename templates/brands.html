@@ -1,105 +1,16 @@
 {% extends "index.html" %}
-{% load static %}
+{% load bootstrap %}
 {% block content %}
     <div class="row">
         <div class="col-lg-2">
             <h3 class="my-4" id="brandName">{{ brand_name }}</h3>
-            {#            <form method="post">#}
-            {#                {% csrf_token %}#}
-            <div class="form-group">
-                <div class="form-row">
-                    <div class="col">
-                        <label for="maxYearNumber">Max year</label>
-                        <input type="number" class="form-control form-control-sm" id="maxYearNumber" min="1800"
-                               value="2018">
-                    </div>
-                    <div class="col">
-                        <label for="minYearNumber">Min Year</label>
-                        <input type="number" class="form-control form-control-sm" id="minYearNumber" min="1800"
-                               value="2000">
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="seatNumber">Number of seats</label>
-                <input type="number" class="form-control form-control-sm" id="seatNumber" min="1" value="4">
-            </div>
-            <div class="form-group">
-                <label for="colourSelect">Colour select</label>
-                <select class="form-control form-control-sm" id="colourSelect">
-                    <option>any colour</option>
-                    {% for car in cars %}
-                        <option>{{ car.colour }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="form-group">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="instockCheckbox">
-                    <label class="form-check-label" for="instockCheckbox">In stock only</label>
-                </div>
-            </div>
-            {#            <div class="form-group">#}
-            {#                <label for="maxpriceSlider">Example range</label>#}
-            {#                <input type="range" class="custom-range" min="0" max="5" step="0.5" id="maxpriceSlider">#}
-            {#                 <label for="maxpriceSlider">Example range</label>#}
-            {#                <input type="range" class="custom-range" min="0" max="5" step="0.5" id="minpriceSlider">#}
-            {#            </div>#}
-            <button type="submit" class="btn btn-primary" id="filterSubmit">Filter</button>
-            {#            </form>#}
+            <form method="post">
+                {% csrf_token %}
+                {{ form | bootstrap }}
+                <button type="submit" class="btn btn-primary" id="filterSubmit">Filter</button>
+            </form>
         </div>
-        <div class="col-lg-10">
-            <div class="row my-4">
-                {% for car in cars %}
-                    <div class="col-lg-4 col-md-6 mb-4">
-                        <div class="card h-100">
-                            <div id="car{{ car.id }}" class="carousel slide" data-ride="carousel">
-                                <div class="carousel-inner">
-                                    {% for im in car.image_set.all %}
-                                        <div class="carousel-item {% if not forloop.counter0 %} active {% endif %}">
-                                            <a href="{{ car.id }}">
-                                                <img class="brand d-block w-100"
-                                                     src="{% static im.image.url %}" alt="slide">
-                                            </a>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                                <ol class="carousel-indicators">
-                                    {% for im in car.image_set.all %}
-                                        <li data-target="#car{{ car.id }}"
-                                            data-slide-to="{{ forloop.counter0 }}" {% if not forloop.counter0 %}
-                                            class="active"{% endif %}></li>
-                                    {% endfor %}
-                                </ol>
-                                <a class="carousel-control-prev" href="#car{{ car.id }}" role="button"
-                                   data-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="sr-only">Previous</span>
-                                </a>
-                                <a class="carousel-control-next" href="#car{{ car.id }}" role="button"
-                                   data-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="sr-only">Next</span>
-                                </a>
-                            </div>
-                            <div class="card-body">
-                                <h4 class="card-title">
-                                    <a href="{{ car.id }}">{{ car }}</a>
-                                </h4>
-                                <h5>{{ car.price }}$</h5>
-                                <p class="card-text">{{ car.description|truncatechars:256 }}</p>
-                            </div>
-                            <div class="card-footer">
-                                {% if car.stock_count != 0 %}
-                                    In stock: {{ car.stock_count }}
-                                {% else %}
-                                    Out of stock
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
+        {% block brand_content %}
+        {% endblock %}
     </div>
 {% endblock %}
