@@ -1,10 +1,9 @@
-from django.http import JsonResponse, HttpResponseRedirect
-from django.shortcuts import render_to_response
+from django.http import HttpResponseRedirect
 from django.views.generic import TemplateView, FormView
 from MarketApp import models
 from random import sample
 from MarketApp import forms
-from django.core.urlresolvers import resolve
+
 
 # Create your views here.
 
@@ -54,14 +53,12 @@ class BrandPageView(FormView):
             cars = cars.filter(colour=data['colour'][0])
         if data['in_stock_only'][0]:
             cars = cars.filter(stock_count__gt=0)
-        cars = cars.filter(year__lte=int(data['max_year'][0]), year__gte=int(data['min_year'][0]),
-                           number_of_seats=int(data['number_of_seats'][0]),
-                           price__gte=int(data['min_price'][0].strip()),
-                           price__lte=int(data['max_price'][0].strip())).select_related(
+        cars = cars.filter(year__lte=data['max_year'][0], year__gte=data['min_year'][0],
+                           number_of_seats=data['number_of_seats'][0], price__gte=data['min_price'][0],
+                           price__lte=data['max_price'][0]).select_related(
             'brand').prefetch_related('image_set')
 
         # print(len(cars))
-
         # return
 
 

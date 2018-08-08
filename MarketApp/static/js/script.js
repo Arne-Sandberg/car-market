@@ -5,7 +5,7 @@ $("#filterSubmit").click(function () {
     let number_of_seats = $('#id_number_of_seats').val();
     let colour = $('#id_colour').val();
     let in_stock_only = $('#id_in_stock_only').prop('checked');
-    let price = $('#id_price').val().split('-');
+    let price = $('#id_price').val().split(/\s+/).join('').split('-');
 
     $.ajax({
         url: '/filter/',

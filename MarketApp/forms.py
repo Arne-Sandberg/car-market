@@ -1,7 +1,6 @@
 from django import forms
 from django.db.models import Max, Min
 from django_range_slider.fields import RangeSliderField
-
 from MarketApp import models
 
 
