@@ -1,4 +1,5 @@
 from django.http import HttpResponseRedirect
+from django.shortcuts import render_to_response
 from django.views.generic import TemplateView, FormView
 from MarketApp import models
 from random import sample
@@ -30,7 +31,6 @@ class BrandPageView(FormView):
     form_class = forms.FilterForm
 
     def form_valid(self, form):
-
         return HttpResponseRedirect(self.request.path)
 
     def get_context_data(self, **kwargs):
@@ -45,21 +45,23 @@ class BrandPageView(FormView):
         kwargs['brand_id'] = self.kwargs['brand_id']
         return kwargs
 
-    def car_filter(self, request):
+    def get(self, request, *args, **kwargs):
         data = dict(**request.GET)
-        cars = models.Car.objects.filter(brand__name=data['brand_name'][0])
+        if len(data.keys()):
+            cars = models.Car.objects.filter(brand__name=data['brand_name'][0])
 
-        if data['colour'][0] != 'any colour':
-            cars = cars.filter(colour=data['colour'][0])
-        if data['in_stock_only'][0]:
-            cars = cars.filter(stock_count__gt=0)
-        cars = cars.filter(year__lte=data['max_year'][0], year__gte=data['min_year'][0],
-                           number_of_seats=data['number_of_seats'][0], price__gte=data['min_price'][0],
-                           price__lte=data['max_price'][0]).select_related(
-            'brand').prefetch_related('image_set')
+            if data['colour'][0] != 'any colour':
+                cars = cars.filter(colour=data['colour'][0])
+            if data['in_stock_only'][0]:
+                cars = cars.filter(stock_count__gt=0)
+            cars = cars.filter(year__lte=data['max_year'][0], year__gte=data['min_year'][0],
+                               number_of_seats=data['number_of_seats'][0], price__gte=data['min_price'][0],
+                               price__lte=data['max_price'][0]).select_related(
+                'brand').prefetch_related('image_set')
 
-        # print(len(cars))
-        # return
+            # print(len(cars))
+            return self.render_to_response('brand_content.html', {'cars': cars})
+        return self.render_to_response(self.get_context_data())
 
 
 class CarPageView(TemplateView):
