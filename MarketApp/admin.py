@@ -8,15 +8,8 @@ class ImageInline(admin.StackedInline):
     model = Image
 
 
-class CarInline(admin.StackedInline):
-    model = Car
-
-
 class BrandAdmin(admin.ModelAdmin):
     list_display = ['name', 'owner']
-    inlines = [
-        CarInline,
-    ]
 
 
 class CarAdmin(admin.ModelAdmin):

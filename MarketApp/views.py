@@ -26,17 +26,18 @@ class IndexView(TemplateView):
 
 
 class BrandPageView(FormView):
-    template_name = 'brand_content.html'
+    template_name = 'brands.html'
     form_class = forms.FilterForm
 
     def form_valid(self, form):
-        return HttpResponseRedirect(self.request.path)
+        return self.render_to_response(self.get_context_data())
 
     def get_context_data(self, **kwargs):
         context = super(BrandPageView, self).get_context_data(**kwargs)
         context['brand_name'] = models.Brand.objects.get(id=self.kwargs['brand_id']).name
         context['cars'] = models.Car.objects.filter(brand_id=self.kwargs['brand_id']).select_related(
             'brand').prefetch_related('image_set')
+        # print(len(context['cars']))
         return context
 
     def get_form_kwargs(self):
@@ -44,25 +45,26 @@ class BrandPageView(FormView):
         kwargs['brand_id'] = self.kwargs['brand_id']
         return kwargs
 
-    def get(self, request, *args, **kwargs):
-        data = dict(**request.GET)
-        if len(data.keys()):
-            context = self.get_context_data()
-            context['cars'] = models.Car.objects.filter(brand__name=data['brand_name'][0])
 
-            if data['colour'][0] != 'any colour':
-                context['cars'] = context['cars'].filter(colour=data['colour'][0])
-            if data['in_stock_only'][0]:
-                context['cars'] = context['cars'].filter(stock_count__gt=0)
-            context['cars'] = context['cars'].filter(year__lte=data['max_year'][0], year__gte=data['min_year'][0],
-                                                     number_of_seats=data['number_of_seats'][0],
-                                                     price__gte=data['min_price'][0],
-                                                     price__lte=data['max_price'][0]).select_related(
-                'brand').prefetch_related('image_set')
+class BrandContent(TemplateView):
+    template_name = 'brand_content.html'
 
-            # print(len(cars))
-            return self.render_to_response(context)
-        return self.render_to_response(self.get_context_data())
+    def get_context_data(self, **kwargs):
+        context = super(BrandContent, self).get_context_data(**kwargs)
+        context['brand_name'] = models.Brand.objects.get(id=self.kwargs['brand_id']).name
+        data = dict(**self.request.GET)
+
+        context['cars'] = models.Car.objects.filter(brand_id=self.kwargs['brand_id'])
+        if data['colour'][0] != 'any colour':
+            context['cars'] = context['cars'].filter(colour=data['colour'][0])
+        if data['in_stock_only'][0]:
+            context['cars'] = context['cars'].filter(stock_count__gt=0)
+        context['cars'] = context['cars'].filter(year__lte=data['max_year'][0], year__gte=data['min_year'][0],
+                                                 number_of_seats=data['number_of_seats'][0],
+                                                 price__gte=data['min_price'][0],
+                                                 price__lte=data['max_price'][0]).select_related(
+            'brand').prefetch_related('image_set')
+        return context
 
 
 class CarPageView(TemplateView):

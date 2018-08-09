@@ -1,17 +1,19 @@
 $(document).ready(function () {
-    $("#filterSubmit").click(function () {
-        let brand_name = $('#brandName').text();
+
+    $("#filterSubmit").click(function (e) {
+        // e.preventDefault();
+
         let min_year = $('#id_min_year').val();
         let max_year = $('#id_max_year').val();
         let number_of_seats = $('#id_number_of_seats').val();
         let colour = $('#id_colour').val();
         let in_stock_only = $('#id_in_stock_only').prop('checked');
         let price = $('#id_price').val().split(/\D+/);
+        let brand_id = window.location.href.split('/')[window.location.href.split('/').length - 2];
 
-        $.ajax({
-            url: '/filter/',
-            data: {
-                'brand_name': brand_name,
+        $.get(
+            '/filter/' + brand_id + '/',
+            {
                 'min_year': min_year,
                 'max_year': max_year,
                 'number_of_seats': number_of_seats,
@@ -20,11 +22,11 @@ $(document).ready(function () {
                 'min_price': price[1],
                 'max_price': price[2]
             },
-            dataType: 'json',
-            success: function () {
-                alert('ok')
+            function (data) {
+                $( "#brand_content" ).html(data)
+                // alert(data)
             }
-        });
-
+        );
+        console.log(123)
     });
 });
