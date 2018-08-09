@@ -1,8 +1,6 @@
 $(document).ready(function () {
 
-    $("#filterSubmit").click(function (e) {
-        // e.preventDefault();
-
+    $("#filterSubmit").click(function () {
         let min_year = $('#id_min_year').val();
         let max_year = $('#id_max_year').val();
         let number_of_seats = $('#id_number_of_seats').val();
@@ -23,10 +21,8 @@ $(document).ready(function () {
                 'max_price': price[2]
             },
             function (data) {
-                $( "#brand_content" ).html(data)
-                // alert(data)
+                $("#brand_content").html(data)
             }
         );
-        console.log(123)
     });
 });

@@ -4,11 +4,8 @@
     <div class="row">
         <div class="col-lg-2">
             <h3 class="my-4" id="brandName">{{ brand_name }}</h3>
-            {#            <form method="post">#}
-            {#            {% csrf_token %}#}
             {{ form | bootstrap }}
             <button type="submit" class="btn btn-primary" id="filterSubmit">Filter</button>
-            {#            </form>#}
         </div>
         <div class="col-lg-10" id="brand_content">
             {% include 'brand_content.html' %}
