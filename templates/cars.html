@@ -38,7 +38,9 @@
             <p>Colour: {{ object.colour }}
                 {% if object.stock_count %}
                     <p>In stock: {{ object.stock_count }}</p>
-                    <button type="submit" class="btn btn-primary" id="filterSubmit">Buy</button>
+                    <a href="/">
+                        <button type="submit" class="btn btn-primary">Buy</button>
+                    </a>
                 {% else %}
                     <p>Out of stock</p>
                 {% endif %}

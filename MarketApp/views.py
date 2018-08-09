@@ -77,3 +77,13 @@ class CarPageView(DetailView):
         context = super().get_context_data(**kwargs)
         context['brands'] = models.Brand.objects.all()
         return context
+
+
+class ThanksView(TemplateView):
+    template_name = 'thanks.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['brands'] = models.Brand.objects.all()
+        context['car'] = models.Car.objects.get(id=self.kwargs['pk'])
+        return context

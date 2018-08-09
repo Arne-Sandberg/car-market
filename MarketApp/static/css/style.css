@@ -26,8 +26,3 @@ footer {
 button {
     width: 75px;
 }
-
-.carousel-caption:hover {
-    background: rgba(50, 50, 50, 0.7);
-    border-radius: 5px;
-}
