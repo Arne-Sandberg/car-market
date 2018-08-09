@@ -1,6 +1,6 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
-from django.views.generic import TemplateView, FormView
+from django.views.generic import TemplateView, FormView, DetailView
 from MarketApp import models
 from random import sample, shuffle
 from MarketApp import forms
@@ -69,11 +69,11 @@ class BrandContent(TemplateView):
         return context
 
 
-class CarPageView(TemplateView):
+class CarPageView(DetailView):
     template_name = 'cars.html'
+    model = models.Car
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['brands'] = models.Brand.objects.all()
-        context['car'] = models.Car.objects.prefetch_related('image_set').get(id=self.kwargs['car_id'])
         return context
