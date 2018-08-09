@@ -38,9 +38,13 @@
             Colour: {{ car.colour }} <br/>
             {% if car.stock_count != 0 %}
                 In stock: {{ car.stock_count }}
+
             {% else %}
                 Out of stock
             {% endif %}
         </div>
+        {% if car.stock_count != 0 %}
+            <button type="submit" class="btn btn-primary" id="filterSubmit">Buy</button>
+        {% endif %}
     </div>
 {% endblock %}

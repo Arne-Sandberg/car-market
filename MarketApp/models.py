@@ -12,7 +12,7 @@ class Brand(models.Model):
 
 
 class Car(models.Model):
-    REG_INDICATOR = (('New', 'N'), ('Used vehicle', 'U'), ('Re-registrated', 'R'), ('Scratch-built', 'S'))
+    REG_INDICATOR = (('New', 'N'), ('Used vehicle', 'U'), ('Re-registered', 'R'), ('Scratch-built', 'S'))
 
     car_model = models.CharField(max_length=70, blank=False, null=False)
     car_type = models.CharField(max_length=70)
@@ -27,7 +27,7 @@ class Car(models.Model):
     is_advertised = models.BooleanField(default=False)
 
     def __str__(self):
-        return str(self.brand) + ' - ' + self.car_model + ' ' + str(self.year) + ' - ' + self.car_type
+        return "{0} - {1} {2} - {3}".format(self.brand, self.car_model, self.year, self.car_type)
 
 
 class Image(models.Model):

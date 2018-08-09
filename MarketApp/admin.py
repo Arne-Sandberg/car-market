@@ -14,14 +14,10 @@ class BrandAdmin(admin.ModelAdmin):
 
 class CarAdmin(admin.ModelAdmin):
     list_display = ['car_model', 'car_type', 'year', 'registration_indicator', 'number_of_seats', 'colour',
-                    'description', 'stock_count', 'price', 'brand']
+                    'description', 'stock_count', 'price', 'is_advertised', 'brand']
     inlines = [
         ImageInline,
     ]
-
-
-class ImageAdmin(admin.ModelAdmin):
-    list_display = ['car', 'image']
 
 
 admin.site.register(Brand, BrandAdmin)
