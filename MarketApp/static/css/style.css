@@ -8,16 +8,26 @@ footer {
     min-height: 5vh;
 }
 
-.advert {
+.advert_img {
     min-height: 500px;
     max-height: 500px;
 }
 
-.brand {
+.brand_img {
     min-height: 180px;
     max-height: 180px;
 }
 
-button{
+.car_img {
+    min-height: 470px;
+    max-height: 470px;
+}
+
+button {
     width: 75px;
+}
+
+.carousel-caption:hover {
+    background: rgba(50, 50, 50, 0.7);
+    border-radius: 5px;
 }

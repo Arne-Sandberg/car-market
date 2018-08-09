@@ -12,7 +12,7 @@
                                 {% for im in car.image_set.all %}
                                     <div class="carousel-item {% if not forloop.counter0 %} active {% endif %}">
                                         <a href="{{ car.id }}">
-                                            <img class="brand d-block w-100"
+                                            <img class="brand_img d-block w-100"
                                                  src="{% static im.image.url %}" alt="slide">
                                         </a>
                                     </div>

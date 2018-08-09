@@ -76,11 +76,11 @@
                                 {% for car in advertisement %}
                                     <div class="carousel-item {% if not forloop.counter0 %} active {% endif %}">
                                         <a href="/brand/{{ car.brand_id }}/{{ car.id }}"> <img
-                                                class="advert d-block w-100"
+                                                class="advert_img d-block w-100"
                                                 src="{% static car.image_set.first.image.url %}" alt="slide">
                                             <div class="carousel-caption d-none d-md-block">
                                                 <h5>{{ car }}</h5>
-                                                <p>{{ car.price }}$</p>
+                                                {{ car.price }}$
                                             </div>
                                         </a>
                                     </div>

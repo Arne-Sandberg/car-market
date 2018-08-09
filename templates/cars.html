@@ -8,7 +8,7 @@
                 <div class="carousel-inner">
                     {% for im in object.image_set.all %}
                         <div class="carousel-item {% if not forloop.counter0 %} active {% endif %}">
-                            <img class="advert d-block w-100" src="{% static im.image.url %}" alt="slide">
+                            <img class="car_img d-block w-100" src="{% static im.image.url %}" alt="slide">
                         </div>
                     {% endfor %}
                 </div>
