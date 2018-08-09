@@ -20,7 +20,6 @@ class IndexView(TemplateView):
             count = len(models.Car.objects.all())
             size = count if count < 6 else 6
             rand_ids = sample(range(1, count + 1), size)
-            # print(rand_ids, count)
             context['advertisement'] = models.Car.objects.filter(id__in=rand_ids).select_related(
                 'brand').prefetch_related('image_set')
         return context
@@ -48,19 +47,21 @@ class BrandPageView(FormView):
     def get(self, request, *args, **kwargs):
         data = dict(**request.GET)
         if len(data.keys()):
-            cars = models.Car.objects.filter(brand__name=data['brand_name'][0])
+            context = self.get_context_data()
+            context['cars'] = models.Car.objects.filter(brand__name=data['brand_name'][0])
 
             if data['colour'][0] != 'any colour':
-                cars = cars.filter(colour=data['colour'][0])
+                context['cars'] = context['cars'].filter(colour=data['colour'][0])
             if data['in_stock_only'][0]:
-                cars = cars.filter(stock_count__gt=0)
-            cars = cars.filter(year__lte=data['max_year'][0], year__gte=data['min_year'][0],
-                               number_of_seats=data['number_of_seats'][0], price__gte=data['min_price'][0],
-                               price__lte=data['max_price'][0]).select_related(
+                context['cars'] = context['cars'].filter(stock_count__gt=0)
+            context['cars'] = context['cars'].filter(year__lte=data['max_year'][0], year__gte=data['min_year'][0],
+                                                     number_of_seats=data['number_of_seats'][0],
+                                                     price__gte=data['min_price'][0],
+                                                     price__lte=data['max_price'][0]).select_related(
                 'brand').prefetch_related('image_set')
 
             # print(len(cars))
-            return self.render_to_response('brand_content.html', {'cars': cars})
+            return self.render_to_response(context)
         return self.render_to_response(self.get_context_data())
 
 
