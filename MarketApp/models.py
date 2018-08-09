@@ -27,7 +27,7 @@ class Car(models.Model):
     is_advertised = models.BooleanField(default=False)
 
     def __str__(self):
-        return "{0} - {1} {2} - {3}".format(self.brand, self.car_model, self.year, self.car_type)
+        return f'{self.brand} - {self.car_model} {self.year} - {self.car_type}'
 
 
 class Image(models.Model):

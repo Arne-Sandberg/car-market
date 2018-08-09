@@ -19,8 +19,7 @@ class IndexView(TemplateView):
         if not len(context['advertisement']):
             ids_list = list(models.Car.objects.all().values_list('id', flat=True))
             shuffle(ids_list)
-            size = len(ids_list) if len(ids_list) < 6 else 6
-            context['advertisement'] = models.Car.objects.filter(id__in=ids_list[:size]).select_related(
+            context['advertisement'] = models.Car.objects.filter(id__in=ids_list[:6]).select_related(
                 'brand').prefetch_related('image_set')
         return context
 
