@@ -52,18 +52,22 @@ class BrandContent(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(BrandContent, self).get_context_data(**kwargs)
         context['brand_name'] = models.Brand.objects.get(id=self.kwargs['brand_id']).name
-        data = dict(**self.request.GET)
 
-        context['cars'] = models.Car.objects.filter(brand_id=self.kwargs['brand_id'])
-        if data['colour'][0] != 'any colour':
-            context['cars'] = context['cars'].filter(colour=data['colour'][0])
-        if data['in_stock_only'][0]:
-            context['cars'] = context['cars'].filter(stock_count__gt=0)
-        context['cars'] = context['cars'].filter(year__lte=data['max_year'][0], year__gte=data['min_year'][0],
-                                                 number_of_seats=data['number_of_seats'][0],
-                                                 price__gte=data['min_price'][0],
-                                                 price__lte=data['max_price'][0]).select_related(
-            'brand').prefetch_related('image_set')
+        data = dict(**self.request.GET)
+        if len(data):
+            context['cars'] = models.Car.objects.filter(brand_id=self.kwargs['brand_id'])
+            if data['colour'][0] != 'any colour':
+                context['cars'] = context['cars'].filter(colour=data['colour'][0])
+            if data['in_stock_only'][0]:
+                context['cars'] = context['cars'].filter(stock_count__gt=0)
+            context['cars'] = context['cars'].filter(year__lte=data['max_year'][0], year__gte=data['min_year'][0],
+                                                     number_of_seats=data['number_of_seats'][0],
+                                                     price__gte=data['min_price'][0],
+                                                     price__lte=data['max_price'][0]).select_related(
+                'brand').prefetch_related('image_set')
+        else:
+            context['cars'] = models.Car.objects.filter(brand_id=self.kwargs['brand_id']).select_related(
+                'brand').prefetch_related('image_set')
         return context
 
 

@@ -1,5 +1,5 @@
 $(document).ready(function () {
-
+    let brand_id = window.location.href.split('/')[window.location.href.split('/').length - 2];
     $("#filterSubmit").click(function () {
         let min_year = $('#id_min_year').val();
         let max_year = $('#id_max_year').val();
@@ -7,7 +7,7 @@ $(document).ready(function () {
         let colour = $('#id_colour').val();
         let in_stock_only = $('#id_in_stock_only').prop('checked');
         let price = $('#id_price').val().split(/\D+/);
-        let brand_id = window.location.href.split('/')[window.location.href.split('/').length - 2];
+
 
         $.get(
             '/filter/' + brand_id + '/',
@@ -25,4 +25,12 @@ $(document).ready(function () {
             }
         );
     });
+    $("#filterCancel").click(function () {
+        $.get(
+            '/filter/' + brand_id + '/',
+            function (data) {
+                $("#brand_content").html(data)
+            }
+        );
+    })
 });
