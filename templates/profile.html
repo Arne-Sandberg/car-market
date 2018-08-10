@@ -1,10 +1,15 @@
 {% extends 'index.html' %}
+{% load static %}
 {% block content %}
     <div class="row">
         <div class="col-lg-3">
             <img alt="User Pic"
-                 src="http://www.personalbrandingblog.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640-300x300.png"
-                 class="profile">
+                 src="
+                 {% if request.user.image %}
+                 {% static request.user.image.url %}
+                 {% else %}http://www.personalbrandingblog.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640-300x300.png
+                 {% endif %}"
+                 class="profile_img">
         </div>
         <div class="col-lg-9">
 

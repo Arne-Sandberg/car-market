@@ -1,7 +1,6 @@
 from django.contrib import admin
-
-from MarketApp.models import Profile
-from .models import Brand, Car, Image
+from django.contrib.auth.admin import UserAdmin
+from .models import Brand, Car, Image, User
 
 
 # Register your models here.
@@ -22,6 +21,6 @@ class CarAdmin(admin.ModelAdmin):
     ]
 
 
-admin.site.register(Profile)
+admin.site.register(User, UserAdmin)
 admin.site.register(Brand, BrandAdmin)
 admin.site.register(Car, CarAdmin)

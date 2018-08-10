@@ -23,11 +23,9 @@ footer {
     max-height: 470px;
 }
 
-.profile {
+.profile_img {
+    border: solid 1px black;
+    border-radius: 5px;
     min-height: 200px;
     max-height: 200px;
-}
-
-button {
-    width: 75px;
 }

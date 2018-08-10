@@ -1,15 +1,10 @@
 {% extends 'index.html' %}
 {% load bootstrap %}
 {% block content %}
-    <div class="row">
-        <div>
-            <form method="post">
-                {% csrf_token %}
-                {{ profile_form | bootstrap }}
-                {{ user_form | bootstrap }}
-                <button type="submit" class="btn btn-primary">Save</button>
-                <a href="/accounts/profile" class="btn btn-primary">Cancel</a>
-            </form>
-        </div>
-    </div>
+    <form enctype="multipart/form-data" method="post">
+        {% csrf_token %}
+        {{ form | bootstrap }}
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a href="/accounts/profile" class="btn btn-primary">Cancel</a>
+    </form>
 {% endblock %}

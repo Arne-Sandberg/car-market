@@ -126,25 +126,15 @@ class ProfileView(TemplateView):
     template_name = 'profile.html'
 
 
-class EditView(View):
-    def get(self, request):
-        user_form = forms.UserForm(instance=request.user)
-        profile_form = forms.ProfileForm(instance=request.user.profile)
+class EditView(FormView):
+    template_name = 'edit.html'
+    form_class = forms.UserForm
 
-        return render(request, 'edit.html', {
-            'user_form': user_form,
-            'profile_form': profile_form
-        })
+    def get_context_data(self, **kwargs):
+        context = super(EditView, self).get_context_data(**kwargs)
+        context['form'] = forms.UserForm(instance=self.request.user)
+        return context
 
-    def post(self, request):
-        user_form = forms.UserForm(request.POST, instance=request.user)
-        profile_form = forms.ProfileForm(request.POST, instance=request.user.profile)
-        if user_form.is_valid() and profile_form.is_valid():
-            user_form.save()
-            profile_form.save()
-            return redirect('/accounts/profile')
-        else:
-            return render(request, 'edit.html', {
-                'user_form': user_form,
-                'profile_form': profile_form
-            })
+    def form_valid(self, form):
+        forms.UserForm(self.request.POST, instance=self.request.user).save()
+        return redirect('/accounts/profile')
