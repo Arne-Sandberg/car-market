@@ -1,7 +1,9 @@
 import stripe
-from django.shortcuts import redirect
+from django.contrib.auth.models import User
+from django.shortcuts import redirect, render
 from django.views.generic import TemplateView, FormView, DetailView
 from django.views.generic.base import View
+
 from Market import settings
 from MarketApp import models
 from random import shuffle
@@ -26,7 +28,7 @@ class IndexView(TemplateView):
         return context
 
 
-class BrandPageView(FormView):
+class BrandView(FormView):
     template_name = 'brands.html'
     form_class = forms.FilterForm
 
@@ -34,14 +36,14 @@ class BrandPageView(FormView):
         return self.render_to_response(self.get_context_data())
 
     def get_context_data(self, **kwargs):
-        context = super(BrandPageView, self).get_context_data(**kwargs)
+        context = super(BrandView, self).get_context_data(**kwargs)
         context['brand_name'] = models.Brand.objects.get(id=self.kwargs['brand_id']).name
         context['cars'] = models.Car.objects.filter(brand_id=self.kwargs['brand_id']).select_related(
             'brand').prefetch_related('image_set')
         return context
 
     def get_form_kwargs(self):
-        kwargs = super(BrandPageView, self).get_form_kwargs()
+        kwargs = super(BrandView, self).get_form_kwargs()
         kwargs['brand_id'] = self.kwargs['brand_id']
         return kwargs
 
@@ -70,12 +72,12 @@ class BrandContent(TemplateView):
         return context
 
 
-class CarPageView(DetailView):
+class CarView(DetailView):
     template_name = 'cars.html'
     model = models.Car
 
     def get_context_data(self, **kwargs):
-        context = super(CarPageView, self).get_context_data(**kwargs)
+        context = super(CarView, self).get_context_data(**kwargs)
         context['brands'] = models.Brand.objects.all()
         context['stripe_key'] = settings.STRIPE_PUBLIC_KEY
         return context
@@ -100,7 +102,7 @@ class ErrorView(TemplateView):
         return context
 
 
-class CheckOutView(View):
+class CheckoutView(View):
     def post(self, request, *args, **kwargs):
         token = request.POST.get("stripeToken")
         car = models.Car.objects.get(id=self.kwargs['pk'])
@@ -111,10 +113,38 @@ class CheckOutView(View):
                 amount=car.price * 100,
                 currency="usd",
                 source=token,
-                description=f"{car} was sold to {request.user}"
+                description=f"{car} {car.colour} was sold to {request.user}"
             )
         except stripe.error.CardError as e:
             return redirect('error/')
         else:
             car.save()
             return redirect('thanks/')
+
+
+class ProfileView(TemplateView):
+    template_name = 'profile.html'
+
+
+class EditView(View):
+    def get(self, request):
+        user_form = forms.UserForm(instance=request.user)
+        profile_form = forms.ProfileForm(instance=request.user.profile)
+
+        return render(request, 'edit.html', {
+            'user_form': user_form,
+            'profile_form': profile_form
+        })
+
+    def post(self, request):
+        user_form = forms.UserForm(request.POST, instance=request.user)
+        profile_form = forms.ProfileForm(request.POST, instance=request.user.profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            return redirect('/accounts/profile')
+        else:
+            return render(request, 'edit.html', {
+                'user_form': user_form,
+                'profile_form': profile_form
+            })

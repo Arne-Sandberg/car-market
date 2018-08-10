@@ -115,8 +115,6 @@ USE_TZ = True
 
 ACCOUNT_ACTIVATION_DAYS = 2
 
-LOGIN_REDIRECT_URL = '/home'
-
 LOGOUT_REDIRECT_URL = '/home'
 
 MEDIA_URL = '/images/'

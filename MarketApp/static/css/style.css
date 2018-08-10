@@ -23,6 +23,11 @@ footer {
     max-height: 470px;
 }
 
+.profile {
+    min-height: 200px;
+    max-height: 200px;
+}
+
 button {
     width: 75px;
 }

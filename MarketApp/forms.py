@@ -1,7 +1,9 @@
 from django import forms
+from django.contrib.auth.models import User
 from django.db.models import Max, Min
 from django_range_slider.fields import RangeSliderField
 from MarketApp import models
+from MarketApp.models import Profile
 
 
 class FilterForm(forms.Form):
@@ -26,3 +28,19 @@ class FilterForm(forms.Form):
         self.fields['price'] = RangeSliderField(label='Price', minimum=min_p, maximum=max_p, name='$')
         self.fields['min_year'] = forms.IntegerField(min_value=min_y, max_value=max_y, initial=min_y)
         self.fields['max_year'] = forms.IntegerField(min_value=min_y, max_value=max_y, initial=max_y)
+
+
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'email')
+
+
+class ProfileForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ProfileForm, self).__init__(*args, **kwargs)
+        self.fields['image'].required = False
+
+    class Meta:
+        model = Profile
+        fields = ('image',)
