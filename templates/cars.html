@@ -38,9 +38,16 @@
             <p>Colour: {{ object.colour }}
                 {% if object.stock_count %}
                     <p>In stock: {{ object.stock_count }}</p>
-                    <a href="/">
-                        <button type="submit" class="btn btn-primary">Buy</button>
-                    </a>
+                    <form action="checkout/" method="POST">
+                        {% csrf_token %}
+                        <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                                data-key="{{ stripe_key }}"
+                                data-amount="{{ car.price }}00"
+                                data-name="Car Market"
+                                data-description="{{ car }}"
+                                data-currency="usd">
+                        </script>
+                    </form>
                 {% else %}
                     <p>Out of stock</p>
                 {% endif %}

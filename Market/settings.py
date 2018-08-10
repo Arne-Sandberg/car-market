@@ -123,7 +123,10 @@ MEDIA_URL = '/images/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'MarketApp/static/images')
 
-INTERNAL_IPS = ['127.0.0.1']
+STRIPE_PUBLIC_KEY = os.environ.get("STRIPE_SECRET_KEY", "pk_test_0iZ2ciCzQWinzLyvzEzkuWiE")
+
+STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "sk_test_v8wWUdop2kxCHBzLZEUYKJXP")
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 

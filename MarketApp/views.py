@@ -1,8 +1,10 @@
-from django.http import HttpResponseRedirect
-from django.shortcuts import render_to_response
+import stripe
+from django.shortcuts import redirect
 from django.views.generic import TemplateView, FormView, DetailView
+from django.views.generic.base import View
+from Market import settings
 from MarketApp import models
-from random import sample, shuffle
+from random import shuffle
 from MarketApp import forms
 
 
@@ -12,7 +14,7 @@ class IndexView(TemplateView):
     template_name = 'index.html'
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+        context = super(IndexView, self).get_context_data(**kwargs)
         context['brands'] = models.Brand.objects.all()
         context['advertisement'] = models.Car.objects.filter(is_advertised=True).select_related(
             'brand').prefetch_related('image_set')
@@ -50,7 +52,6 @@ class BrandContent(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(BrandContent, self).get_context_data(**kwargs)
         context['brand_name'] = models.Brand.objects.get(id=self.kwargs['brand_id']).name
-
         data = self.request.GET
         if len(data):
             context['cars'] = models.Car.objects.filter(brand_id=self.kwargs['brand_id'])
@@ -74,8 +75,9 @@ class CarPageView(DetailView):
     model = models.Car
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+        context = super(CarPageView, self).get_context_data(**kwargs)
         context['brands'] = models.Brand.objects.all()
+        context['stripe_key'] = settings.STRIPE_PUBLIC_KEY
         return context
 
 
@@ -83,7 +85,36 @@ class ThanksView(TemplateView):
     template_name = 'thanks.html'
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+        context = super(ThanksView, self).get_context_data(**kwargs)
         context['brands'] = models.Brand.objects.all()
         context['car'] = models.Car.objects.get(id=self.kwargs['pk'])
         return context
+
+
+class ErrorView(TemplateView):
+    template_name = 'error.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ErrorView, self).get_context_data(**kwargs)
+        context['brands'] = models.Brand.objects.all()
+        return context
+
+
+class CheckOutView(View):
+    def post(self, request, *args, **kwargs):
+        token = request.POST.get("stripeToken")
+        car = models.Car.objects.get(id=self.kwargs['pk'])
+        car.stock_count -= 1
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        try:
+            stripe.Charge.create(
+                amount=car.price * 100,
+                currency="usd",
+                source=token,
+                description=f"{car} was sold to {request.user}"
+            )
+        except stripe.error.CardError as e:
+            return redirect('error/')
+        else:
+            car.save()
+            return redirect('thanks/')
