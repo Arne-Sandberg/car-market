@@ -6,7 +6,8 @@ from MarketApp import views
 urlpatterns = [
     url('^accounts/', include('registration.backends.simple.urls')),
     url('^accounts/profile/$', views.ProfileView.as_view()),
-    url('^accounts/profile/edit/$', views.EditView.as_view()),
+    url('^accounts/profile/edit/profile/$', views.EditProfileView.as_view()),
+    url('^accounts/profile/edit/password/$', views.EditPasswordView.as_view()),
     url('^home$|^$', views.IndexView.as_view()),
     url('^brand/(?P<brand_id>\d+)/$', views.BrandView.as_view()),
     url('^brand/(?P<brand_id>\d+)/(?P<pk>\d+)/$', views.CarView.as_view()),
