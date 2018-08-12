@@ -1,16 +1,18 @@
 import stripe
-from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import redirect
 from django.views.generic import TemplateView, FormView, DetailView
 from django.views.generic.base import View
+from registration.views import RegistrationView
+
 from Market import settings
 from MarketApp import models, forms
 from random import shuffle
 
 
 # Create your views here.
+
 
 class IndexView(TemplateView):
     template_name = 'index.html'
@@ -128,15 +130,15 @@ class ProfileView(TemplateView):
 
 class EditProfileView(FormView):
     template_name = 'edit.html'
-    form_class = forms.UserForm
+    form_class = forms.UserEditForm
 
     def get_context_data(self, **kwargs):
         context = super(EditProfileView, self).get_context_data(**kwargs)
-        context['form'] = forms.UserForm(instance=self.request.user)
+        context['form'] = forms.UserEditForm(instance=self.request.user)
         return context
 
     def form_valid(self, form):
-        forms.UserForm(self.request.POST, self.request.FILES, instance=self.request.user).save()
+        forms.UserEditForm(self.request.POST, self.request.FILES, instance=self.request.user).save()
         return redirect('/accounts/profile')
 
 
@@ -153,3 +155,13 @@ class EditPasswordView(FormView):
         user = form.save()
         update_session_auth_hash(self.request, user)
         return redirect('/accounts/profile')
+
+
+# class RegView(RegistrationView):
+#     template_name = 'registration/registration_form.html'
+#     form_class = forms.UserCreateForm
+#
+#     def form_valid(self, form):
+#         user = form.save()
+#         update_session_auth_hash(self.request, user)
+#         return redirect('/')

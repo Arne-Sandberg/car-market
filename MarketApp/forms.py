@@ -1,7 +1,10 @@
 from django import forms
 from django.db.models import Max, Min
 from django_range_slider.fields import RangeSliderField
+from registration.forms import RegistrationForm
+
 from MarketApp import models
+from MarketApp.models import User
 
 
 class FilterForm(forms.Form):
@@ -28,11 +31,17 @@ class FilterForm(forms.Form):
         self.fields['max_year'] = forms.IntegerField(min_value=min_y, max_value=max_y, initial=max_y)
 
 
-class UserForm(forms.ModelForm):
+class UserEditForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        super(UserForm, self).__init__(*args, **kwargs)
+        super(UserEditForm, self).__init__(*args, **kwargs)
         self.fields['image'].required = False
 
     class Meta:
         model = models.User
         fields = ('image', 'first_name', 'last_name', 'email')
+
+
+# class UserCreateForm(RegistrationForm):
+#     class Meta:
+#         model = models.User
+#         fields = ('username', 'email', 'password1', 'password2')
