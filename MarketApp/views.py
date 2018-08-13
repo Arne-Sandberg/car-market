@@ -4,7 +4,6 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import redirect
 from django.views.generic import TemplateView, FormView, DetailView
 from django.views.generic.base import View
-from registration.views import RegistrationView
 
 from Market import settings
 from MarketApp import models, forms
@@ -155,7 +154,6 @@ class EditPasswordView(FormView):
         user = form.save()
         update_session_auth_hash(self.request, user)
         return redirect('/accounts/profile')
-
 
 # class RegView(RegistrationView):
 #     template_name = 'registration/registration_form.html'

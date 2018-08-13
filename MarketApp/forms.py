@@ -2,9 +2,8 @@ from django import forms
 from django.db.models import Max, Min
 from django_range_slider.fields import RangeSliderField
 from registration.forms import RegistrationForm
-
+from django.contrib.auth import get_user_model
 from MarketApp import models
-from MarketApp.models import User
 
 
 class FilterForm(forms.Form):
@@ -37,11 +36,12 @@ class UserEditForm(forms.ModelForm):
         self.fields['image'].required = False
 
     class Meta:
-        model = models.User
+        model = get_user_model()
         fields = ('image', 'first_name', 'last_name', 'email')
 
 
-# class UserCreateForm(RegistrationForm):
-#     class Meta:
-#         model = models.User
-#         fields = ('username', 'email', 'password1', 'password2')
+class UserCreateForm(RegistrationForm):
+
+    class Meta:
+        model = models.User
+        fields = ('username', 'email', 'password1', 'password2')

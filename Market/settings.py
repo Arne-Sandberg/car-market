@@ -129,6 +129,7 @@ STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "sk_test_v8wWUdop2kxCHBz
 INTERNAL_IPS = ['127.0.0.1']
 
 AUTH_USER_MODEL = 'MarketApp.User'
+USERNAME_FIELD = 'username'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
