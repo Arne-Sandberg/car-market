@@ -8,15 +8,14 @@
                  {% static comment.user.image.url %}
                  {% else %}http://www.personalbrandingblog.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640-300x300.png
                  {% endif %}">
-            <div class="media-body">
+            <div class="media-body" data-id="{{ comment.id }}">
                 <b>{{ comment.user }}: {{ comment.rating }}★</b>
                 <small>{{ comment.creation_date }}</small>
                 {% if comment.user == request.user %}
-                    <a href="#">edit</a> | <a href="#" data-id="{{ comment.id }}" class="deleteComment">delete</a>
+                    <a href="" class="editComment">edit</a> | <a href="" class="deleteComment">delete</a>
                 {% endif %}
                 <p>{{ comment.content | truncatechars:100 }}</p>
             </div>
         </div>
-        <script type="text/javascript" src=""></script>
     {% endfor %}
 {% endblock %}

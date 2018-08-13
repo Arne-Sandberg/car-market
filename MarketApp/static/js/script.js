@@ -1,6 +1,6 @@
 $(document).ready(function () {
-    let brand_id = window.location.href.split('/')[window.location.href.split('/').length - 2];
-    let car_id = window.location.href.split('/')[window.location.href.split('/').length - 2];
+    let brand_id = window.location.href.split('/')[4];
+    let car_id = window.location.href.split('/')[5];
 
     $("#filterSubmit").click(function () {
         let min_year = $('#id_min_year').val();
@@ -39,29 +39,16 @@ $(document).ready(function () {
 
 
     $("#submitComment").click(function () {
-        let csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
-
-        function csrfSafeMethod(method) {
-            // these HTTP methods do not require CSRF protection
-            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-        }
-
-        $.ajaxSetup({
-            beforeSend: function (xhr, settings) {
-                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                }
-            }
-        });
-
         let content = $('#id_content').val();
         let rating = $('#id_rating').val();
+
         $.post(
             '/comment/',
             {
                 'car_id': car_id,
                 'content': content,
                 'rating': rating,
+                'csrfmiddlewaretoken': jQuery("[name=csrfmiddlewaretoken]").val(),
             },
             function (data) {
                 $("#comments").html(data);
@@ -71,8 +58,9 @@ $(document).ready(function () {
         );
     });
 
-    $(".media-body").on("click", 'a.deleteComment', function () {
-        let comment_id = $(this).attr("data-id");
+    $("body").on("click", 'a.deleteComment', function () {
+        let comment_id = $(this).parents().attr("data-id");
+
         $.post(
             '/comment/',
             {
@@ -84,7 +72,10 @@ $(document).ready(function () {
             function (data) {
                 $("#comments").html(data);
             }
-        )
+        );
     });
 
+    // $("body").on("click", 'a.editComment', function () {
+    //    
+    // });
 });
