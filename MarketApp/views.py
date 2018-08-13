@@ -156,7 +156,14 @@ class CommentView(TemplateView):
 
     def post(self, request, *args, **kwargs):
         data = request.POST
-        comment = models.Comment.objects.create(user=self.request.user, car_id=data['car_id'], content=data['content'],
-                                                rating=data['rating'])
-        comment.save()
-        return self.render_to_response(self.get_context_data())
+        if data['delete']:
+            models.Comment.objects.get(id=data['comment_id']).delete()
+        else:
+            comment = models.Comment.objects.create(user=self.request.user, car_id=data['car_id'], content=data['content'],
+                                                    rating=data['rating'])
+            comment.save()
+        context = self.get_context_data()
+        context['object'] = models.Car.objects.get(id=data['car_id'])
+        return self.render_to_response(context)
+
+

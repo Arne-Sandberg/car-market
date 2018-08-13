@@ -1,6 +1,7 @@
 $(document).ready(function () {
     let brand_id = window.location.href.split('/')[window.location.href.split('/').length - 2];
     let car_id = window.location.href.split('/')[window.location.href.split('/').length - 2];
+
     $("#filterSubmit").click(function () {
         let min_year = $('#id_min_year').val();
         let max_year = $('#id_max_year').val();
@@ -36,6 +37,7 @@ $(document).ready(function () {
         );
     });
 
+
     $("#submitComment").click(function () {
         let csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
 
@@ -63,7 +65,26 @@ $(document).ready(function () {
             },
             function (data) {
                 $("#comments").html(data);
+                $("#id_content").val('');
+                $("#id_rating").val(1);
             }
         );
-    })
+    });
+
+    $(".media-body").on("click", 'a.deleteComment', function () {
+        let comment_id = $(this).attr("data-id");
+        $.post(
+            '/comment/',
+            {
+                'car_id': car_id,
+                'delete': true,
+                'comment_id': comment_id,
+                'csrfmiddlewaretoken': jQuery("[name=csrfmiddlewaretoken]").val(),
+            },
+            function (data) {
+                $("#comments").html(data);
+            }
+        )
+    });
+
 });
