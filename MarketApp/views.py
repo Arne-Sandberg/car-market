@@ -10,9 +10,6 @@ from MarketApp import models, forms
 from random import shuffle
 
 
-# Create your views here.
-
-
 class IndexView(TemplateView):
     template_name = 'index.html'
 
@@ -32,9 +29,6 @@ class IndexView(TemplateView):
 class BrandView(FormView):
     template_name = 'brands.html'
     form_class = forms.FilterForm
-
-    def form_valid(self, form):
-        return self.render_to_response(self.get_context_data())
 
     def get_context_data(self, **kwargs):
         context = super(BrandView, self).get_context_data(**kwargs)
@@ -81,6 +75,7 @@ class CarView(DetailView):
         context = super(CarView, self).get_context_data(**kwargs)
         context['brands'] = models.Brand.objects.all()
         context['stripe_key'] = settings.STRIPE_PUBLIC_KEY
+        context['form'] = forms.CommentForm
         return context
 
 
@@ -155,11 +150,13 @@ class EditPasswordView(FormView):
         update_session_auth_hash(self.request, user)
         return redirect('/accounts/profile')
 
-# class RegView(RegistrationView):
-#     template_name = 'registration/registration_form.html'
-#     form_class = forms.UserCreateForm
-#
-#     def form_valid(self, form):
-#         user = form.save()
-#         update_session_auth_hash(self.request, user)
-#         return redirect('/')
+
+class CommentView(TemplateView):
+    template_name = 'comments.html'
+
+    def post(self, request, *args, **kwargs):
+        data = request.POST
+        comment = models.Comment.objects.create(user=self.request.user, car_id=data['car_id'], content=data['content'],
+                                                rating=data['rating'])
+        comment.save()
+        return self.render_to_response(self.get_context_data())

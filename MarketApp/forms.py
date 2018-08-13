@@ -41,7 +41,15 @@ class UserEditForm(forms.ModelForm):
 
 
 class UserCreateForm(RegistrationForm):
-
     class Meta:
         model = models.User
         fields = ('username', 'email', 'password1', 'password2')
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = models.Comment
+        fields = ('content', 'rating')
+        widgets = {
+            'content': forms.Textarea(attrs={'rows': 3}),
+        }

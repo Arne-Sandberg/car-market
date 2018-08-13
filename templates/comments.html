@@ -1,0 +1,21 @@
+{% load static %}
+{% block comments %}
+    {% for comment in object.comment_set.all %}
+        <hr>
+        <div class="media">
+            <img class="comment_img img-thumbnail"
+                 src="{% if comment.user.image %}
+                 {% static comment.user.image.url %}
+                 {% else %}http://www.personalbrandingblog.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640-300x300.png
+                 {% endif %}">
+            <div class="media-body">
+                <b>{{ comment.user }}: {{ comment.rating }}★</b>
+                <small>{{ comment.creation_date }}</small>
+                {% if comment.user == request.user %}
+                    <a href="#">edit</a> | <a href="#">delete</a>
+                {% endif %}
+                <p>{{ comment.content | truncatechars:100 }}</p>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

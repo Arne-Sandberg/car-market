@@ -1,5 +1,6 @@
 {% extends 'index.html' %}
 {% load static %}
+{% load bootstrap %}
 {% block product %}
     <div class="card mt-4">
         <div class="card-body">
@@ -50,6 +51,31 @@
                 {% else %}
                     <p>Out of stock</p>
                 {% endif %}
+        </div>
+        <div class="container">
+            <hr>
+            <h3>Comments:</h3>
+            <hr>
+            {% if request.user.is_authenticated %}
+                <div class="media-body">
+                    <img class="comment_img img-thumbnail"
+                         src="{% if request.user.image %}
+                 {% static request.user.image.url %}
+                 {% else %}http://www.personalbrandingblog.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640-300x300.png
+                 {% endif %}">
+                    <b>{{ request.user }}</b>
+                    {{ form|bootstrap }}
+                    {% csrf_token %}
+                    <a href="" class="btn btn-primary" id="submitComment">Submit</a>
+                </div>
+            {% else %}
+                <h5>To leave a comment you have to:</h5>
+                <a href="/accounts/login" class="btn">Log in</a> |
+                <a href="/accounts/register" class="btn">Sign up</a>
+            {% endif %}
+            <div id="comments">
+                {% include 'comments.html' %}
+            </div>
         </div>
     </div>
 {% endblock %}

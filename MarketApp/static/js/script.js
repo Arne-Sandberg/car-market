@@ -1,5 +1,6 @@
 $(document).ready(function () {
     let brand_id = window.location.href.split('/')[window.location.href.split('/').length - 2];
+    let car_id = window.location.href.split('/')[window.location.href.split('/').length - 2];
     $("#filterSubmit").click(function () {
         let min_year = $('#id_min_year').val();
         let max_year = $('#id_max_year').val();
@@ -25,11 +26,43 @@ $(document).ready(function () {
             }
         );
     });
+
     $("#filterCancel").click(function () {
         $.get(
             '/filter/' + brand_id + '/',
             function (data) {
-                $("#brand_content").html(data)
+                $("#brand_content").html(data);
+            }
+        );
+    });
+
+    $("#submitComment").click(function () {
+        let csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+
+        $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+
+        let content = $('#id_content').val();
+        let rating = $('#id_rating').val();
+        $.post(
+            '/comment/',
+            {
+                'car_id': car_id,
+                'content': content,
+                'rating': rating,
+            },
+            function (data) {
+                $("#comments").html(data);
             }
         );
     })

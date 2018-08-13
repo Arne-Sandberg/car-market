@@ -1,8 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.utils import timezone
 
 
-# Create your models here.
+class User(AbstractUser):
+    image = models.ImageField(null=True)
 
 
 class Brand(models.Model):
@@ -34,5 +36,9 @@ class Image(models.Model):
     image = models.ImageField()
 
 
-class User(AbstractUser):
-    image = models.ImageField(null=True)
+class Comment(models.Model):
+    content = models.TextField()
+    rating = models.IntegerField(default=1)
+    creation_date = models.DateTimeField(default=timezone.now)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    car = models.ForeignKey(Car, on_delete=models.CASCADE)

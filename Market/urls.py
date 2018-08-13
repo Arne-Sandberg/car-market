@@ -16,6 +16,7 @@ urlpatterns = [
     url('^brand/(?P<brand_id>\d+)/$', views.BrandView.as_view()),
     url('^brand/(?P<brand_id>\d+)/(?P<pk>\d+)/$', views.CarView.as_view()),
     url('^filter/(?P<brand_id>\d+)/', views.BrandContent.as_view()),
+    url('^comment/', views.CommentView.as_view()),
     url('^brand/(?P<brand_id>\d+)/(?P<pk>\d+)/checkout/$', views.CheckoutView.as_view()),
     url('^brand/(?P<brand_id>\d+)/(?P<pk>\d+)/checkout/thanks/$', views.ThanksView.as_view()),
     url('^brand/(?P<brand_id>\d+)/(?P<pk>\d+)/checkout/error/$', views.ErrorView.as_view()),
