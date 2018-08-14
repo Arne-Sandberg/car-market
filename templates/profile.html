@@ -6,18 +6,20 @@
             <div class="card">
                 <img alt="User Pic"
                      src="
-                 {% if request.user.image %}
-                 {% static request.user.image.url %}
+                 {% if user.image %}
+                 {% static user.image.url %}
                  {% else %}http://www.personalbrandingblog.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640-300x300.png
                  {% endif %}"
                      class="img-thumbnail">
-                <div class="card-body">
-                    <a href="edit/profile">Edit profile</a>
-                    <br/>
-                    <a href="edit/password">Change password</a>
-                    <br/>
-                    <a href="/accounts/logout">Log out</a>
-                </div>
+                {% if user == request.user %}
+                    <div class="card-body">
+                        <a href="/accounts/profile/edit/profile">Edit profile</a>
+                        <br/>
+                        <a href="/accounts/profile/edit/password">Change password</a>
+                        <br/>
+                        <a href="/accounts/logout">Log out</a>
+                    </div>
+                {% endif %}
             </div>
         </div>
         <div class="col-lg-9">
@@ -26,19 +28,19 @@
                 <tbody>
                 <tr>
                     <td>Username</td>
-                    <td>{{ request.user }}</td>
+                    <td>{{ user }}</td>
                 </tr>
                 <tr>
                     <td>Email</td>
-                    <td>{{ request.user.email }}</td>
+                    <td>{{ user.email }}</td>
                 </tr>
                 <tr>
                     <td>First name</td>
-                    <td>{{ request.user.first_name }}</td>
+                    <td>{{ user.first_name }}</td>
                 </tr>
                 <tr>
                     <td>Last name</td>
-                    <td>{{ request.user.last_name }}</td>
+                    <td>{{ user.last_name }}</td>
                 </tr>
                 </tbody>
             </table>
@@ -54,7 +56,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for purchase in request.user.purchase_set.all %}
+                {% for purchase in user.purchase_set.all %}
                     <tr>
                         <td>{{ purchase.id }}</td>
                         <td>{{ purchase.date }}</td>

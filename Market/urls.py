@@ -9,7 +9,7 @@ from MarketApp.forms import UserCreateForm
 urlpatterns = [
     url('^accounts/register/$', RegistrationView.as_view(form_class=UserCreateForm)),
     url('^accounts/', include('registration.backends.simple.urls')),
-    url('^accounts/profile/$', views.ProfileView.as_view()),
+    url('^accounts/profile/(?P<username>\w+)/$', views.ProfileView.as_view()),
     url('^accounts/profile/edit/profile/$', views.EditProfileView.as_view()),
     url('^accounts/profile/edit/password/$', views.EditPasswordView.as_view()),
     url('^home$|^$', views.IndexView.as_view()),

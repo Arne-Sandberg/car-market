@@ -124,6 +124,11 @@ class CheckoutView(View):
 class ProfileView(TemplateView):
     template_name = 'profile.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(ProfileView, self).get_context_data(**kwargs)
+        context['user'] = models.User.objects.get(username=self.kwargs['username'])
+        return context
+
 
 class EditProfileView(FormView):
     template_name = 'edit.html'

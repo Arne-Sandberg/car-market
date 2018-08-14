@@ -118,6 +118,8 @@ ACCOUNT_ACTIVATION_DAYS = 2
 
 LOGOUT_REDIRECT_URL = '/home'
 
+LOGIN_REDIRECT_URL = '/home'
+
 MEDIA_URL = '/images/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'MarketApp/static/images')
@@ -129,6 +131,7 @@ STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "sk_test_v8wWUdop2kxCHBz
 INTERNAL_IPS = ['127.0.0.1']
 
 AUTH_USER_MODEL = 'MarketApp.User'
+
 USERNAME_FIELD = 'username'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
