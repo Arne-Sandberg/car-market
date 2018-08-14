@@ -103,8 +103,7 @@ class CheckoutView(View):
         token = request.POST.get("stripeToken")
         car = models.Car.objects.get(id=self.kwargs['pk'])
         car.stock_count -= 1
-        purchase = models.Purchase.objects.create(user=request.user, price=car.price, date=timezone.now(),
-                                                  car_colour=car.colour, car_info=str(car))
+        purchase = models.Purchase.objects.create(user=request.user, price=car.price, date=timezone.now(), car=car)
         stripe.api_key = settings.STRIPE_SECRET_KEY
         try:
             stripe.Charge.create(
