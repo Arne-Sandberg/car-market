@@ -11,7 +11,7 @@ $(document).ready(function () {
                 'csrfmiddlewaretoken': csrf_token,
             },
             function (data) {
-                $("#user_comment").html(data);
+                $("#comment").html(data);
             }
         );
     }
@@ -64,7 +64,7 @@ $(document).ready(function () {
                 'csrfmiddlewaretoken': csrf_token,
             },
             function (data) {
-                $("#comments").html(data);
+                $("#comments_content").html(data);
                 refreshUserComment();
             }
         );
@@ -86,7 +86,7 @@ $(document).ready(function () {
                 'csrfmiddlewaretoken': csrf_token,
             },
             function (data) {
-                $("#comments").html(data);
+                $("#comments_content").html(data);
                 refreshUserComment();
             }
         );
@@ -102,7 +102,7 @@ $(document).ready(function () {
                 'csrfmiddlewaretoken': csrf_token,
             },
             function (data) {
-                $("#comments").html(data);
+                $("#comments_content").html(data);
                 refreshUserComment();
             }
         );
@@ -120,7 +120,7 @@ $(document).ready(function () {
                 'csrfmiddlewaretoken': csrf_token,
             },
             function (data) {
-                $("#comments").html(data);
+                $("#comments_content").html(data);
                 refreshUserComment();
             }
         );
@@ -141,7 +141,7 @@ $(document).ready(function () {
                 'csrfmiddlewaretoken': csrf_token,
             },
             function (data) {
-                $("#comments").html(data);
+                $("#comments_content").html(data);
             }
         );
 
@@ -155,7 +155,7 @@ $(document).ready(function () {
                 'csrfmiddlewaretoken': csrf_token,
             },
             function (data) {
-                $("#user_comment").html(data);
+                $("#comment").html(data);
             }
         );
     });

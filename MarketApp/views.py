@@ -17,8 +17,7 @@ class IndexView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(IndexView, self).get_context_data(**kwargs)
         context['brands'] = models.Brand.objects.all()
-        context['advertisement'] = models.Car.objects.filter(is_advertised=True).select_related(
-            'brand').prefetch_related('image_set')
+        context['advertisement'] = models.Car.objects.filter(is_advertised=True)
         if not len(context['advertisement']):
             ids_list = list(models.Car.objects.all().values_list('id', flat=True))
             shuffle(ids_list)
