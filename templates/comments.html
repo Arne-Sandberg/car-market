@@ -12,7 +12,7 @@
                 <b>{{ comment.user }}: </b><b id="comment_rating">{{ comment.rating }}</b>★
                 <small>{{ comment.creation_date }}</small>
                 {% if comment.user == request.user %}
-                    {% if comment.id == comment_id %}
+                    {% if comment.id == editing_comment_id %}
                         editing...
                     {% else %}
                         <a href="#user_comment" class="editComment">edit</a> |

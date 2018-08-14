@@ -159,20 +159,20 @@ class CommentView(TemplateView):
         data = request.POST
         context = self.get_context_data()
         context['object'] = models.Car.objects.get(id=data['car_id'])
-        if 'delete' in data:
+        if data['flag'] == 'delete':
             models.Comment.objects.get(id=data['comment_id']).delete()
-        elif 'edit' in data:
+        elif data['flag'] == 'edit':
             comment = models.Comment.objects.get(id=data['comment_id'])
             comment.content = data['content']
             comment.rating = data['rating']
             comment.creation_date = timezone.now()
             comment.save()
-        elif 'create' in data:
+        elif data['flag'] == 'create':
             models.Comment.objects.create(user=self.request.user, car_id=data['car_id'],
                                           content=data['content'],
                                           rating=data['rating']).save()
-        elif 'editing' in data:
-            context['comment_id'] = int(data['comment_id'])
+        elif data['flag'] == 'editing':
+            context['editing_comment_id'] = int(data['comment_id'])
         return self.render_to_response(context)
 
 
@@ -182,7 +182,7 @@ class UserCommentView(TemplateView):
     def post(self, request, *args, **kwargs):
         data = request.POST
         context = self.get_context_data()
-        if 'edit' in data:
+        if data['flag'] == 'edit':
             initial = {'content': data['content'], 'rating': data['rating']}
             context['form'] = forms.CommentForm(initial=initial)
             context['edit'] = True
