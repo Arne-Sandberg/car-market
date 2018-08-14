@@ -47,6 +47,5 @@ class Comment(models.Model):
 class Purchase(models.Model):
     date = models.DateTimeField(default=timezone.now)
     price = models.IntegerField()
-    car_info = models.CharField(max_length=200)
-    car_colour = models.CharField(max_length=70)
+    car = models.ForeignKey(Car, on_delete=models.SET_NULL, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
