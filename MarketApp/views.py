@@ -191,6 +191,7 @@ class CommentView(TemplateView):
         context = self.get_context_data()
         if data['flag'] == 'edit':
             initial = {'content': data['content'], 'rating': data['rating']}
+            print(initial)
             context['form'] = forms.CommentForm(initial=initial)
             context['edit'] = True
             context['comment_id'] = data['comment_id']
