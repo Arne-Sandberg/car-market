@@ -104,6 +104,8 @@ class CheckoutView(View):
         token = request.POST.get("stripeToken")
         car = models.Car.objects.get(id=self.kwargs['pk'])
         car.stock_count -= 1
+        purchase = models.Purchase.objects.create(user=request.user, price=car.price, date=timezone.now(),
+                                                  car_colour=car.colour, car_info=str(car))
         stripe.api_key = settings.STRIPE_SECRET_KEY
         try:
             stripe.Charge.create(
@@ -115,6 +117,7 @@ class CheckoutView(View):
         except stripe.error.CardError as e:
             return redirect('error/')
         else:
+            purchase.save()
             car.save()
             return redirect('thanks/')
 
@@ -152,8 +155,8 @@ class EditPasswordView(FormView):
         return redirect('/accounts/profile')
 
 
-class CommentView(TemplateView):
-    template_name = 'comments.html'
+class CommentContent(TemplateView):
+    template_name = 'comments_content.html'
 
     def post(self, request, *args, **kwargs):
         data = request.POST
@@ -176,8 +179,8 @@ class CommentView(TemplateView):
         return self.render_to_response(context)
 
 
-class UserCommentView(TemplateView):
-    template_name = 'user_comment.html'
+class CommentView(TemplateView):
+    template_name = 'comment.html'
 
     def post(self, request, *args, **kwargs):
         data = request.POST

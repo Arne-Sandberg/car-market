@@ -38,16 +38,18 @@
             <p>Colour: {{ object.colour }}
                 {% if object.stock_count %}
                     <p>In stock: {{ object.stock_count }}</p>
-                    <form action="checkout/" method="POST">
-                        {% csrf_token %}
-                        <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                                data-key="{{ stripe_key }}"
-                                data-amount="{{ car.price }}00"
-                                data-name="Car Market"
-                                data-description="{{ car }}"
-                                data-currency="usd">
-                        </script>
-                    </form>
+                    {% if request.user.is_authenticated %}
+                        <form action="checkout/" method="POST">
+                            {% csrf_token %}
+                            <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                                    data-key="{{ stripe_key }}"
+                                    data-amount="{{ car.price }}00"
+                                    data-name="Car Market"
+                                    data-description="{{ car }}"
+                                    data-currency="usd">
+                            </script>
+                        </form>
+                    {% endif %}
                 {% else %}
                     <p>Out of stock</p>
                 {% endif %}
@@ -55,11 +57,11 @@
         <div class="container">
             <hr>
             <h3>Comments:</h3>
-            <div id="comments">
-                {% include 'comments.html' %}
+            <div id="comments_content">
+                {% include 'comments_content.html' %}
             </div>
-            <div id="user_comment">
-                {% include 'user_comment.html' %}
+            <div id="comment">
+                {% include 'comment.html' %}
             </div>
         </div>
     </div>

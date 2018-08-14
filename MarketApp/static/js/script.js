@@ -50,7 +50,7 @@ $(document).ready(function () {
         );
     });
 
-    $("#user_comment").on("click", "#submitComment", function () {
+    $("#comment").on("click", "#submitComment", function () {
         let new_comment_content = $('#id_content').val();
         let new_comment_rating = $('#id_rating').val();
 
@@ -70,7 +70,7 @@ $(document).ready(function () {
         );
     });
 
-    $("#user_comment").on("click", "#saveEditComment", function () {
+    $("#comment").on("click", "#saveEditComment", function () {
         let new_comment_content = $('#id_content').val();
         let new_comment_rating = $('#id_rating').val();
         let comment_id = $(this).parents().attr("data-id");
@@ -93,7 +93,7 @@ $(document).ready(function () {
     });
 
 
-    $("#user_comment").on("click", "#cancelEditComment", function () {
+    $("#comment").on("click", "#cancelEditComment", function () {
         $.post(
             '/comment/',
             {
@@ -108,7 +108,7 @@ $(document).ready(function () {
         );
     });
 
-    $("#comments").on("click", 'a.deleteComment', function () {
+    $("#comments_content").on("click", 'a.deleteComment', function () {
         let comment_id = $(this).parents().attr("data-id");
 
         $.post(
@@ -127,7 +127,7 @@ $(document).ready(function () {
     });
 
 
-    $("#comments").on("click", 'a.editComment', function () {
+    $("#comments_content").on("click", 'a.editComment', function () {
         let comment_id = $(this).parents().attr("data-id");
         let old_comment_content = $(this).parents().children("#comment_content").text();
         let old_comment_rating = $(this).parents().children("#comment_rating").text();
