@@ -1,15 +1,27 @@
 $(document).ready(function () {
     let brand_id = window.location.href.split('/')[4];
     let car_id = window.location.href.split('/')[5];
+    let csrf_token = jQuery("[name=csrfmiddlewaretoken]").val();
 
-    $("#filterSubmit").click(function () {
+    function refreshUserComment() {
+        $.post(
+            '/comment/edit/',
+            {
+                'csrfmiddlewaretoken': csrf_token,
+            },
+            function (data) {
+                $("#user_comment").html(data);
+            }
+        );
+    }
+
+    $("#submitFilter").click(function () {
         let min_year = $('#id_min_year').val();
         let max_year = $('#id_max_year').val();
         let number_of_seats = $('#id_number_of_seats').val();
         let colour = $('#id_colour').val();
         let in_stock_only = $('#id_in_stock_only').prop('checked');
         let price = $('#id_price').val().split(/\D+/);
-
 
         $.get(
             '/filter/' + brand_id + '/',
@@ -28,7 +40,7 @@ $(document).ready(function () {
         );
     });
 
-    $("#filterCancel").click(function () {
+    $("#cancelFilter").click(function () {
         $.get(
             '/filter/' + brand_id + '/',
             function (data) {
@@ -37,18 +49,40 @@ $(document).ready(function () {
         );
     });
 
-
-    $("#submitComment").click(function () {
-        let content = $('#id_content').val();
-        let rating = $('#id_rating').val();
+    $("#user_comment").on("click", "#submitComment", function () {
+        let new_comment_content = $('#id_content').val();
+        let new_comment_rating = $('#id_rating').val();
 
         $.post(
             '/comment/',
             {
+                'create': true,
                 'car_id': car_id,
-                'content': content,
-                'rating': rating,
-                'csrfmiddlewaretoken': jQuery("[name=csrfmiddlewaretoken]").val(),
+                'content': new_comment_content,
+                'rating': new_comment_rating,
+                'csrfmiddlewaretoken': csrf_token,
+            },
+            function (data) {
+                $("#comments").html(data);
+            }
+        );
+        refreshUserComment();
+    });
+
+    $("#user_comment").on("click", "#saveEditComment", function () {
+        let new_comment_content = $('#id_content').val();
+        let new_comment_rating = $('#id_rating').val();
+        let comment_id = $(this).parents().attr("data-id");
+
+        $.post(
+            '/comment/',
+            {
+                'edit': true,
+                'car_id': car_id,
+                'comment_id': comment_id,
+                'content': new_comment_content,
+                'rating': new_comment_rating,
+                'csrfmiddlewaretoken': csrf_token,
             },
             function (data) {
                 $("#comments").html(data);
@@ -56,26 +90,74 @@ $(document).ready(function () {
                 $("#id_rating").val(1);
             }
         );
+
+        refreshUserComment();
     });
 
-    $("body").on("click", 'a.deleteComment', function () {
-        let comment_id = $(this).parents().attr("data-id");
 
+    $("#user_comment").on("click", "#cancelEditComment", function () {
         $.post(
             '/comment/',
             {
                 'car_id': car_id,
-                'delete': true,
-                'comment_id': comment_id,
-                'csrfmiddlewaretoken': jQuery("[name=csrfmiddlewaretoken]").val(),
+                'csrfmiddlewaretoken': csrf_token,
             },
             function (data) {
                 $("#comments").html(data);
             }
         );
+        refreshUserComment();
     });
 
-    // $("body").on("click", 'a.editComment', function () {
-    //    
-    // });
+    $("#comments").on("click", 'a.deleteComment', function () {
+        let comment_id = $(this).parents().attr("data-id");
+
+        $.post(
+            '/comment/',
+            {
+                'delete': true,
+                'car_id': car_id,
+                'comment_id': comment_id,
+                'csrfmiddlewaretoken': csrf_token,
+            },
+            function (data) {
+                $("#comments").html(data);
+            }
+        );
+        refreshUserComment();
+    });
+
+
+    $("#comments").on("click", 'a.editComment', function () {
+        let comment_id = $(this).parents().attr("data-id");
+        let old_comment_content = $(this).parents().children("#comment_content").text();
+        let old_comment_rating = $(this).parents().children("#comment_rating").text();
+
+        $.post(
+            '/comment/',
+            {
+                'editing': true,
+                'car_id': car_id,
+                'comment_id': comment_id,
+                'csrfmiddlewaretoken': csrf_token,
+            },
+            function (data) {
+                $("#comments").html(data);
+            }
+        );
+
+        $.post(
+            '/comment/edit/',
+            {
+                'edit': true,
+                'comment_id': comment_id,
+                'content': old_comment_content,
+                'rating': old_comment_rating,
+                'csrfmiddlewaretoken': csrf_token,
+            },
+            function (data) {
+                $("#user_comment").html(data);
+            }
+        );
+    });
 });

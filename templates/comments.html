@@ -9,12 +9,17 @@
                  {% else %}http://www.personalbrandingblog.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640-300x300.png
                  {% endif %}">
             <div class="media-body" data-id="{{ comment.id }}">
-                <b>{{ comment.user }}: {{ comment.rating }}★</b>
+                <b>{{ comment.user }}: </b><b id="comment_rating">{{ comment.rating }}</b>★
                 <small>{{ comment.creation_date }}</small>
                 {% if comment.user == request.user %}
-                    <a href="" class="editComment">edit</a> | <a href="" class="deleteComment">delete</a>
+                    {% if comment.id == comment_id %}
+                        editing...
+                    {% else %}
+                        <a href="#user_comment" class="editComment">edit</a> |
+                        <a href="#comments" class="deleteComment">delete</a>
+                    {% endif %}
                 {% endif %}
-                <p>{{ comment.content | truncatechars:100 }}</p>
+                <p id="comment_content">{{ comment.content }}</p>
             </div>
         </div>
     {% endfor %}

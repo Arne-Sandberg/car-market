@@ -1,0 +1,23 @@
+{% load bootstrap %}
+{% block user_comment %}
+    <hr>
+    <div class="media">
+        <div class="media-body" data-id="{{ comment_id }}">
+            {% if request.user.is_authenticated %}
+                <b>{{ request.user }}: {% if edit %} edit comment {% else %} leave comment {% endif %}</b>
+                {{ form|bootstrap }}
+                {% csrf_token %}
+                {% if edit %}
+                    <button class="btn btn-primary" id="saveEditComment">Save</button>
+                    <button class="btn btn-primary" id="cancelEditComment">Cancel</button>
+                {% else %}
+                    <button class="btn btn-primary" id="submitComment">Submit</button>
+                {% endif %}
+            {% else %}
+                <h5>To leave a comment you have to:</h5>
+                <a href="/accounts/login">Log in</a> |
+                <a href="/accounts/register">Sign up</a>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

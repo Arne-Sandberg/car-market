@@ -58,21 +58,9 @@
             <div id="comments">
                 {% include 'comments.html' %}
             </div>
-            <hr>
-            {% if request.user.is_authenticated %}
-                <div class="media">
-                    <div class="media-body">
-                        <b>{{ request.user }}</b>:
-                        {{ form|bootstrap }}
-                        {% csrf_token %}
-                        <button class="btn btn-primary" id="submitComment">Submit</button>
-                    </div>
-                </div>
-            {% else %}
-                <h5>To leave a comment you have to:</h5>
-                <a href="/accounts/login">Log in</a> |
-                <a href="/accounts/register">Sign up</a>
-            {% endif %}
+            <div id="user_comment">
+                {% include 'user_comment.html' %}
+            </div>
         </div>
     </div>
 {% endblock %}

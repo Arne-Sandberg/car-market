@@ -2,6 +2,7 @@ import stripe
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import redirect
+from django.utils import timezone
 from django.views.generic import TemplateView, FormView, DetailView
 from django.views.generic.base import View
 
@@ -156,12 +157,36 @@ class CommentView(TemplateView):
 
     def post(self, request, *args, **kwargs):
         data = request.POST
+        context = self.get_context_data()
+        context['object'] = models.Car.objects.get(id=data['car_id'])
         if 'delete' in data:
             models.Comment.objects.get(id=data['comment_id']).delete()
-        else:
+        elif 'edit' in data:
+            comment = models.Comment.objects.get(id=data['comment_id'])
+            comment.content = data['content']
+            comment.rating = data['rating']
+            comment.creation_date = timezone.now()
+            comment.save()
+        elif 'create' in data:
             models.Comment.objects.create(user=self.request.user, car_id=data['car_id'],
                                           content=data['content'],
                                           rating=data['rating']).save()
+        elif 'editing' in data:
+            context['comment_id'] = int(data['comment_id'])
+        return self.render_to_response(context)
+
+
+class UserCommentView(TemplateView):
+    template_name = 'user_comment.html'
+
+    def post(self, request, *args, **kwargs):
+        data = request.POST
         context = self.get_context_data()
-        context['object'] = models.Car.objects.get(id=data['car_id'])
+        if 'edit' in data:
+            initial = {'content': data['content'], 'rating': data['rating']}
+            context['form'] = forms.CommentForm(initial=initial)
+            context['edit'] = True
+            context['comment_id'] = data['comment_id']
+        else:
+            context['form'] = forms.CommentForm()
         return self.render_to_response(context)
