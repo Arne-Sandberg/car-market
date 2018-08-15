@@ -5,9 +5,9 @@
         <div class="media">
             <a href="{% url 'profile' comment.user %}">
                 <img class="comment_img img-thumbnail"
-                     src="{% if comment.user.image %}
-                         {% static comment.user.image.url %}{% else %}{% static 'images/default_user.png' %}
-                 {% endif %}">
+                     src="{% if comment.user.image %}{% static comment.user.image.url %}
+                            {% else %}{% static 'images/default_user.png' %}
+                            {% endif %}">
             </a>
             <div class="media-body" data-id="{{ comment.id }}">
                 <a href="{% url 'profile' comment.user %}">{{ comment.user }}</a>:

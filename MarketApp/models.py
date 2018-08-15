@@ -48,4 +48,4 @@ class Purchase(models.Model):
     date = models.DateTimeField(default=timezone.now)
     price = models.IntegerField()
     car = models.ForeignKey(Car, on_delete=models.SET_NULL, null=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
