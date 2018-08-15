@@ -64,8 +64,11 @@ $(document).ready(function () {
                 'csrfmiddlewaretoken': csrf_token,
             },
             function (data) {
-                $("#comments_content").html(data);
-                refreshUserComment();
+
+                if($("#id_content").val() && $("#id_rating").val()) {
+                    $("#comments_content").html(data);
+                    refreshUserComment();
+                }
             }
         );
     });
@@ -86,8 +89,10 @@ $(document).ready(function () {
                 'csrfmiddlewaretoken': csrf_token,
             },
             function (data) {
-                $("#comments_content").html(data);
-                refreshUserComment();
+                if($("#id_content").val() && $("#id_rating").val()) {
+                    $("#comments_content").html(data);
+                    refreshUserComment();
+                }
             }
         );
     });
