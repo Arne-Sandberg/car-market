@@ -1,7 +1,8 @@
 import stripe
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
-from django.shortcuts import redirect
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from django.utils import timezone
 from django.views.generic import TemplateView, FormView, DetailView
 from django.views.generic.base import View
@@ -18,7 +19,7 @@ class IndexView(TemplateView):
         context = super(IndexView, self).get_context_data(**kwargs)
         context['brands'] = models.Brand.objects.all()
         context['advertisement'] = models.Car.objects.filter(is_advertised=True)
-        if not len(context['advertisement']):
+        if not context['advertisement']:
             ids_list = list(models.Car.objects.all().values_list('id', flat=True))
             shuffle(ids_list)
             context['advertisement'] = models.Car.objects.filter(id__in=ids_list[:6]).select_related(
@@ -50,7 +51,7 @@ class BrandContent(TemplateView):
         context = super(BrandContent, self).get_context_data(**kwargs)
         context['brand_name'] = models.Brand.objects.get(id=self.kwargs['brand_id']).name
         data = self.request.GET
-        if len(data):
+        if data:
             context['cars'] = models.Car.objects.filter(brand_id=self.kwargs['brand_id'])
             if data['colour'] != 'any colour':
                 context['cars'] = context['cars'].filter(colour=data['colour'])
@@ -113,11 +114,11 @@ class CheckoutView(View):
                 description=f"{car} {car.colour} was sold to {request.user}"
             )
         except stripe.error.CardError as e:
-            return redirect('error/')
+            return HttpResponseRedirect(reverse('error'))
         else:
             purchase.save()
             car.save()
-            return redirect('thanks/')
+            return HttpResponseRedirect(reverse('thanks'))
 
 
 class ProfileView(TemplateView):
@@ -140,7 +141,7 @@ class EditProfileView(FormView):
 
     def form_valid(self, form):
         forms.UserEditForm(self.request.POST, self.request.FILES, instance=self.request.user).save()
-        return redirect('/accounts/profile')
+        return HttpResponseRedirect(reverse('profile', kwargs={'username': self.request.user}))
 
 
 class EditPasswordView(FormView):
@@ -155,7 +156,7 @@ class EditPasswordView(FormView):
     def form_valid(self, form):
         user = form.save()
         update_session_auth_hash(self.request, user)
-        return redirect('/accounts/profile')
+        return HttpResponseRedirect(reverse('profile', kwargs={'username': self.request.user}))
 
 
 class CommentContent(TemplateView):
@@ -163,16 +164,13 @@ class CommentContent(TemplateView):
 
     def post(self, request, *args, **kwargs):
         data = request.POST
+
         context = self.get_context_data()
         context['object'] = models.Car.objects.get(id=data['car_id'])
         if data['flag'] == 'delete':
             models.Comment.objects.get(id=data['comment_id']).delete()
         elif data['flag'] == 'edit':
-            comment = models.Comment.objects.get(id=data['comment_id'])
-            comment.content = data['content']
-            comment.rating = data['rating']
-            comment.creation_date = timezone.now()
-            comment.save()
+            forms.CommentForm(data, instance=models.Comment.objects.get(id=data['comment_id'])).save()
         elif data['flag'] == 'create':
             models.Comment.objects.create(user=self.request.user, car_id=data['car_id'],
                                           content=data['content'],

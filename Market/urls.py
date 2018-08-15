@@ -7,21 +7,26 @@ from MarketApp import views
 from MarketApp.forms import UserCreateForm
 
 urlpatterns = [
-    url('^accounts/register/$', RegistrationView.as_view(form_class=UserCreateForm)),
-    url('^accounts/', include('registration.backends.simple.urls')),
-    url('^accounts/profile/(?P<username>\w+)/$', views.ProfileView.as_view()),
-    url('^accounts/profile/edit/profile/$', views.EditProfileView.as_view()),
-    url('^accounts/profile/edit/password/$', views.EditPasswordView.as_view()),
-    url('^home$|^$', views.IndexView.as_view()),
-    url('^brand/(?P<brand_id>\d+)/$', views.BrandView.as_view()),
-    url('^brand/(?P<brand_id>\d+)/(?P<pk>\d+)/$', views.CarView.as_view()),
-    url('^filter/(?P<brand_id>\d+)/', views.BrandContent.as_view()),
-    url('^comment/$', views.CommentContent.as_view()),
-    url('^comment/edit/$', views.CommentView.as_view()),
-    url('^brand/(?P<brand_id>\d+)/(?P<pk>\d+)/checkout/$', views.CheckoutView.as_view()),
-    url('^brand/(?P<brand_id>\d+)/(?P<pk>\d+)/checkout/thanks/$', views.ThanksView.as_view()),
-    url('^brand/(?P<brand_id>\d+)/(?P<pk>\d+)/checkout/error/$', views.ErrorView.as_view()),
-    url('^admin/', admin.site.urls),
+    url('^accounts/register/$', RegistrationView.as_view(form_class=UserCreateForm), name='register'),
+    url('^accounts/', include('django.contrib.auth.urls')),
+    url('^accounts/profile/(?P<username>\w+)/$', views.ProfileView.as_view(), name='profile'),
+    url('^accounts/profile/edit/profile/$', views.EditProfileView.as_view(), name='edit_profile'),
+    url('^accounts/profile/edit/password/$', views.EditPasswordView.as_view(), name='edit_password'),
+
+    url('^brand/(?P<brand_id>\d+)/$', views.BrandView.as_view(), name='brand'),
+    url('^brand/(?P<brand_id>\d+)/(?P<pk>\d+)/$', views.CarView.as_view(), name='car'),
+    url('^brand/(?P<brand_id>\d+)/(?P<pk>\d+)/checkout/$', views.CheckoutView.as_view(), name='checkout'),
+    url('^brand/(?P<brand_id>\d+)/(?P<pk>\d+)/checkout/thanks/$', views.ThanksView.as_view(), name='thanks'),
+    url('^brand/(?P<brand_id>\d+)/(?P<pk>\d+)/checkout/error/$', views.ErrorView.as_view(), name='error'),
+
+    url('^filter/(?P<brand_id>\d+)/', views.BrandContent.as_view(), name='filter'),
+
+    url('^comment/$', views.CommentContent.as_view(), name='comment'),
+    url('^comment/edit/$', views.CommentView.as_view(), name='edit_comment'),
+
+    url('^home$|^$', views.IndexView.as_view(), name='home'),
+
+    url('^admin/', include(admin.site.urls)),
 ]
 
 if settings.DEBUG:

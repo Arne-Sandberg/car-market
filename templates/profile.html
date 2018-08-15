@@ -5,19 +5,16 @@
         <div class="col-lg-3">
             <div class="card">
                 <img alt="User Pic"
-                     src="
-                 {% if user.image %}
-                 {% static user.image.url %}
-                 {% else %}http://www.personalbrandingblog.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640-300x300.png
+                     src="{% if user.image %}{% static user.image.url %}{% else %}{% static 'images/default_user.png' %}
                  {% endif %}"
                      class="img-thumbnail">
                 {% if user == request.user %}
                     <div class="card-body">
-                        <a href="/accounts/profile/edit/profile">Edit profile</a>
+                        <a href="{% url 'edit_profile' %}">Edit profile</a>
                         <br/>
-                        <a href="/accounts/profile/edit/password">Change password</a>
+                        <a href="{% url 'edit_password' %}">Change password</a>
                         <br/>
-                        <a href="/accounts/logout">Log out</a>
+                        <a href="{% url 'logout' %}">Log out</a>
                     </div>
                 {% endif %}
             </div>

@@ -2,6 +2,6 @@
 {% block product %}
     <div class="mt-4" align="center">
         <h3>Thank you, {{ request.user }}, for purchasing<br/> {{ car }}</h3>
-        <p>To return to home page press <a href="/">here</a></p>
+        <p>To return to home page press <a href="{% url 'home' %}">here</a></p>
     </div>
 {% endblock %}

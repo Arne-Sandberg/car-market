@@ -1,5 +1,6 @@
 from django import forms
 from django.db.models import Max, Min
+from django.utils import timezone
 from django_range_slider.fields import RangeSliderField
 from registration.forms import RegistrationForm
 from django.contrib.auth import get_user_model
@@ -55,5 +56,5 @@ class CommentForm(forms.ModelForm):
         model = models.Comment
         fields = ('content', 'rating')
         widgets = {
-            'content': forms.Textarea(attrs={'rows': 3}),
+            'content': forms.Textarea(attrs={'rows': 2}),
         }

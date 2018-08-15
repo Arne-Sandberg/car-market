@@ -3,14 +3,14 @@
     {% for comment in object.comment_set.all %}
         <hr>
         <div class="media">
-            <a href="/accounts/profile/{{ comment.user }}">
+            <a href="{% url 'profile' comment.user %}">
                 <img class="comment_img img-thumbnail"
-                     src="{% if comment.user.image %} {% static comment.user.image.url %}
-                 {% else %}http://www.personalbrandingblog.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640-300x300.png
+                     src="{% if comment.user.image %}
+                         {% static comment.user.image.url %}{% else %}{% static 'images/default_user.png' %}
                  {% endif %}">
             </a>
             <div class="media-body" data-id="{{ comment.id }}">
-                <b><a href="/accounts/profile/{{ comment.user }}">{{ comment.user }}</a>:</b>
+                <a href="{% url 'profile' comment.user %}">{{ comment.user }}</a>:
                 <b id="comment_rating">{{ comment.rating }}</b>★
                 <small>{{ comment.creation_date }}</small>
                 {% if comment.user == request.user %}
