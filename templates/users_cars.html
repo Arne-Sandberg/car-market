@@ -1,0 +1,30 @@
+{% block users_cars %}
+    <h4>Cars:</h4>
+    <table class="table table-bordered">
+        <thead class="thead-light">
+        <tr>
+            <th scope="col">Car</th>
+            <th scope="col">Colour</th>
+            <th scope="col">Price</th>
+            {% if request.user == user %}
+                <th scope="col">Action</th>
+            {% endif %}
+        </tr>
+        </thead>
+        {% csrf_token %}
+        <tbody>
+        {% for car in user.car_set.all %}
+            <tr>
+                <td><a href="{% url 'car' car.brand_id car.id %}">{{ car }}</a></td>
+                <td>{{ car.colour }}</td>
+                <td>{{ car.price }}$</td>
+                {% if request.user == user %}
+                    <td><a href="{% url 'edit_car' car.id %}">edit</a> |
+                        <a href="#usersCars" class="deleteCar" data-id="{{ car.id }}">delete</a>
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

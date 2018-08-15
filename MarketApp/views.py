@@ -132,7 +132,7 @@ class ProfileView(TemplateView):
 
 
 class EditProfileView(FormView):
-    template_name = 'empty_form.html'
+    template_name = 'form.html'
     form_class = forms.UserEditForm
 
     def get_context_data(self, **kwargs):
@@ -146,7 +146,7 @@ class EditProfileView(FormView):
 
 
 class EditPasswordView(FormView):
-    template_name = 'empty_form.html'
+    template_name = 'form.html'
     form_class = PasswordChangeForm
 
     def get_form_kwargs(self):
@@ -193,7 +193,7 @@ class CommentContent(TemplateView):
 
 
 class CreateCarView(FormView):
-    template_name = 'empty_form.html'
+    template_name = 'form.html'
     form_class = forms.CarForm
 
     def form_valid(self, form):
@@ -204,7 +204,7 @@ class CreateCarView(FormView):
 
 
 class EditCarView(FormView):
-    template_name = 'empty_form.html'
+    template_name = 'form.html'
     form_class = forms.CarForm
 
     def get_context_data(self, **kwargs):
@@ -213,7 +213,7 @@ class EditCarView(FormView):
         if car.owner == self.request.user:
             context['form'] = forms.CarForm(instance=car)
         else:
-            context['flag'] = 'edit_not_allowed'
+            context['editing_not_allowed'] = True
         return context
 
     def form_valid(self, form):
@@ -222,6 +222,11 @@ class EditCarView(FormView):
         return HttpResponseRedirect(reverse('profile', kwargs={'username': self.request.user}))
 
 
-class DeleteCarView(View):
+class DeleteCarView(TemplateView):
+    template_name = 'users_cars.html'
+
     def post(self, request, *args, **kwargs):
         models.Car.objects.get(id=request.POST['car_id']).delete()
+        context = self.get_context_data()
+        context['user'] = self.request.user
+        return self.render_to_response(context)

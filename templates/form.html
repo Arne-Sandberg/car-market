@@ -1,10 +1,8 @@
 {% extends 'index.html' %}
 {% load bootstrap %}
 {% block content %}
-    {% if flag == 'edit_not_allowed' %}
+    {% if editing_not_allowed %}
         <h3>You have no rights to edit this car</h3>
-    {% elif flag == 'delete_not_allowed' %}
-        <h3>You have no rights to delete this car</h3>
     {% else %}
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}

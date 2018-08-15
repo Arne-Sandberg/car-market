@@ -140,6 +140,9 @@ $(document).ready(function () {
                 'car_id': car_id,
                 'csrfmiddlewaretoken': csrf_token,
             },
+            function (data) {
+                $("#usersCars").html(data);
+            }
         );
     })
 });
