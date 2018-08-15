@@ -1,13 +1,40 @@
 {% load bootstrap %}
+{% load static %}
 {% block user_comment %}
+    {% for comment in object.comment_set.all %}
+        <hr>
+        <div class="media">
+            <a href="{% url 'profile' comment.user %}">
+                <img class="comment_img img-thumbnail"
+                     src="{% if comment.user.image %}{% static comment.user.image.url %}
+                            {% else %}{% static 'images/default_user.png' %}
+                            {% endif %}">
+            </a>
+            <div class="media-body" data-id="{{ comment.id }}">
+                <a href="{% url 'profile' comment.user %}">{{ comment.user }}</a>:
+                <b id="comment_rating">{{ comment.rating }}</b>★
+                <small>{{ comment.creation_date }}</small>
+                {% if comment.user == request.user %}
+                    {% if comment.id == editing_comment_id %}
+                        editing...
+                    {% else %}
+                        <a href="#user_comment" class="editComment">edit</a> |
+                        <a href="#comments" class="deleteComment">delete</a>
+                    {% endif %}
+                {% endif %}
+                <p id="comment_content">{{ comment.content }}</p>
+            </div>
+        </div>
+    {% endfor %}
+
     <hr>
     <div class="media">
-        <div class="media-body" data-id="{{ comment_id }}">
+        <div class="media-body" data-id="{{ editing_comment_id }}">
             {% if request.user.is_authenticated %}
-                <b>{{ request.user }}: {% if edit %} edit comment {% else %} leave comment {% endif %}</b>
+                <b>{{ request.user }}: {% if editing_comment_id %} edit comment {% else %} leave comment {% endif %}</b>
                 {{ form|bootstrap }}
                 {% csrf_token %}
-                {% if edit %}
+                {% if editing_comment_id %}
                     <button class="btn btn-primary" id="saveEditComment">Save</button>
                     <button class="btn btn-primary" id="cancelEditComment">Cancel</button>
                 {% else %}

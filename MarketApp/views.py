@@ -160,39 +160,31 @@ class EditPasswordView(FormView):
 
 
 class CommentContent(TemplateView):
-    template_name = 'comments_content.html'
+    template_name = 'comment.html'
 
     def post(self, request, *args, **kwargs):
         data = request.POST
         context = self.get_context_data()
         context['object'] = models.Car.objects.get(id=data['car_id'])
+        context['form'] = forms.CommentForm()
         if data['flag'] == 'delete':
             models.Comment.objects.get(id=data['comment_id']).delete()
         elif data['flag'] == 'edit':
             if forms.CommentForm(data).is_valid():
                 forms.CommentForm(data, instance=models.Comment.objects.get(id=data['comment_id'])).save()
+            else:
+                context['editing_comment_id'] = int(data['comment_id'])
+                context['form'] = forms.CommentForm(data)
         elif data['flag'] == 'create':
             if forms.CommentForm(data).is_valid():
                 comment = forms.CommentForm(data).save(commit=False)
                 comment.car_id = data['car_id']
                 comment.user = self.request.user
                 comment.save()
+            else:
+                context['form'] = forms.CommentForm(data)
         elif data['flag'] == 'editing':
             context['editing_comment_id'] = int(data['comment_id'])
-        return self.render_to_response(context)
-
-
-class CommentView(TemplateView):
-    template_name = 'comment.html'
-
-    def post(self, request, *args, **kwargs):
-        data = request.POST
-        context = self.get_context_data()
-        if data['flag'] == 'edit':
             initial = {'content': data['content'], 'rating': data['rating']}
             context['form'] = forms.CommentForm(initial=initial)
-            context['edit'] = True
-            context['comment_id'] = data['comment_id']
-        else:
-            context['form'] = forms.CommentForm()
         return self.render_to_response(context)

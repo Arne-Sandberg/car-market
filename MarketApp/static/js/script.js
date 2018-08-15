@@ -3,19 +3,6 @@ $(document).ready(function () {
     let car_id = window.location.href.split('/')[5];
     let csrf_token = jQuery("[name=csrfmiddlewaretoken]").val();
 
-    function refreshUserComment() {
-        $.post(
-            '/comment/edit/',
-            {
-                'flag': 'refresh',
-                'csrfmiddlewaretoken': csrf_token,
-            },
-            function (data) {
-                $("#comment").html(data);
-            }
-        );
-    }
-
     $("#submitFilter").click(function () {
         let min_year = $('#id_min_year').val();
         let max_year = $('#id_max_year').val();
@@ -64,11 +51,7 @@ $(document).ready(function () {
                 'csrfmiddlewaretoken': csrf_token,
             },
             function (data) {
-
-                if($("#id_content").val() && $("#id_rating").val()) {
-                    $("#comments_content").html(data);
-                    refreshUserComment();
-                }
+                $("#comment").html(data);
             }
         );
     });
@@ -89,10 +72,7 @@ $(document).ready(function () {
                 'csrfmiddlewaretoken': csrf_token,
             },
             function (data) {
-                if($("#id_content").val() && $("#id_rating").val()) {
-                    $("#comments_content").html(data);
-                    refreshUserComment();
-                }
+                    $("#comment").html(data);
             }
         );
     });
@@ -107,13 +87,12 @@ $(document).ready(function () {
                 'csrfmiddlewaretoken': csrf_token,
             },
             function (data) {
-                $("#comments_content").html(data);
-                refreshUserComment();
+                $("#comment").html(data);
             }
         );
     });
 
-    $("#comments_content").on("click", 'a.deleteComment', function () {
+    $("#comment").on("click", 'a.deleteComment', function () {
         let comment_id = $(this).parents().attr("data-id");
 
         $.post(
@@ -125,14 +104,13 @@ $(document).ready(function () {
                 'csrfmiddlewaretoken': csrf_token,
             },
             function (data) {
-                $("#comments_content").html(data);
-                refreshUserComment();
+                $("#comment").html(data);
             }
         );
     });
 
 
-    $("#comments_content").on("click", 'a.editComment', function () {
+    $("#comment").on("click", 'a.editComment', function () {
         let comment_id = $(this).parents().attr("data-id");
         let old_comment_content = $(this).parents().children("#comment_content").text();
         let old_comment_rating = $(this).parents().children("#comment_rating").text();
@@ -142,21 +120,9 @@ $(document).ready(function () {
             {
                 'flag': 'editing',
                 'car_id': car_id,
-                'comment_id': comment_id,
-                'csrfmiddlewaretoken': csrf_token,
-            },
-            function (data) {
-                $("#comments_content").html(data);
-            }
-        );
-
-        $.post(
-            '/comment/edit/',
-            {
-                'flag': 'edit',
-                'comment_id': comment_id,
-                'content': old_comment_content,
+                'content':old_comment_content,
                 'rating': old_comment_rating,
+                'comment_id': comment_id,
                 'csrfmiddlewaretoken': csrf_token,
             },
             function (data) {

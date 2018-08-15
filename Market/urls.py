@@ -22,7 +22,7 @@ urlpatterns = [
     url('^filter/(?P<brand_id>\d+)/', views.BrandContent.as_view(), name='filter'),
 
     url('^comment/$', views.CommentContent.as_view(), name='comment'),
-    url('^comment/edit/$', views.CommentView.as_view(), name='edit_comment'),
+    # url('^comment/edit/$', views.CommentView.as_view(), name='edit_comment'),
 
     url('^home$|^$', views.IndexView.as_view(), name='home'),
 
