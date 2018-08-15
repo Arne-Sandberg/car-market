@@ -32,6 +32,9 @@
                 </a>
             </div>
             <h4>{{ object.price }}$</h4>
+            {% if object.owner %}
+                <p>Owner: <a href="{% url 'profile' object.owner%}">{{ object.owner }}</a></p>
+            {% endif %}
             <p class="card-text">{{ car.description }}</p>
             <p>Year: {{ object.year }}</p>
             <p>Seats number: {{ object.number_of_seats }}</p>
@@ -39,7 +42,7 @@
                 {% if object.stock_count %}
                     <p>In stock: {{ object.stock_count }}</p>
                     {% if request.user.is_authenticated %}
-                        <form action="checkout/" method="POST">
+                        <form action="{% url 'checkout' object.brand_id object.id%}" method="POST">
                             {% csrf_token %}
                             <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
                                     data-key="{{ stripe_key }}"

@@ -5,6 +5,8 @@ from django.utils import timezone
 
 class User(AbstractUser):
     image = models.ImageField(null=True)
+    stripe_secret_key = models.CharField(max_length=256, blank=True, null=True)
+    stripe_public_key = models.CharField(max_length=256, blank=True, null=True)
 
 
 class Brand(models.Model):
@@ -22,10 +24,11 @@ class Car(models.Model):
     number_of_seats = models.IntegerField()
     colour = models.CharField(max_length=70)
     description = models.TextField()
-    stock_count = models.IntegerField()
+    stock_count = models.IntegerField(default=1)
     price = models.IntegerField()
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
     is_advertised = models.BooleanField(default=False)
+    owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return f'{self.brand} - {self.car_model} {self.year} - {self.car_type}'

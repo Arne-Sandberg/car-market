@@ -10,8 +10,11 @@ urlpatterns = [
     url('^accounts/register/$', RegistrationView.as_view(form_class=UserCreateForm), name='register'),
     url('^accounts/', include('django.contrib.auth.urls')),
     url('^accounts/profile/(?P<username>\w+)/$', views.ProfileView.as_view(), name='profile'),
-    url('^accounts/profile/edit/profile/$', views.EditProfileView.as_view(), name='edit_profile'),
-    url('^accounts/profile/edit/password/$', views.EditPasswordView.as_view(), name='edit_password'),
+    url('^accounts/profile/settings/profile/$', views.EditProfileView.as_view(), name='edit_profile'),
+    url('^accounts/profile/settings/password/$', views.EditPasswordView.as_view(), name='edit_password'),
+    url('^accounts/profile/settings/create_car/$', views.CreateCarView.as_view(), name='create_car'),
+    url('^accounts/profile/settings/edit_car/(?P<car_id>\d+)/$', views.EditCarView.as_view(), name='edit_car'),
+    url('^delete/car/$', views.DeleteCarView.as_view(), name='delete_car'),
 
     url('^brand/(?P<brand_id>\d+)/$', views.BrandView.as_view(), name='brand'),
     url('^brand/(?P<brand_id>\d+)/(?P<pk>\d+)/$', views.CarView.as_view(), name='car'),

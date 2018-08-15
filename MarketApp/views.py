@@ -75,7 +75,8 @@ class CarView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(CarView, self).get_context_data(**kwargs)
         context['brands'] = models.Brand.objects.all()
-        context['stripe_key'] = settings.STRIPE_PUBLIC_KEY
+        owner = models.Car.objects.get(id=self.kwargs['pk']).owner
+        context['stripe_key'] = owner.stripe_public_key if owner else settings.STRIPE_PUBLIC_KEY
         context['form'] = forms.CommentForm
         return context
 
@@ -105,7 +106,7 @@ class CheckoutView(View):
         car = models.Car.objects.get(id=self.kwargs['pk'])
         car.stock_count -= 1
         purchase = models.Purchase.objects.create(user=request.user, price=car.price, date=timezone.now(), car=car)
-        stripe.api_key = settings.STRIPE_SECRET_KEY
+        stripe.api_key = car.owner.stripe_secret_key if car.owner else settings.STRIPE_SECRET_KEY
         try:
             stripe.Charge.create(
                 amount=car.price * 100,
@@ -131,7 +132,7 @@ class ProfileView(TemplateView):
 
 
 class EditProfileView(FormView):
-    template_name = 'edit.html'
+    template_name = 'empty_form.html'
     form_class = forms.UserEditForm
 
     def get_context_data(self, **kwargs):
@@ -145,7 +146,7 @@ class EditProfileView(FormView):
 
 
 class EditPasswordView(FormView):
-    template_name = 'edit.html'
+    template_name = 'empty_form.html'
     form_class = PasswordChangeForm
 
     def get_form_kwargs(self):
@@ -164,27 +165,63 @@ class CommentContent(TemplateView):
 
     def post(self, request, *args, **kwargs):
         data = request.POST
+        form = forms.CommentForm(data)
         context = self.get_context_data()
         context['object'] = models.Car.objects.get(id=data['car_id'])
         context['form'] = forms.CommentForm()
         if data['flag'] == 'delete':
             models.Comment.objects.get(id=data['comment_id']).delete()
         elif data['flag'] == 'edit':
-            if forms.CommentForm(data).is_valid():
+            if form.is_valid():
                 forms.CommentForm(data, instance=models.Comment.objects.get(id=data['comment_id'])).save()
             else:
                 context['editing_comment_id'] = int(data['comment_id'])
-                context['form'] = forms.CommentForm(data)
+                context['form'] = form
         elif data['flag'] == 'create':
-            if forms.CommentForm(data).is_valid():
-                comment = forms.CommentForm(data).save(commit=False)
+            if form.is_valid():
+                comment = form.save(commit=False)
                 comment.car_id = data['car_id']
                 comment.user = self.request.user
                 comment.save()
             else:
-                context['form'] = forms.CommentForm(data)
+                context['form'] = form
         elif data['flag'] == 'editing':
             context['editing_comment_id'] = int(data['comment_id'])
             initial = {'content': data['content'], 'rating': data['rating']}
             context['form'] = forms.CommentForm(initial=initial)
         return self.render_to_response(context)
+
+
+class CreateCarView(FormView):
+    template_name = 'empty_form.html'
+    form_class = forms.CarForm
+
+    def form_valid(self, form):
+        car = forms.CarForm(self.request.POST).save(commit=False)
+        car.owner = self.request.user
+        car.save()
+        return HttpResponseRedirect(reverse('profile', kwargs={'username': self.request.user}))
+
+
+class EditCarView(FormView):
+    template_name = 'empty_form.html'
+    form_class = forms.CarForm
+
+    def get_context_data(self, **kwargs):
+        context = super(EditCarView, self).get_context_data(**kwargs)
+        car = models.Car.objects.get(id=self.kwargs['car_id'])
+        if car.owner == self.request.user:
+            context['form'] = forms.CarForm(instance=car)
+        else:
+            context['flag'] = 'edit_not_allowed'
+        return context
+
+    def form_valid(self, form):
+        forms.CarForm(self.request.POST, self.request.FILES,
+                      instance=models.Car.objects.get(id=self.kwargs['car_id'])).save()
+        return HttpResponseRedirect(reverse('profile', kwargs={'username': self.request.user}))
+
+
+class DeleteCarView(View):
+    def post(self, request, *args, **kwargs):
+        models.Car.objects.get(id=request.POST['car_id']).delete()

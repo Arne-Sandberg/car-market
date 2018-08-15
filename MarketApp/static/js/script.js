@@ -72,7 +72,7 @@ $(document).ready(function () {
                 'csrfmiddlewaretoken': csrf_token,
             },
             function (data) {
-                    $("#comment").html(data);
+                $("#comment").html(data);
             }
         );
     });
@@ -120,7 +120,7 @@ $(document).ready(function () {
             {
                 'flag': 'editing',
                 'car_id': car_id,
-                'content':old_comment_content,
+                'content': old_comment_content,
                 'rating': old_comment_rating,
                 'comment_id': comment_id,
                 'csrfmiddlewaretoken': csrf_token,
@@ -130,4 +130,16 @@ $(document).ready(function () {
             }
         );
     });
+
+    $(".deleteCar").click(function () {
+        let car_id = $(this).attr("data-id");
+
+        $.post(
+            '/delete/car/',
+            {
+                'car_id': car_id,
+                'csrfmiddlewaretoken': csrf_token,
+            },
+        );
+    })
 });

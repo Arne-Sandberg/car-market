@@ -37,7 +37,7 @@ class UserEditForm(forms.ModelForm):
 
     class Meta:
         model = get_user_model()
-        fields = ('image', 'first_name', 'last_name', 'email')
+        fields = ('image', 'first_name', 'last_name', 'email', 'stripe_public_key', 'stripe_secret_key')
 
 
 class UserCreateForm(RegistrationForm):
@@ -53,3 +53,10 @@ class CommentForm(forms.ModelForm):
         widgets = {
             'content': forms.Textarea(attrs={'rows': 2}),
         }
+
+
+class CarForm(forms.ModelForm):
+    class Meta:
+        model = models.Car
+        fields = ('car_model', 'car_type', 'year', 'number_of_seats', 'colour', 'description', 'stock_count', 'price',
+                  'brand',)
