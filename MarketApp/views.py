@@ -75,8 +75,15 @@ class CarView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(CarView, self).get_context_data(**kwargs)
         context['brands'] = models.Brand.objects.all()
-        owner = models.Car.objects.get(id=self.kwargs['pk']).owner
-        context['stripe_key'] = owner.stripe_public_key if owner else settings.STRIPE_PUBLIC_KEY
+        context['images'] = context['object'].image_set.all()
+        owner = context['object'].owner
+        if owner:
+            if owner.stripe_secret_key and owner.stripe_public_key and owner != self.request.user:
+                context['stripe_key'] = owner.stripe_public_key
+                context['flag'] = 'show_button'
+        else:
+            context['stripe_key'] = settings.STRIPE_PUBLIC_KEY
+            context['flag'] = 'show_button'
         context['form'] = forms.CommentForm
         return context
 
@@ -101,7 +108,7 @@ class ErrorView(TemplateView):
 
 
 class CheckoutView(View):
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         token = request.POST.get("stripeToken")
         car = models.Car.objects.get(id=self.kwargs['pk'])
         car.stock_count -= 1
@@ -163,7 +170,7 @@ class EditPasswordView(FormView):
 class CommentContent(TemplateView):
     template_name = 'comment.html'
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         data = request.POST
         form = forms.CommentForm(data)
         context = self.get_context_data()
@@ -196,6 +203,12 @@ class CreateCarView(FormView):
     template_name = 'form.html'
     form_class = forms.CarForm
 
+    def get_context_data(self, **kwargs):
+        context = super(CreateCarView, self).get_context_data(**kwargs)
+        if not self.request.user.stripe_secret_key or not self.request.user.stripe_public_key:
+            context['flag'] = 'no_keys'
+        return context
+
     def form_valid(self, form):
         car = forms.CarForm(self.request.POST).save(commit=False)
         car.owner = self.request.user
@@ -210,10 +223,13 @@ class EditCarView(FormView):
     def get_context_data(self, **kwargs):
         context = super(EditCarView, self).get_context_data(**kwargs)
         car = models.Car.objects.get(id=self.kwargs['car_id'])
+        context['user'] = self.request.user
         if car.owner == self.request.user:
             context['form'] = forms.CarForm(instance=car)
+        elif not self.request.user.stripe_secret_key or not self.request.user.stripe_public_key:
+            context['flag'] = 'no_keys'
         else:
-            context['editing_not_allowed'] = True
+            context['flag'] = 'editing_not_allowed'
         return context
 
     def form_valid(self, form):
@@ -225,7 +241,7 @@ class EditCarView(FormView):
 class DeleteCarView(TemplateView):
     template_name = 'users_cars.html'
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         models.Car.objects.get(id=request.POST['car_id']).delete()
         context = self.get_context_data()
         context['user'] = self.request.user

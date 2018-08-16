@@ -1,8 +1,16 @@
 {% extends 'index.html' %}
 {% load bootstrap %}
 {% block content %}
-    {% if editing_not_allowed %}
-        <h3>You have no rights to edit this car</h3>
+    {% if flag == 'editing_not_allowed' %}
+        <div class="mt-4" align="center">
+            <h3>You have no rights to edit this car.</h3>
+            <p>To return press <a href="{% url 'profile' request.user %}">here</a></p>
+        </div>
+    {% elif flag == 'no_keys' %}
+        <div class="mt-4" align="center">
+            <h3>You have to save your stripe keys to do this action.</h3>
+            <p>To enter your keys press <a href="{% url 'edit_profile' %}">here</a></p>
+        </div>
     {% else %}
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}

@@ -14,11 +14,8 @@
                         <br/>
                         <a href="{% url 'edit_password' %}">Change password</a>
                         <br/>
-                        {% if user.stripe_public_key and user.stripe_secret_key %}
-
-                            <a href="{% url 'create_car' %}">Create car</a>
-                            <br/>
-                        {% endif %}
+                        <a href="{% url 'create_car' %}">Create car</a>
+                        <br/>
                         <a href="{% url 'logout' %}">Log out</a>
                     </div>
                 {% endif %}

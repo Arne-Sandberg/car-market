@@ -14,7 +14,8 @@ urlpatterns = [
     url('^accounts/profile/settings/password/$', views.EditPasswordView.as_view(), name='edit_password'),
     url('^accounts/profile/settings/create_car/$', views.CreateCarView.as_view(), name='create_car'),
     url('^accounts/profile/settings/edit_car/(?P<car_id>\d+)/$', views.EditCarView.as_view(), name='edit_car'),
-    url('^delete/car/$', views.DeleteCarView.as_view(), name='delete_car'),
+
+
 
     url('^brand/(?P<brand_id>\d+)/$', views.BrandView.as_view(), name='brand'),
     url('^brand/(?P<brand_id>\d+)/(?P<pk>\d+)/$', views.CarView.as_view(), name='car'),
@@ -25,7 +26,8 @@ urlpatterns = [
     url('^filter/(?P<brand_id>\d+)/', views.BrandContent.as_view(), name='filter'),
 
     url('^comment/$', views.CommentContent.as_view(), name='comment'),
-    # url('^comment/edit/$', views.CommentView.as_view(), name='edit_comment'),
+
+    url('^delete/car/$', views.DeleteCarView.as_view(), name='delete_car'),
 
     url('^home$|^$', views.IndexView.as_view(), name='home'),
 

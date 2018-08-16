@@ -56,6 +56,10 @@ class CommentForm(forms.ModelForm):
 
 
 class CarForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(CarForm, self).__init__(*args, **kwargs)
+        self.fields['description'].required = False
+
     class Meta:
         model = models.Car
         fields = ('car_model', 'car_type', 'year', 'number_of_seats', 'colour', 'description', 'stock_count', 'price',
