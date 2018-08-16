@@ -14,8 +14,7 @@ urlpatterns = [
     url('^accounts/profile/settings/password/$', views.EditPasswordView.as_view(), name='edit_password'),
     url('^accounts/profile/settings/create_car/$', views.CreateCarView.as_view(), name='create_car'),
     url('^accounts/profile/settings/edit_car/(?P<car_id>\d+)/$', views.EditCarView.as_view(), name='edit_car'),
-
-
+    url('^accounts/profile/settings/connect_stripe/$', views.UserProfileView.as_view(), name='connect_stripe'),
 
     url('^brand/(?P<brand_id>\d+)/$', views.BrandView.as_view(), name='brand'),
     url('^brand/(?P<brand_id>\d+)/(?P<pk>\d+)/$', views.CarView.as_view(), name='car'),

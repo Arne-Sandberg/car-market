@@ -78,7 +78,9 @@
                                     <div class="carousel-item {% if not forloop.counter0 %} active {% endif %}">
                                         <a href="{% url 'car' car.brand_id car.id %}"> <img
                                                 class="advert_img d-block w-100"
-                                                src="{% static car.image_set.first.image.url %}" alt="slide">
+                                                src="{% if car.image_set.first %}{% static car.image_set.first.image.url %}
+                                                        {% else %}{% static 'images/no-image.jpg' %}
+                                                        {% endif %}" alt="slide">
                                             <div class="carousel-caption d-none d-md-block">
                                                 <h5>{{ car }}</h5>
                                                 {{ car.price }}$

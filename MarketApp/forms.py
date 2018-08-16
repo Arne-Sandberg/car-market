@@ -37,7 +37,7 @@ class UserEditForm(forms.ModelForm):
 
     class Meta:
         model = get_user_model()
-        fields = ('image', 'first_name', 'last_name', 'email', 'stripe_public_key', 'stripe_secret_key')
+        fields = ('image', 'first_name', 'last_name', 'email')
 
 
 class UserCreateForm(RegistrationForm):

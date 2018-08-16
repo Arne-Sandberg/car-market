@@ -1,3 +1,5 @@
+import requests
+
 import stripe
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
@@ -76,15 +78,12 @@ class CarView(DetailView):
         context = super(CarView, self).get_context_data(**kwargs)
         context['brands'] = models.Brand.objects.all()
         context['images'] = context['object'].image_set.all()
-        owner = context['object'].owner
-        if owner:
-            if owner.stripe_secret_key and owner.stripe_public_key and owner != self.request.user:
-                context['stripe_key'] = owner.stripe_public_key
-                context['flag'] = 'show_button'
-        else:
-            context['stripe_key'] = settings.STRIPE_PUBLIC_KEY
-            context['flag'] = 'show_button'
+        context['stripe_key'] = settings.STRIPE_PUBLIC_KEY
+        context['flag'] = 'show_button'
         context['form'] = forms.CommentForm
+        owner = context['object'].owner
+        if owner and (owner == self.request.user or not owner.stripe_user_id):
+            context['flag'] = 'no_button'
         return context
 
 
@@ -108,25 +107,33 @@ class ErrorView(TemplateView):
 
 
 class CheckoutView(View):
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         token = request.POST.get("stripeToken")
-        car = models.Car.objects.get(id=self.kwargs['pk'])
+        car = models.Car.objects.get(id=kwargs['pk'])
         car.stock_count -= 1
-        purchase = models.Purchase.objects.create(user=request.user, price=car.price, date=timezone.now(), car=car)
-        stripe.api_key = car.owner.stripe_secret_key if car.owner else settings.STRIPE_SECRET_KEY
+        purchase_id = models.Purchase.objects.last().id + 1
+        stripe.api_key = settings.STRIPE_SECRET_KEY
         try:
             stripe.Charge.create(
                 amount=car.price * 100,
                 currency="usd",
                 source=token,
-                description=f"{car} {car.colour} was sold to {request.user}"
+                description=f"{car} {car.colour} was sold to {request.user}",
+                transfer_group=f"purchase_{purchase_id}",
             )
-        except stripe.error.CardError as e:
-            return HttpResponseRedirect(reverse('error'))
+            if car.owner:
+                stripe.Transfer.create(
+                    amount=car.price * 90,
+                    currency="usd",
+                    destination=f"{car.owner.stripe_user_id}",
+                    transfer_group=f"purchase_{purchase_id}",
+                )
+        except stripe.error.CardError:
+            return HttpResponseRedirect(reverse('error', kwargs=kwargs))
         else:
-            purchase.save()
+            models.Purchase.objects.create(user=request.user, price=car.price, date=timezone.now(), car=car)
             car.save()
-            return HttpResponseRedirect(reverse('thanks'))
+            return HttpResponseRedirect(reverse('thanks', kwargs=kwargs))
 
 
 class ProfileView(TemplateView):
@@ -170,7 +177,7 @@ class EditPasswordView(FormView):
 class CommentContent(TemplateView):
     template_name = 'comment.html'
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         data = request.POST
         form = forms.CommentForm(data)
         context = self.get_context_data()
@@ -205,7 +212,7 @@ class CreateCarView(FormView):
 
     def get_context_data(self, **kwargs):
         context = super(CreateCarView, self).get_context_data(**kwargs)
-        if not self.request.user.stripe_secret_key or not self.request.user.stripe_public_key:
+        if not self.request.user.stripe_user_id:
             context['flag'] = 'no_keys'
         return context
 
@@ -226,7 +233,7 @@ class EditCarView(FormView):
         context['user'] = self.request.user
         if car.owner == self.request.user:
             context['form'] = forms.CarForm(instance=car)
-        elif not self.request.user.stripe_secret_key or not self.request.user.stripe_public_key:
+        elif not self.request.user.stripe_user_id:
             context['flag'] = 'no_keys'
         else:
             context['flag'] = 'editing_not_allowed'
@@ -241,8 +248,25 @@ class EditCarView(FormView):
 class DeleteCarView(TemplateView):
     template_name = 'users_cars.html'
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         models.Car.objects.get(id=request.POST['car_id']).delete()
         context = self.get_context_data()
         context['user'] = self.request.user
         return self.render_to_response(context)
+
+
+class UserProfileView(TemplateView):
+    template_name = 'form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(UserProfileView, self).get_context_data(**kwargs)
+        code = self.request.GET['code']
+        data = {'client_secret': settings.STRIPE_SECRET_KEY, 'code': code, 'grant_type': 'authorization_code'}
+        response = requests.post('https://connect.stripe.com/oauth/token', params=data).json()
+        if 'stripe_user_id' in response:
+            self.request.user.stripe_user_id = response['stripe_user_id']
+            self.request.user.save()
+            context['flag'] = 'stripe_success'
+        else:
+            context['flag'] = 'stripe_error'
+        return context
