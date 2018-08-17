@@ -5,12 +5,18 @@
             <h3>Sorry. Nothing was found, try another filters...</h3>
         {% else %}
             {% for car in cars %}
-
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="card h-100">
-                        {% if car.image_set.all %}
-                            <div id="car{{ car.id }}" class="carousel slide" data-ride="carousel">
-                                <div class="carousel-inner">
+                        <div id="car{{ car.id }}" class="carousel slide" data-ride="carousel">
+                            <div class="carousel-inner">
+                                {% if not car.image_set.all %}
+                                    <div class="carousel-item active ">
+                                        <a href="{% url 'car' car.brand_id car.id %}">
+                                            <img class="brand_img d-block w-100"
+                                                 src="{% static 'images/no-image.jpg' %}" alt="slide">
+                                        </a>
+                                    </div>
+                                {% else %}
                                     {% for im in car.image_set.all %}
                                         <div class="carousel-item {% if not forloop.counter0 %} active {% endif %}">
                                             <a href="{% url 'car' car.brand_id car.id %}">
@@ -19,26 +25,31 @@
                                             </a>
                                         </div>
                                     {% endfor %}
-                                </div>
-                                <ol class="carousel-indicators">
+                                {% endif %}
+                            </div>
+                            <ol class="carousel-indicators">
+                                {% if not car.image_set.all %}
+                                    <li data-target="#car{{ car.id }}" data-slide-to="0" class="active"></li>
+                                {% else %}
                                     {% for im in car.image_set.all %}
                                         <li data-target="#car{{ car.id }}"
                                             data-slide-to="{{ forloop.counter0 }}" {% if not forloop.counter0 %}
                                             class="active"{% endif %}></li>
                                     {% endfor %}
-                                </ol>
-                                <a class="carousel-control-prev" href="#car{{ car.id }}" role="button"
-                                   data-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="sr-only">Previous</span>
-                                </a>
-                                <a class="carousel-control-next" href="#car{{ car.id }}" role="button"
-                                   data-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="sr-only">Next</span>
-                                </a>
-                            </div>
-                        {% endif %}
+                                {% endif %}
+                            </ol>
+                            <a class="carousel-control-prev" href="#car{{ car.id }}" role="button"
+                               data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" href="#car{{ car.id }}" role="button"
+                               data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </div>
+
                         <div class="card-body">
                             <h4 class="card-title">
                                 <a href="{% url 'car' car.brand_id car.id %}">{{ car }}</a>

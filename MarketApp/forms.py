@@ -64,3 +64,13 @@ class CarForm(forms.ModelForm):
         model = models.Car
         fields = ('car_model', 'car_type', 'year', 'number_of_seats', 'colour', 'description', 'stock_count', 'price',
                   'brand',)
+
+
+class ImageForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ImageForm, self).__init__(*args, **kwargs)
+        self.fields['image'].required = False
+
+    class Meta:
+        model = models.Image
+        fields = ('image',)

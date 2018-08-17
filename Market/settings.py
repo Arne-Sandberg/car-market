@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'MarketApp.apps.MarketappConfig',
     'bootstrapform',
     'debug_toolbar',
+    'formtools',
 ]
 
 MIDDLEWARE = [

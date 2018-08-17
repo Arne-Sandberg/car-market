@@ -1,0 +1,52 @@
+{% extends 'index.html' %}
+{% load bootstrap %}
+{% load i18n %}
+{% block content %}
+    {% if flag == 'not_authenticated' %}
+        <div class="mt-4" align="center">
+            <h3>You have no rights to do this action.</h3>
+            <p>In order to proceed you have to
+                <a href="{% url 'login' %}">log in</a> or
+                <a href="{% url 'register' %}">sign up</a>.
+            </p>
+        </div>
+    {% elif flag == 'editing_not_allowed' %}
+        <div class="mt-4" align="center">
+            <h3>You have no rights to edit this car.</h3>
+            <p>To return press
+                <a href="{% url 'profile' request.user %}">here</a>.
+            </p>
+        </div>
+    {% elif flag == 'no_keys' %}
+        <div class="mt-4" align="center">
+            <h3>You have to connect your stripe account to do this action.</h3>
+            <p>To connect your stripe account press
+                <a href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_DQaOCFCjDd2o48wUjD5fLPQlm6vkG51j&scope=read_write">
+                    here</a>.
+            </p>
+        </div>
+    {% else %}
+        {{ wizard.form.media }}
+        <p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
+        <form action="" method="post">{% csrf_token %}
+            <table>
+                {{ wizard.management_form }}
+                {% if wizard.form.forms %}
+                    {{ wizard.form.management_form }}
+                    {% for form in wizard.form.forms %}
+                        {{ form | bootstrap }}
+                    {% endfor %}
+                {% else %}
+                    {{ wizard.form | bootstrap }}
+                {% endif %}
+            </table>
+            {% if wizard.steps.prev %}
+                <button name="wizard_goto_step" type="submit" class="btn btn-primary"
+                        value="{{ wizard.steps.first }}">{% trans "first step" %}</button>
+                <button name="wizard_goto_step" type="submit" class="btn btn-primary"
+                        value="{{ wizard.steps.prev }}">{% trans "prev step" %}</button>
+            {% endif %}
+            <input type="submit" class="btn btn-primary" value="{% trans "submit" %}"/>
+        </form>
+    {% endif %}
+{% endblock %}

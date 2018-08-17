@@ -1,13 +1,17 @@
+import os
+
 import requests
 
 import stripe
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
+from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.utils import timezone
 from django.views.generic import TemplateView, FormView, DetailView
 from django.views.generic.base import View
+from formtools.wizard.views import WizardView, SessionWizardView
 
 from Market import settings
 from MarketApp import models, forms
@@ -146,12 +150,15 @@ class ProfileView(TemplateView):
 
 
 class EditProfileView(FormView):
-    template_name = 'form.html'
+    template_name = 'profile_form.html'
     form_class = forms.UserEditForm
 
     def get_context_data(self, **kwargs):
         context = super(EditProfileView, self).get_context_data(**kwargs)
-        context['form'] = forms.UserEditForm(instance=self.request.user)
+        if not self.request.user.is_authenticated:
+            context['flag'] = 'not_authenticated'
+        else:
+            context['form'] = forms.UserEditForm(instance=self.request.user)
         return context
 
     def form_valid(self, form):
@@ -160,13 +167,19 @@ class EditProfileView(FormView):
 
 
 class EditPasswordView(FormView):
-    template_name = 'form.html'
+    template_name = 'profile_form.html'
     form_class = PasswordChangeForm
 
     def get_form_kwargs(self):
         kwargs = super(EditPasswordView, self).get_form_kwargs()
         kwargs['user'] = self.request.user
         return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super(EditPasswordView, self).get_context_data(**kwargs)
+        if not self.request.user.is_authenticated:
+            context['flag'] = 'not_authenticated'
+        return context
 
     def form_valid(self, form):
         user = form.save()
@@ -206,26 +219,34 @@ class CommentContent(TemplateView):
         return self.render_to_response(context)
 
 
-class CreateCarView(FormView):
-    template_name = 'form.html'
-    form_class = forms.CarForm
+class CreateCarView(SessionWizardView):
+    template_name = 'car_form.html'
+    form_list = [forms.CarForm, forms.ImageForm]
+    file_storage = FileSystemStorage(location=os.path.join(settings.MEDIA_ROOT, 'storage'))
 
     def get_context_data(self, **kwargs):
         context = super(CreateCarView, self).get_context_data(**kwargs)
-        if not self.request.user.stripe_user_id:
+        if not self.request.user.is_authenticated:
+            context['flag'] = 'not_authenticated'
+        elif not self.request.user.stripe_user_id:
             context['flag'] = 'no_keys'
         return context
 
-    def form_valid(self, form):
-        car = forms.CarForm(self.request.POST).save(commit=False)
-        car.owner = self.request.user
-        car.save()
+    def done(self, form_list, **kwargs):
+        # car = kwargs['form_dict']['0'].save(commit=False)
+        # car.owner = self.request.user
+        # car.save()
+        # image = kwargs['form_dict']['1'].save(commit=False)
+        # image.car = car
+        # image.save()
+        # print(kwargs['form_dict']['1'].cleaned_data)
         return HttpResponseRedirect(reverse('profile', kwargs={'username': self.request.user}))
 
 
-class EditCarView(FormView):
-    template_name = 'form.html'
-    form_class = forms.CarForm
+class EditCarView(SessionWizardView):
+    template_name = 'car_form.html'
+    form_list = [forms.CarForm, forms.ImageForm]
+    file_storage = FileSystemStorage(location=os.path.join(settings.MEDIA_ROOT, 'storage'))
 
     def get_context_data(self, **kwargs):
         context = super(EditCarView, self).get_context_data(**kwargs)
@@ -239,24 +260,12 @@ class EditCarView(FormView):
             context['flag'] = 'editing_not_allowed'
         return context
 
-    def form_valid(self, form):
-        forms.CarForm(self.request.POST, self.request.FILES,
-                      instance=models.Car.objects.get(id=self.kwargs['car_id'])).save()
+    def done(self, form_list, **kwargs):
         return HttpResponseRedirect(reverse('profile', kwargs={'username': self.request.user}))
 
 
-class DeleteCarView(TemplateView):
-    template_name = 'users_cars.html'
-
-    def post(self, request, *args, **kwargs):
-        models.Car.objects.get(id=request.POST['car_id']).delete()
-        context = self.get_context_data()
-        context['user'] = self.request.user
-        return self.render_to_response(context)
-
-
 class UserProfileView(TemplateView):
-    template_name = 'form.html'
+    template_name = 'profile_form.html'
 
     def get_context_data(self, **kwargs):
         context = super(UserProfileView, self).get_context_data(**kwargs)
@@ -270,3 +279,13 @@ class UserProfileView(TemplateView):
         else:
             context['flag'] = 'stripe_error'
         return context
+
+
+class DeleteCarView(TemplateView):
+    template_name = 'users_cars.html'
+
+    def post(self, request, *args, **kwargs):
+        models.Car.objects.get(id=request.POST['car_id']).delete()
+        context = self.get_context_data()
+        context['user'] = self.request.user
+        return self.render_to_response(context)

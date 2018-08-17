@@ -30,10 +30,12 @@
                     <td>Username</td>
                     <td>{{ user }}</td>
                 </tr>
-                <tr>
-                    <td>Email</td>
-                    <td>{{ user.email }}</td>
-                </tr>
+                {% if user == request.user %}
+                    <tr>
+                        <td>Email</td>
+                        <td>{{ user.email }}</td>
+                    </tr>
+                {% endif %}
                 <tr>
                     <td>First name</td>
                     <td>{{ user.first_name }}</td>

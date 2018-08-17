@@ -4,34 +4,43 @@
     <div class="card mt-4">
         <div class="card-body">
             <h3 class="card-title">{{ object }}</h3>
-            {% if images %}
-                <div id="car{{ object.id }}" class="carousel slide my-4" data-ride="carousel">
-                    <div class="carousel-inner">
+            <div id="car{{ object.id }}" class="carousel slide my-4" data-ride="carousel">
+                <div class="carousel-inner">
+                    {% if not images %}
+                        <div class="carousel-item active">
+                            <img class="car_img d-block w-100" src="{% static 'images/no-image.jpg' %}" alt="slide">
+                        </div>
+                    {% else %}
                         {% for im in images %}
                             <div class="carousel-item {% if not forloop.counter0 %} active {% endif %}">
                                 <img class="car_img d-block w-100" src="{% static im.image.url %}" alt="slide">
                             </div>
                         {% endfor %}
-                    </div>
-                    <ol class="carousel-indicators">
+                    {% endif %}
+                </div>
+                <ol class="carousel-indicators">
+                    {% if not images %}
+                        <li data-target="#car{{ object.id }}" data-slide-to="0" class="active"></li>
+                    {% else %}
                         {% for im in images %}
                             <li data-target="#car{{ object.id }}"
                                 data-slide-to="{{ forloop.counter0 }}" {% if not forloop.counter0 %}
                                 class="active"{% endif %}></li>
                         {% endfor %}
-                    </ol>
-                    <a class="carousel-control-prev" href="#car{{ object.id }}" role="button"
-                       data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="carousel-control-next" href="#car{{ object.id }}" role="button"
-                       data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </div>
-            {% endif %}
+                    {% endif %}
+                </ol>
+                <a class="carousel-control-prev" href="#car{{ object.id }}" role="button"
+                   data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#car{{ object.id }}" role="button"
+                   data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+
             <h4>{{ object.price }}$</h4>
             {% if object.owner %}
                 <p>Owner: <a href="{% url 'profile' object.owner %}">{{ object.owner }}</a></p>

@@ -1,3 +1,4 @@
+import webcolors
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
@@ -17,11 +18,13 @@ class Brand(models.Model):
 
 
 class Car(models.Model):
+    COLOUR_CHOICES = [(i, i) for i in webcolors.HTML4_HEX_TO_NAMES.values()]
+
     car_model = models.CharField(max_length=70)
     car_type = models.CharField(max_length=70)
     year = models.IntegerField()
     number_of_seats = models.IntegerField()
-    colour = models.CharField(max_length=70)
+    colour = models.CharField(choices=COLOUR_CHOICES, max_length=70)
     description = models.TextField(null=True, blank=True)
     stock_count = models.IntegerField(default=1)
     price = models.IntegerField()
