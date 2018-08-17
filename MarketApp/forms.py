@@ -1,5 +1,6 @@
 from django import forms
 from django.db.models import Max, Min
+from django.utils import timezone
 from django_range_slider.fields import RangeSliderField
 from registration.forms import RegistrationForm
 from django.contrib.auth import get_user_model
@@ -52,6 +53,7 @@ class CommentForm(forms.ModelForm):
         fields = ('content', 'rating')
         widgets = {
             'content': forms.Textarea(attrs={'rows': 2}),
+            'rating': forms.NumberInput(attrs={'min': 1, 'max': 5})
         }
 
 
@@ -64,6 +66,12 @@ class CarForm(forms.ModelForm):
         model = models.Car
         fields = ('car_model', 'car_type', 'year', 'number_of_seats', 'colour', 'description', 'stock_count', 'price',
                   'brand',)
+        widgets = {
+            'year': forms.NumberInput(attrs={'min': 0, 'max': timezone.now().year}),
+            'number_of_seats': forms.NumberInput(attrs={'min': 1, 'max': 100}),
+            'stock_count': forms.NumberInput(attrs={'min': 1}),
+            'price': forms.NumberInput(attrs={'min': 10}),
+        }
 
 
 class ImageForm(forms.ModelForm):

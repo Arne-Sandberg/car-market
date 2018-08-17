@@ -131,7 +131,7 @@ $(document).ready(function () {
         );
     });
 
-    $(".deleteCar").click(function () {
+    $("#usersCars").on("click", ".deleteCar", function () {
         let car_id = $(this).attr("data-id");
 
         $.post(

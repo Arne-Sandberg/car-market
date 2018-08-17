@@ -6,6 +6,7 @@ import stripe
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.core.files.storage import FileSystemStorage
+from django.forms import modelformset_factory, inlineformset_factory, formset_factory
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.utils import timezone
@@ -115,22 +116,23 @@ class CheckoutView(View):
         token = request.POST.get("stripeToken")
         car = models.Car.objects.get(id=kwargs['pk'])
         car.stock_count -= 1
-        purchase_id = models.Purchase.objects.last().id + 1
         stripe.api_key = settings.STRIPE_SECRET_KEY
         try:
-            stripe.Charge.create(
-                amount=car.price * 100,
-                currency="usd",
-                source=token,
-                description=f"{car} {car.colour} was sold to {request.user}",
-                transfer_group=f"purchase_{purchase_id}",
-            )
             if car.owner:
-                stripe.Transfer.create(
-                    amount=car.price * 90,
+                stripe.Charge.create(
+                    amount=int(car.price * 92.9 + 30),
                     currency="usd",
-                    destination=f"{car.owner.stripe_user_id}",
-                    transfer_group=f"purchase_{purchase_id}",
+                    source=token,
+                    description=f"{car} {car.colour} was sold to {request.user}",
+                    application_fee=int(car.price * 7.1 - 30),
+                    stripe_account=car.owner.stripe_user_id,
+                )
+            else:
+                stripe.Charge.create(
+                    amount=car.price * 100,
+                    currency="usd",
+                    source=token,
+                    description=f"{car} {car.colour} was sold to {request.user}",
                 )
         except stripe.error.CardError:
             return HttpResponseRedirect(reverse('error', kwargs=kwargs))
@@ -221,7 +223,7 @@ class CommentContent(TemplateView):
 
 class CreateCarView(SessionWizardView):
     template_name = 'car_form.html'
-    form_list = [forms.CarForm, forms.ImageForm]
+    form_list = [forms.CarForm, formset_factory(form=forms.ImageForm, extra=3)]
     file_storage = FileSystemStorage(location=os.path.join(settings.MEDIA_ROOT, 'storage'))
 
     def get_context_data(self, **kwargs):
@@ -233,19 +235,20 @@ class CreateCarView(SessionWizardView):
         return context
 
     def done(self, form_list, **kwargs):
-        # car = kwargs['form_dict']['0'].save(commit=False)
-        # car.owner = self.request.user
-        # car.save()
-        # image = kwargs['form_dict']['1'].save(commit=False)
-        # image.car = car
-        # image.save()
-        # print(kwargs['form_dict']['1'].cleaned_data)
+        car = kwargs['form_dict']['0'].save(commit=False)
+        car.owner = self.request.user
+        car.save()
+        images = kwargs['form_dict']['1']
+        for image in images:
+            im = image.save(commit=False)
+            im.car_id = car.id
+            im.save()
         return HttpResponseRedirect(reverse('profile', kwargs={'username': self.request.user}))
 
 
 class EditCarView(SessionWizardView):
     template_name = 'car_form.html'
-    form_list = [forms.CarForm, forms.ImageForm]
+    form_list = [forms.CarForm, inlineformset_factory(models.Car, models.Image, forms.ImageForm, extra=1)]
     file_storage = FileSystemStorage(location=os.path.join(settings.MEDIA_ROOT, 'storage'))
 
     def get_context_data(self, **kwargs):
@@ -253,7 +256,8 @@ class EditCarView(SessionWizardView):
         car = models.Car.objects.get(id=self.kwargs['car_id'])
         context['user'] = self.request.user
         if car.owner == self.request.user:
-            context['form'] = forms.CarForm(instance=car)
+            self.form_list[0].instance = car
+            self.form_list[1].instance = car
         elif not self.request.user.stripe_user_id:
             context['flag'] = 'no_keys'
         else:
