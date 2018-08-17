@@ -240,9 +240,10 @@ class CreateCarView(SessionWizardView):
         car.save()
         images = kwargs['form_dict']['1']
         for image in images:
-            im = image.save(commit=False)
-            im.car_id = car.id
-            im.save()
+            if image.cleaned_data:
+                im = image.save(commit=False)
+                im.car = car
+                im.save()
         return HttpResponseRedirect(reverse('profile', kwargs={'username': self.request.user}))
 
 
@@ -255,12 +256,9 @@ class EditCarView(SessionWizardView):
         context = super(EditCarView, self).get_context_data(**kwargs)
         car = models.Car.objects.get(id=self.kwargs['car_id'])
         context['user'] = self.request.user
-        if car.owner == self.request.user:
-            self.form_list[0].instance = car
-            self.form_list[1].instance = car
-        elif not self.request.user.stripe_user_id:
+        if not self.request.user.stripe_user_id:
             context['flag'] = 'no_keys'
-        else:
+        elif car.owner != self.request.user:
             context['flag'] = 'editing_not_allowed'
         return context
 
