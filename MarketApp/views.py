@@ -235,15 +235,15 @@ class CreateCarView(SessionWizardView):
         return context
 
     def done(self, form_list, **kwargs):
-        car = kwargs['form_dict']['0'].save(commit=False)
+        form_data = [form for form in form_list]
+        car = form_data[0].save(commit=False)
         car.owner = self.request.user
         car.save()
-        images = kwargs['form_dict']['1']
-        for image in images:
-            if image.cleaned_data:
-                im = image.save(commit=False)
-                im.car = car
-                im.save()
+        for data in form_data[1]:
+            if data.cleaned_data:
+                image = data.save(commit=False)
+                image.car = car
+                image.save()
         return HttpResponseRedirect(reverse('profile', kwargs={'username': self.request.user}))
 
 
@@ -262,7 +262,15 @@ class EditCarView(SessionWizardView):
             context['flag'] = 'editing_not_allowed'
         return context
 
+    def get_form_instance(self, step):
+        return models.Car.objects.get(id=self.kwargs['car_id'])
+
     def done(self, form_list, **kwargs):
+        form_data = [form for form in form_list]
+        form_data[0].save()
+        for data in form_data[1]:
+            if data.cleaned_data:
+                data.save()
         return HttpResponseRedirect(reverse('profile', kwargs={'username': self.request.user}))
 
 
