@@ -8,19 +8,14 @@ footer {
     min-height: 5vh;
 }
 
-.advert_img {
-    min-height: 500px;
-    max-height: 500px;
-}
-
 .brand_img {
     min-height: 180px;
     max-height: 180px;
 }
 
 .car_img {
-    min-height: 470px;
-    max-height: 470px;
+    min-height: 500px;
+    max-height: 500px;
 }
 
 .comment_img {
