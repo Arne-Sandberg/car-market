@@ -23,7 +23,7 @@ class Car(models.Model):
     car_model = models.CharField(max_length=70)
     car_type = models.CharField(max_length=70)
     year = models.IntegerField()
-    number_of_seats = models.IntegerField()
+    number_of_seats = models.IntegerField(default=4)
     colour = models.CharField(choices=COLOUR_CHOICES, max_length=70)
     description = models.TextField(null=True, blank=True)
     stock_count = models.IntegerField(default=1)

@@ -1,10 +1,9 @@
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.conf import settings
-from django.forms import inlineformset_factory, formset_factory
 from registration.backends.simple.views import RegistrationView
 
-from MarketApp import views, models, forms
+from MarketApp import views
 from MarketApp.forms import UserCreateForm
 
 urlpatterns = [

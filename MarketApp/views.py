@@ -6,13 +6,13 @@ import stripe
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.core.files.storage import FileSystemStorage
-from django.forms import modelformset_factory, inlineformset_factory, formset_factory
+from django.forms import inlineformset_factory, formset_factory
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.utils import timezone
 from django.views.generic import TemplateView, FormView, DetailView
 from django.views.generic.base import View
-from formtools.wizard.views import WizardView, SessionWizardView
+from formtools.wizard.views import SessionWizardView
 
 from Market import settings
 from MarketApp import models, forms
