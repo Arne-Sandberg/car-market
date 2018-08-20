@@ -239,11 +239,12 @@ class CreateCarView(SessionWizardView):
         car = form_data[0].save(commit=False)
         car.owner = self.request.user
         car.save()
-        for data in form_data[1]:
-            if data.cleaned_data:
-                image = data.save(commit=False)
+        for image_form in form_data[1]:
+            if image_form.cleaned_data:
+                image = image_form.save(commit=False)
                 image.car = car
                 image.save()
+                self.file_storage.delete(image_form.cleaned_data['image'])
         return HttpResponseRedirect(reverse('profile', kwargs={'username': self.request.user}))
 
 
@@ -268,9 +269,10 @@ class EditCarView(SessionWizardView):
     def done(self, form_list, **kwargs):
         form_data = [form for form in form_list]
         form_data[0].save()
-        for data in form_data[1]:
-            if data.cleaned_data:
-                data.save()
+        for image_form in form_data[1]:
+            if image_form.cleaned_data:
+                image_form.save()
+                self.file_storage.delete(image_form.cleaned_data['image'])
         return HttpResponseRedirect(reverse('profile', kwargs={'username': self.request.user}))
 
 

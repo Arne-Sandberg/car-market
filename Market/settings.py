@@ -121,9 +121,9 @@ LOGOUT_REDIRECT_URL = '/home'
 
 LOGIN_REDIRECT_URL = '/home'
 
-MEDIA_URL = '/images/'
+MEDIA_URL = '/media/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'MarketApp/static/images')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'MarketApp/static/media')
 
 STRIPE_PUBLIC_KEY = os.environ.get("STRIPE_SECRET_KEY", "pk_test_0iZ2ciCzQWinzLyvzEzkuWiE")
 

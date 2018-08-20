@@ -10,12 +10,12 @@
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
+    <link href="http://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="http://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+
     <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
 </head>
 <body>
@@ -79,10 +79,8 @@
                                 {% for car in advertisement %}
                                     <div class="carousel-item {% if not forloop.counter0 %} active {% endif %}">
                                         <a href="{% url 'car' car.brand_id car.id %}">
-                                            <img class="advert_img d-block w-100" src="
-
-
-                                                    {% if car.image_set.first %}{% static car.image_set.first.image.url %}
+                                            <img class="advert_img d-block w-100"
+                                                 src="{% if car.image_set.all %}{% static car.image_set.all.first.image.url %}
                                                         {% else %}{% static 'images/no-image.jpg' %}
                                                         {% endif %}" alt="slide">
                                             <div class="carousel-caption d-none d-md-block">
@@ -130,5 +128,6 @@
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
         crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+
 </body>
 </html>
