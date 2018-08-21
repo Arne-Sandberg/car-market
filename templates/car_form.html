@@ -1,6 +1,7 @@
 {% extends 'index.html' %}
 {% load bootstrap %}
 {% load i18n %}
+{% load static %}
 {% block content %}
     {% if flag == 'not_authenticated' %}
         <div class="mt-4" align="center">
@@ -33,7 +34,32 @@
             {% if wizard.form.forms %}
                 {{ wizard.form.management_form }}
                 {% for form in wizard.form.forms %}
-                    {{ form | bootstrap }}
+                    {% if form.image %}
+                        {% for field in form %}
+                            {% if forloop.counter0 == 0 %}
+                                <div class="fileinput fileinput-new w-100" data-provides="fileinput">
+                                    <div>{{ field|bootstrap }}</div>
+                                    <div class="row">
+                                        <div class="">
+                                            <div class="brand_img fileinput-preview thumbnail"
+                                                 data-trigger="fileinput">
+                                                <img
+                                                        {% if field.value %} src="{% static field.value.url %}"
+                                                        {% else %} src="{% static 'images/no-image.jpg' %}"
+                                                        {% endif %}>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% elif forloop.counter0 == 2 %}
+                                {{ field|bootstrap }}
+                            {% else %}
+                                {{ field.as_hidden }}
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        {{ form | bootstrap }}
+                    {% endif %}
                 {% endfor %}
             {% else %}
                 {{ wizard.form | bootstrap }}
