@@ -151,6 +151,7 @@ class EditProfileView(FormView):
 
     def get_context_data(self, **kwargs):
         context = super(EditProfileView, self).get_context_data(**kwargs)
+        context['flag'] = 'profile'
         if not self.request.user.is_authenticated:
             context['flag'] = 'not_authenticated'
         else:
@@ -191,6 +192,7 @@ class StripeConnectView(TemplateView):
         code = self.request.GET['code']
         data = {'client_secret': settings.STRIPE_SECRET_KEY, 'code': code, 'grant_type': 'authorization_code'}
         response = requests.post('https://connect.stripe.com/oauth/token', params=data).json()
+        context['flag'] = 'password'
         if 'stripe_user_id' in response:
             self.request.user.stripe_user_id = response['stripe_user_id']
             self.request.user.save()

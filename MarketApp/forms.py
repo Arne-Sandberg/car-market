@@ -44,7 +44,7 @@ class UserEditForm(forms.ModelForm):
 class UserCreateForm(RegistrationForm):
     class Meta:
         model = models.User
-        fields = ('username', 'email', 'password1', 'password2')
+        fields = ('username', 'email', 'password1', 'password2', 'image')
 
 
 class CommentForm(forms.ModelForm):

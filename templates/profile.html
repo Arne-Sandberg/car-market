@@ -3,11 +3,12 @@
 {% block content %}
     <div class="row">
         <div class="col-lg-3">
-            <div class="card">
-                <img alt="User Pic"
-                     src="{% if user.image %}{% static user.image.url %}{% else %}{% static 'images/default_user.png' %}
-                 {% endif %}"
-                     class="img-thumbnail">
+            <div class="card p-2">
+                <img class="profile_img mx-auto thumbnail"
+                     {% if user.image %}src="{% static user.image.url %}"
+                     {% else %}src="{% static 'images/default_user.png' %}"
+                     {% endif %}
+                     alt="User Pic">
                 {% if user == request.user %}
                     <div class="card-body">
                         <a href="{% url 'edit_profile' %}">Edit profile</a>
