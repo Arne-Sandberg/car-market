@@ -37,7 +37,7 @@ $(document).ready(function () {
         );
     });
 
-    $("#comment").on("click", "#submitComment", function () {
+    $("#comments").on("click", "#submitComment", function () {
         let new_comment_content = $('#id_content').val();
         let new_comment_rating = $('#id_rating').val();
 
@@ -51,12 +51,12 @@ $(document).ready(function () {
                 'csrfmiddlewaretoken': csrf_token,
             },
             function (data) {
-                $("#comment").html(data);
+                $("#comments").html(data);
             }
         );
     });
 
-    $("#comment").on("click", "#saveEditComment", function () {
+    $("#comments").on("click", "#saveEditComment", function () {
         let new_comment_content = $('#id_content').val();
         let new_comment_rating = $('#id_rating').val();
         let comment_id = $(this).parents().attr("data-id");
@@ -72,13 +72,13 @@ $(document).ready(function () {
                 'csrfmiddlewaretoken': csrf_token,
             },
             function (data) {
-                $("#comment").html(data);
+                $("#comments").html(data);
             }
         );
     });
 
 
-    $("#comment").on("click", "#cancelEditComment", function () {
+    $("#comments").on("click", "#cancelEditComment", function () {
         $.post(
             '/comment/',
             {
@@ -87,12 +87,12 @@ $(document).ready(function () {
                 'csrfmiddlewaretoken': csrf_token,
             },
             function (data) {
-                $("#comment").html(data);
+                $("#comments").html(data);
             }
         );
     });
 
-    $("#comment").on("click", 'a.deleteComment', function () {
+    $("#comments").on("click", 'a.deleteComment', function () {
         let comment_id = $(this).parents().attr("data-id");
 
         $.post(
@@ -104,13 +104,13 @@ $(document).ready(function () {
                 'csrfmiddlewaretoken': csrf_token,
             },
             function (data) {
-                $("#comment").html(data);
+                $("#comments").html(data);
             }
         );
     });
 
 
-    $("#comment").on("click", 'a.editComment', function () {
+    $("#comments").on("click", 'a.editComment', function () {
         let comment_id = $(this).parents().attr("data-id");
         let old_comment_content = $(this).parents().children("#comment_content").text();
         let old_comment_rating = $(this).parents().children("#comment_rating").text();
@@ -126,7 +126,7 @@ $(document).ready(function () {
                 'csrfmiddlewaretoken': csrf_token,
             },
             function (data) {
-                $("#comment").html(data);
+                $("#comments").html(data);
             }
         );
     });

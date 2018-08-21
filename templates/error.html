@@ -1,8 +1,0 @@
-{% extends 'index.html' %}
-{% block product %}
-    <div class="mt-4" align="center">
-        <h3>Sorry, your card was declined</h3>
-        <p>To return to home page press <a href="{% url 'home' %}">here</a></p>
-        <p>To try again press <a href="/brand/{{ brand_id }}/{{ pk }}">here</a></p>
-    </div>
-{% endblock %}

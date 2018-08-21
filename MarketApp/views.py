@@ -92,22 +92,14 @@ class CarView(DetailView):
         return context
 
 
-class ThanksView(TemplateView):
-    template_name = 'thanks.html'
+class CheckoutResultView(TemplateView):
+    template_name = 'checkout_result.html'
 
     def get_context_data(self, **kwargs):
-        context = super(ThanksView, self).get_context_data(**kwargs)
+        context = super(CheckoutResultView, self).get_context_data(**kwargs)
         context['brands'] = models.Brand.objects.all()
         context['car'] = models.Car.objects.get(id=self.kwargs['pk'])
-        return context
-
-
-class ErrorView(TemplateView):
-    template_name = 'error.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(ErrorView, self).get_context_data(**kwargs)
-        context['brands'] = models.Brand.objects.all()
+        context['flag'] = self.kwargs['flag']
         return context
 
 
@@ -134,12 +126,14 @@ class CheckoutView(View):
                     source=token,
                     description=f"{car} {car.colour} was sold to {request.user}",
                 )
-        except stripe.error.CardError:
-            return HttpResponseRedirect(reverse('error', kwargs=kwargs))
+        except stripe.error.CardError as e:
+            kwargs['flag'] = 'error'
+            return HttpResponseRedirect(reverse('checkout_result', kwargs=kwargs))
         else:
             models.Purchase.objects.create(user=request.user, price=car.price, date=timezone.now(), car=car)
             car.save()
-            return HttpResponseRedirect(reverse('thanks', kwargs=kwargs))
+            kwargs['flag'] = 'success'
+            return HttpResponseRedirect(reverse('checkout_result', kwargs=kwargs))
 
 
 class ProfileView(TemplateView):
@@ -189,8 +183,25 @@ class EditPasswordView(FormView):
         return HttpResponseRedirect(reverse('profile', kwargs={'username': self.request.user}))
 
 
+class StripeConnectView(TemplateView):
+    template_name = 'profile_form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(StripeConnectView, self).get_context_data(**kwargs)
+        code = self.request.GET['code']
+        data = {'client_secret': settings.STRIPE_SECRET_KEY, 'code': code, 'grant_type': 'authorization_code'}
+        response = requests.post('https://connect.stripe.com/oauth/token', params=data).json()
+        if 'stripe_user_id' in response:
+            self.request.user.stripe_user_id = response['stripe_user_id']
+            self.request.user.save()
+            context['flag'] = 'stripe_success'
+        else:
+            context['flag'] = 'stripe_error'
+        return context
+
+
 class CommentContent(TemplateView):
-    template_name = 'comment.html'
+    template_name = 'comments.html'
 
     def post(self, request, *args, **kwargs):
         data = request.POST
@@ -274,23 +285,6 @@ class EditCarView(SessionWizardView):
                 image_form.save()
                 self.file_storage.delete(image_form.cleaned_data['image'])
         return HttpResponseRedirect(reverse('profile', kwargs={'username': self.request.user}))
-
-
-class UserProfileView(TemplateView):
-    template_name = 'profile_form.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(UserProfileView, self).get_context_data(**kwargs)
-        code = self.request.GET['code']
-        data = {'client_secret': settings.STRIPE_SECRET_KEY, 'code': code, 'grant_type': 'authorization_code'}
-        response = requests.post('https://connect.stripe.com/oauth/token', params=data).json()
-        if 'stripe_user_id' in response:
-            self.request.user.stripe_user_id = response['stripe_user_id']
-            self.request.user.save()
-            context['flag'] = 'stripe_success'
-        else:
-            context['flag'] = 'stripe_error'
-        return context
 
 
 class DeleteCarView(TemplateView):

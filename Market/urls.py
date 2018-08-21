@@ -14,13 +14,13 @@ urlpatterns = [
     url('^accounts/profile/settings/password/$', views.EditPasswordView.as_view(), name='edit_password'),
     url('^accounts/profile/settings/create_car/$', views.CreateCarView.as_view(), name='create_car'),
     url('^accounts/profile/settings/edit_car/(?P<car_id>\d+)/$', views.EditCarView.as_view(), name='edit_car'),
-    url('^accounts/profile/settings/connect_stripe/$', views.UserProfileView.as_view(), name='connect_stripe'),
+    url('^accounts/profile/settings/connect_stripe/$', views.StripeConnectView.as_view(), name='connect_stripe'),
 
     url('^brand/(?P<brand_id>\d+)/$', views.BrandView.as_view(), name='brand'),
     url('^brand/(?P<brand_id>\d+)/(?P<pk>\d+)/$', views.CarView.as_view(), name='car'),
     url('^brand/(?P<brand_id>\d+)/(?P<pk>\d+)/checkout/$', views.CheckoutView.as_view(), name='checkout'),
-    url('^brand/(?P<brand_id>\d+)/(?P<pk>\d+)/checkout/thanks/$', views.ThanksView.as_view(), name='thanks'),
-    url('^brand/(?P<brand_id>\d+)/(?P<pk>\d+)/checkout/error/$', views.ErrorView.as_view(), name='error'),
+    url('^brand/(?P<brand_id>\d+)/(?P<pk>\d+)/checkout/(?P<flag>\w+)/$', views.CheckoutResultView.as_view(),
+        name='checkout_result'),
 
     url('^filter/(?P<brand_id>\d+)/', views.BrandContent.as_view(), name='filter'),
 
