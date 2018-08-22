@@ -9,11 +9,9 @@
         {{ form.email|bootstrap }}
         {{ form.password1|bootstrap }}
         {{ form.password2|bootstrap }}
-        <div class="fileinput fileinput-new w-100" data-provides="fileinput">
-            <div>{{ form.image|bootstrap }}</div>
-            <div class="profile_img fileinput-preview thumbnail" data-trigger="fileinput">
-                <img src="{% static 'images/default_user.png' %}">
-            </div>
+        <div class="preview mb-3">
+            {{ form.image|bootstrap }}
+            <img id="preview_image" class="profile_img rounded" src="{% static 'images/default_user.png' %}">
         </div>
         <button type="submit" class="btn btn-primary">Sign Up</button>
     </form>

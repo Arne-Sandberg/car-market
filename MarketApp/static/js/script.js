@@ -3,7 +3,7 @@ $(document).ready(function () {
     let car_id = window.location.href.split('/')[5];
     let csrf_token = jQuery("[name=csrfmiddlewaretoken]").val();
 
-    $("#submitFilter").click(function () {
+    $("#submit_filter").click(function () {
         let min_year = $('#id_min_year').val();
         let max_year = $('#id_max_year').val();
         let number_of_seats = $('#id_number_of_seats').val();
@@ -28,7 +28,7 @@ $(document).ready(function () {
         );
     });
 
-    $("#cancelFilter").click(function () {
+    $("#cancel_filter").click(function () {
         $.get(
             '/filter/' + brand_id + '/',
             function (data) {
@@ -37,7 +37,7 @@ $(document).ready(function () {
         );
     });
 
-    $("#comment").on("click", "#submitComment", function () {
+    $("#comments").on("click", "#submitComment", function () {
         let new_comment_content = $('#id_content').val();
         let new_comment_rating = $('#id_rating').val();
 
@@ -51,12 +51,12 @@ $(document).ready(function () {
                 'csrfmiddlewaretoken': csrf_token,
             },
             function (data) {
-                $("#comment").html(data);
+                $("#comments").html(data);
             }
         );
     });
 
-    $("#comment").on("click", "#saveEditComment", function () {
+    $("#comments").on("click", "#saveEditComment", function () {
         let new_comment_content = $('#id_content').val();
         let new_comment_rating = $('#id_rating').val();
         let comment_id = $(this).parents().attr("data-id");
@@ -72,13 +72,13 @@ $(document).ready(function () {
                 'csrfmiddlewaretoken': csrf_token,
             },
             function (data) {
-                $("#comment").html(data);
+                $("#comments").html(data);
             }
         );
     });
 
 
-    $("#comment").on("click", "#cancelEditComment", function () {
+    $("#comments").on("click", "#cancelEditComment", function () {
         $.post(
             '/comment/',
             {
@@ -87,12 +87,12 @@ $(document).ready(function () {
                 'csrfmiddlewaretoken': csrf_token,
             },
             function (data) {
-                $("#comment").html(data);
+                $("#comments").html(data);
             }
         );
     });
 
-    $("#comment").on("click", 'a.deleteComment', function () {
+    $("#comments").on("click", 'a.deleteComment', function () {
         let comment_id = $(this).parents().attr("data-id");
 
         $.post(
@@ -104,13 +104,13 @@ $(document).ready(function () {
                 'csrfmiddlewaretoken': csrf_token,
             },
             function (data) {
-                $("#comment").html(data);
+                $("#comments").html(data);
             }
         );
     });
 
 
-    $("#comment").on("click", 'a.editComment', function () {
+    $("#comments").on("click", 'a.editComment', function () {
         let comment_id = $(this).parents().attr("data-id");
         let old_comment_content = $(this).parents().children("#comment_content").text();
         let old_comment_rating = $(this).parents().children("#comment_rating").text();
@@ -126,12 +126,12 @@ $(document).ready(function () {
                 'csrfmiddlewaretoken': csrf_token,
             },
             function (data) {
-                $("#comment").html(data);
+                $("#comments").html(data);
             }
         );
     });
 
-    $("#usersCars").on("click", ".deleteCar", function () {
+    $("#users_cars").on("click", ".deleteCar", function () {
         let car_id = $(this).attr("data-id");
 
         $.post(
@@ -141,8 +141,22 @@ $(document).ready(function () {
                 'csrfmiddlewaretoken': csrf_token,
             },
             function (data) {
-                $("#usersCars").html(data);
+                $("#users_cars").html(data);
             }
         );
+    });
+
+    function preview(input) {
+        if (input.files) {
+            let reader = new FileReader();
+            reader.onload = function (e) {
+                $(input).parents(".preview").find("img#preview_image").attr('src', e.target.result);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("input").change(function () {
+        preview(this);
     });
 });

@@ -3,7 +3,7 @@
 {% load static %}
 {% block content %}
     {% if flag == 'not_authenticated' %}
-        <div class="mt-4" align="center">
+        <div align="center">
             <h3>You have no rights to do this action.</h3>
             <p>In order to proceed you have to
                 <a href="{% url 'login' %}">log in</a> or
@@ -11,14 +11,14 @@
             </p>
         </div>
     {% elif flag == 'stripe_success' %}
-        <div class="mt-4" align="center">
+        <div align="center">
             <h3>Your stripe account was successfully connected.</h3>
             <p>To proceed press
                 <a href="{% url 'profile' request.user %}">here</a>.
             </p>
         </div>
     {% elif flag == 'stripe_error' %}
-        <div class="mt-4" align="center">
+        <div align="center">
             <h3>Something went wrong connecting your stripe account.</h3>
             <p>To get back to your profile press
                 <a href="{% url 'profile' request.user %}">here</a>. To try again press
@@ -29,11 +29,9 @@
     {% elif flag == 'profile' %}
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <div class="fileinput fileinput-new w-100" data-provides="fileinput">
-                <div>{{ form.image|bootstrap }}</div>
-                <div class="profile_img fileinput-preview thumbnail" data-trigger="fileinput">
-                    <img src="{% static 'images/default_user.png' %}">
-                </div>
+            <div class="preview mb-3">
+                {{ form.image|bootstrap }}
+                <img id="preview_image" class="profile_img rounded" src="{% static 'images/default_user.png' %}">
             </div>
             {{ form.first_name|bootstrap }}
             {{ form.last_name|bootstrap }}

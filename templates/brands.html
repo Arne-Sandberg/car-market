@@ -3,10 +3,14 @@
 {% block content %}
     <div class="row">
         <div class="col-lg-2">
-            <h3 class="my-4" id="brandName">{{ brand_name }}</h3>
+            <h3 id="brandName">{{ brand_name }}</h3>
             {{ form | bootstrap }}
-            <a href="#top"><button type="submit" class="btn btn-primary" id="submitFilter">Filter</button></a>
-            <a href="#top"><button type="submit" class="btn btn-primary" id="cancelFilter">Cancel</button></a>
+            <a href="#top">
+                <button type="submit" class="btn btn-primary" id="submit_filter">Filter</button>
+            </a>
+            <a href="#top">
+                <button type="submit" class="btn btn-primary" id="cancel_filter">Cancel</button>
+            </a>
         </div>
         <div class="col-lg-10" id="brand_content">
             {% include 'brand_content.html' %}

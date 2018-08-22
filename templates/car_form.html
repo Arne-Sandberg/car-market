@@ -4,7 +4,7 @@
 {% load static %}
 {% block content %}
     {% if flag == 'not_authenticated' %}
-        <div class="mt-4" align="center">
+        <div align="center">
             <h3>You have no rights to do this action.</h3>
             <p>In order to proceed you have to
                 <a href="{% url 'login' %}">log in</a> or
@@ -12,14 +12,14 @@
             </p>
         </div>
     {% elif flag == 'editing_not_allowed' %}
-        <div class="mt-4" align="center">
+        <div align="center">
             <h3>You have no rights to edit this car.</h3>
             <p>To return press
                 <a href="{% url 'profile' request.user %}">here</a>.
             </p>
         </div>
     {% elif flag == 'no_keys' %}
-        <div class="mt-4" align="center">
+        <div align="center">
             <h3>You have to connect your stripe account to do this action.</h3>
             <p>To connect your stripe account press
                 <a href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_DQaOCFCjDd2o48wUjD5fLPQlm6vkG51j&scope=read_write">
@@ -29,7 +29,8 @@
     {% else %}
         {{ wizard.form.media }}
         <p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
-        <form method="post" enctype="multipart/form-data">{% csrf_token %}
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
             {{ wizard.management_form }}
             {% if wizard.form.forms %}
                 {{ wizard.form.management_form }}
@@ -37,17 +38,14 @@
                     {% if form.image %}
                         {% for field in form %}
                             {% if forloop.counter0 == 0 %}
-                                <div class="fileinput fileinput-new w-100" data-provides="fileinput">
-                                    <div>{{ field|bootstrap }}</div>
-                                    <div class="row">
-                                        <div class="">
-                                            <div class="brand_img fileinput-preview thumbnail"
-                                                 data-trigger="fileinput">
-                                                <img
-                                                        {% if field.value %} src="{% static field.value.url %}"
-                                                        {% else %} src="{% static 'images/no-image.jpg' %}"
-                                                        {% endif %}>
-                                            </div>
+                                <div class="preview mb-2">
+                                    {{ field|bootstrap }}
+                                    <div class="col-lg-3 p-0">
+                                        <div class="card">
+                                            <img id="preview_image" class="brand_img w-100"
+                                                    {% if field.value %} src="{% static field.value.url %}"
+                                                    {% else %} src="{% static 'images/no-image.jpg' %}"
+                                                    {% endif %}>
                                         </div>
                                     </div>
                                 </div>
@@ -57,6 +55,7 @@
                                 {{ field.as_hidden }}
                             {% endif %}
                         {% endfor %}
+                        <hr/>
                     {% else %}
                         {{ form | bootstrap }}
                     {% endif %}

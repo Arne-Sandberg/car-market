@@ -1,7 +1,7 @@
 {% extends "index.html" %}
 {% load bootstrap %}
 {% block content %}
-    <form method="post" action="">
+    <form method="post">
         {% csrf_token %}
         <h3>Log in</h3>
         {{ form|bootstrap }}

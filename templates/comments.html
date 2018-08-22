@@ -2,16 +2,15 @@
 {% load static %}
 {% block comments %}
     {% for comment in object.comment_set.all %}
-        <hr>
-        <div class="media">
+        <div class="media my-3">
             <a href="{% url 'profile' comment.user %}">
                 <img class="comment_img img-thumbnail"
                      src="{% if comment.user.image %}{% static comment.user.image.url %}
                             {% else %}{% static 'images/default_user.png' %}
                             {% endif %}">
             </a>
-            <div class="media-body" data-id="{{ comment.id }}">
-                <a href="{% url 'profile' comment.user %}">{{ comment.user }}</a>:
+            <div class="media-body p-0 pl-2" data-id="{{ comment.id }}">
+                <b><a href="{% url 'profile' comment.user %}">{{ comment.user }}</a>:</b>
                 <b id="comment_rating">{{ comment.rating }}</b>★
                 <small>{{ comment.creation_date }}</small>
                 {% if comment.user == request.user %}
@@ -26,25 +25,37 @@
             </div>
         </div>
     {% endfor %}
-
     <hr>
     <div class="media">
-        <div class="media-body" data-id="{{ editing_comment_id }}">
-            {% if request.user.is_authenticated %}
-                <b>{{ request.user }}: {% if editing_comment_id %} edit comment {% else %} leave comment {% endif %}</b>
-                {{ form|bootstrap }}
+        {% if request.user.is_authenticated %}
+            <a href="{% url 'profile' request.user %}">
+                <img class="comment_img img-thumbnail"
+                     src="{% if request.user.image %}{% static request.user.image.url %}
+                            {% else %}{% static 'images/default_user.png' %}
+                            {% endif %}">
+            </a>
+            <div class="media-body p-0 pl-2" data-id="{{ editing_comment_id }}">
+
+                <b>
+                    <a href="{% url 'profile' request.user %}">{{ request.user }}</a>:
+                    {% if editing_comment_id %} edit comment {% else %} leave comment {% endif %}
+                </b>
                 {% csrf_token %}
+                {{ form|bootstrap }}
                 {% if editing_comment_id %}
                     <button class="btn btn-primary" id="saveEditComment">Save</button>
                     <button class="btn btn-primary" id="cancelEditComment">Cancel</button>
                 {% else %}
                     <button class="btn btn-primary" id="submitComment">Submit</button>
                 {% endif %}
-            {% else %}
+
+
+            </div>
+        {% else %}
+            <div class="media-body">
                 <h5>To leave a comment you have to:</h5>
-                <a href="{% url 'login' %}">Log in</a> |
-                <a href="{% url 'register' %}">Sign up</a>
-            {% endif %}
-        </div>
+                <b><a href="{% url 'login' %}">Log in </a></b>or<b><a href="{% url 'register' %}"> Sign up</a></b>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}

@@ -1,6 +1,6 @@
 {% extends 'index.html' %}
 {% block product %}
-    <div class="mt-4" align="center">
+    <div align="center">
         {% if flag == 'error' %}
             <h3>Sorry, your card was declined.</h3>
             <p>To return to home page press <a href="{% url 'home' %}">here</a></p>

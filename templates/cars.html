@@ -1,41 +1,40 @@
 {% extends 'index.html' %}
 {% load static %}
 {% block product %}
-    <div class="card mt-4">
+    <div class="card">
         <div class="card-body">
             <h3 class="card-title">{{ object }}</h3>
-            <div id="car{{ object.id }}" class="carousel slide my-4" data-ride="carousel">
+            <div id="car_{{ object.id }}" class="carousel slide my-4" data-ride="carousel">
                 <div class="carousel-inner">
                     {% if not images %}
                         <div class="carousel-item active">
-                            <img class="car_img d-block w-100" src="{% static 'images/no-image.jpg' %}" alt="slide">
+                            <img class="car_img rounded w-100" src="{% static 'images/no-image.jpg' %}"
+                                 alt="no-image.jpg">
                         </div>
                     {% else %}
                         {% for im in images %}
                             <div class="carousel-item {% if not forloop.counter0 %} active {% endif %}">
-                                <img class="car_img d-block w-100" src="{% static im.image.url %}" alt="slide">
+                                <img class="car_img rounded w-100" src="{% static im.image.url %}"
+                                     alt="{{ im.image.url }}">
                             </div>
                         {% endfor %}
                     {% endif %}
                 </div>
                 <ol class="carousel-indicators">
                     {% if not images %}
-                        <li data-target="#car{{ object.id }}" data-slide-to="0" class="active"></li>
+                        <li data-target="#car_{{ object.id }}" data-slide-to="0" class="active"></li>
                     {% else %}
                         {% for im in images %}
-                            <li data-target="#car{{ object.id }}"
-                                data-slide-to="{{ forloop.counter0 }}" {% if not forloop.counter0 %}
-                                class="active"{% endif %}></li>
+                            <li data-target="#car_{{ object.id }}" data-slide-to="{{ forloop.counter0 }}"
+                                    {% if not forloop.counter0 %} class="active"{% endif %}></li>
                         {% endfor %}
                     {% endif %}
                 </ol>
-                <a class="carousel-control-prev" href="#car{{ object.id }}" role="button"
-                   data-slide="prev">
+                <a class="carousel-control-prev" href="#car_{{ object.id }}" role="button" data-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="sr-only">Previous</span>
                 </a>
-                <a class="carousel-control-next" href="#car{{ object.id }}" role="button"
-                   data-slide="next">
+                <a class="carousel-control-next" href="#car_{{ object.id }}" role="button" data-slide="next">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="sr-only">Next</span>
                 </a>
@@ -49,32 +48,29 @@
             <p>Year: {{ object.year }}</p>
             <p>Seats number: {{ object.number_of_seats }}</p>
             <p>Colour: {{ object.colour }}
-                {% if object.stock_count %}
-                    <p>In stock: {{ object.stock_count }}</p>
-                    {% if request.user.is_authenticated %}
-                        {% if flag == 'show_button' %}
-                            <form action="{% url 'checkout' object.brand_id object.id %}" method="POST">
-                                {% csrf_token %}
-                                <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                                        data-key="{{ stripe_key }}"
-                                        data-amount="{{ car.price }}00"
-                                        data-name="Car Market"
-                                        data-description="{{ car }}"
-                                        data-currency="usd">
-                                </script>
-                            </form>
-                        {% endif %}
-                    {% endif %}
-                {% else %}
-                    <p>Out of stock</p>
-                {% endif %}
+            <p>{% if object.stock_count %}In stock: {{ object.stock_count }}{% else %}Out of stock{% endif %}</p>
         </div>
-        <div class="container">
-            <hr>
-            <h3>Comments:</h3>
-            <div id="comment">
-                {% include 'comments.html' %}
-            </div>
+        <div class="card-footer">
+            {% if request.user.is_authenticated and object.stock_count %}
+                {% if flag == 'show_button' %}
+                    <form action="{% url 'checkout' object.brand_id object.id %}" method="POST">
+                        {% csrf_token %}
+                        <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                                data-key="{{ stripe_key }}"
+                                data-amount="{{ car.price }}00"
+                                data-name="Car Market"
+                                data-description="{{ car }}"
+                                data-currency="usd">
+                        </script>
+                    </form>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="container my-4">
+        <h3>Comments:</h3>
+        <div id="comments">
+            {% include 'comments.html' %}
         </div>
     </div>
 {% endblock %}

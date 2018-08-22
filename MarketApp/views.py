@@ -174,6 +174,7 @@ class EditPasswordView(FormView):
 
     def get_context_data(self, **kwargs):
         context = super(EditPasswordView, self).get_context_data(**kwargs)
+        context['flag'] = 'password'
         if not self.request.user.is_authenticated:
             context['flag'] = 'not_authenticated'
         return context
@@ -297,3 +298,14 @@ class DeleteCarView(TemplateView):
         context = self.get_context_data()
         context['user'] = self.request.user
         return self.render_to_response(context)
+
+
+class SearchView(FormView):
+    template_name = 'search.html'
+    form_class = forms.FilterForm
+
+    def get_context_data(self, **kwargs):
+        context = super(SearchView, self).get_context_data(**kwargs)
+        context['brand_name'] = 'All'
+        context['cars'] = models.Car.objects.all().select_related('brand').prefetch_related('image_set')
+        return context

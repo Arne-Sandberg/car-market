@@ -1,7 +1,6 @@
 .main {
-    margin-top: 54px;
-    padding: 20px;
-    min-height: calc(95vh - 54px);
+    margin-top: 65px;
+    min-height: calc(95vh - 65px);
 }
 
 footer {
@@ -21,11 +20,7 @@ footer {
     height: 70px;
 }
 
-.profile_img{
+.profile_img {
     width: 200px;
     height: 200px;
-}
-
-.media-body {
-    padding: 10px;
 }

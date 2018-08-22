@@ -15,9 +15,9 @@ class FilterForm(forms.Form):
     price = RangeSliderField()
     in_stock_only = forms.BooleanField(required=False)
 
-    def __init__(self, brand_id, *args, **kwargs):
+    def __init__(self, brand_id=0, *args, **kwargs):
         super(FilterForm, self).__init__(*args, **kwargs)
-        cars = models.Car.objects.filter(brand_id=brand_id)
+        cars = models.Car.objects.filter(brand_id=brand_id) if brand_id else models.Car.objects.all()
         max_p = cars.aggregate(Max('price'))['price__max']
         min_p = cars.aggregate(Min('price'))['price__min']
         max_y = cars.aggregate(Max('year'))['year__max']
@@ -57,6 +57,16 @@ class CommentForm(forms.ModelForm):
         }
 
 
+class ImageForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ImageForm, self).__init__(*args, **kwargs)
+        self.fields['image'].required = False
+
+    class Meta:
+        model = models.Image
+        fields = ('image',)
+
+
 class CarForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CarForm, self).__init__(*args, **kwargs)
@@ -72,13 +82,3 @@ class CarForm(forms.ModelForm):
             'stock_count': forms.NumberInput(attrs={'min': 1}),
             'price': forms.NumberInput(attrs={'min': 10}),
         }
-
-
-class ImageForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(ImageForm, self).__init__(*args, **kwargs)
-        self.fields['image'].required = False
-
-    class Meta:
-        model = models.Image
-        fields = ('image',)
