@@ -35,11 +35,12 @@ class IndexView(TemplateView):
 
 
 class BrandView(FormView):
-    template_name = 'brands.html'
+    template_name = 'filter.html'
     form_class = forms.FilterForm
 
     def get_context_data(self, **kwargs):
         context = super(BrandView, self).get_context_data(**kwargs)
+        context['flag'] = 'brand'
         context['brand_name'] = models.Brand.objects.get(id=self.kwargs['brand_id']).name
         context['cars'] = models.Car.objects.filter(brand_id=self.kwargs['brand_id']).select_related(
             'brand').prefetch_related('image_set')
@@ -56,10 +57,12 @@ class BrandContent(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(BrandContent, self).get_context_data(**kwargs)
-        context['brand_name'] = models.Brand.objects.get(id=self.kwargs['brand_id']).name
         data = self.request.GET
+        if int(kwargs['brand_id']):
+            context['cars'] = models.Car.objects.filter(brand_id=kwargs['brand_id'])
+        else:
+            context['cars'] = models.Car.objects.all()
         if data:
-            context['cars'] = models.Car.objects.filter(brand_id=self.kwargs['brand_id'])
             if data['colour'] != 'any colour':
                 context['cars'] = context['cars'].filter(colour=data['colour'])
             if data['in_stock_only']:
@@ -67,16 +70,13 @@ class BrandContent(TemplateView):
             context['cars'] = context['cars'].filter(year__lte=data['max_year'], year__gte=data['min_year'],
                                                      number_of_seats=data['number_of_seats'],
                                                      price__gte=data['min_price'],
-                                                     price__lte=data['max_price']).select_related(
-                'brand').prefetch_related('image_set')
-        else:
-            context['cars'] = models.Car.objects.filter(brand_id=self.kwargs['brand_id']).select_related(
-                'brand').prefetch_related('image_set')
+                                                     price__lte=data['max_price'])
+        context['cars'].select_related('brand').prefetch_related('image_set')
         return context
 
 
 class CarView(DetailView):
-    template_name = 'cars.html'
+    template_name = 'car.html'
     model = models.Car
 
     def get_context_data(self, **kwargs):
@@ -301,11 +301,12 @@ class DeleteCarView(TemplateView):
 
 
 class SearchView(FormView):
-    template_name = 'search.html'
+    template_name = 'filter.html'
     form_class = forms.FilterForm
 
     def get_context_data(self, **kwargs):
         context = super(SearchView, self).get_context_data(**kwargs)
+        context['flag'] = 'search'
         context['brand_name'] = 'All'
         context['cars'] = models.Car.objects.all().select_related('brand').prefetch_related('image_set')
         return context
