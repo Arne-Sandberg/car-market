@@ -24,7 +24,7 @@ urlpatterns = [
 
     url('^filter/(?P<brand_id>\d+)/', views.BrandContent.as_view(), name='filter'),
 
-    url('^search/', views.SearchView.as_view(), name='search'),
+    url('^search/$', views.SearchView.as_view(), name='search'),
 
     url('^comment/$', views.CommentContent.as_view(), name='comment'),
 

@@ -7,6 +7,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.core.files.storage import FileSystemStorage
 from django.forms import inlineformset_factory, formset_factory
+from django.forms.utils import ErrorList
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.utils import timezone
@@ -60,6 +61,8 @@ class BrandContent(TemplateView):
         data = self.request.GET
         if int(kwargs['brand_id']):
             context['cars'] = models.Car.objects.filter(brand_id=kwargs['brand_id'])
+        elif 'key_word' in data:
+            context['cars'] = models.Car.objects.filter(car_model__contains=data['key_word'])
         else:
             context['cars'] = models.Car.objects.all()
         if data:
@@ -209,6 +212,9 @@ class CommentContent(TemplateView):
     def post(self, request, *args, **kwargs):
         data = request.POST
         form = forms.CommentForm(data)
+        if data['rating']:
+            if int(data['rating']) < 1 or int(data['rating']) > 5:
+                form.add_error('rating', 'Rating score can not be greater than 5 or less than 1.')
         context = self.get_context_data()
         context['object'] = models.Car.objects.get(id=data['car_id'])
         context['form'] = forms.CommentForm()

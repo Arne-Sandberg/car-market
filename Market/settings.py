@@ -121,10 +121,6 @@ LOGOUT_REDIRECT_URL = '/home'
 
 LOGIN_REDIRECT_URL = '/home'
 
-MEDIA_URL = '/media/'
-
-MEDIA_ROOT = os.path.join(BASE_DIR, 'MarketApp/static/media')
-
 STRIPE_PUBLIC_KEY = os.environ.get("STRIPE_SECRET_KEY", "pk_test_0iZ2ciCzQWinzLyvzEzkuWiE")
 
 STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "sk_test_v8wWUdop2kxCHBzLZEUYKJXP")
@@ -133,8 +129,13 @@ INTERNAL_IPS = ['127.0.0.1']
 
 AUTH_USER_MODEL = 'MarketApp.User'
 
-USERNAME_FIELD = 'username'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'MarketApp/static')
+
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'MarketApp/static/media')

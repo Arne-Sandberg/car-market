@@ -17,8 +17,8 @@
                     {% if comment.id == editing_comment_id %}
                         editing...
                     {% else %}
-                        <a href="#user_comment" class="editComment">edit</a> |
-                        <a href="#comments" class="deleteComment">delete</a>
+                        <a href="#user_comment" class="edit_comment">edit</a> |
+                        <a href="#comments" class="delete_comment">delete</a>
                     {% endif %}
                 {% endif %}
                 <p id="comment_content">{{ comment.content }}</p>
@@ -35,26 +35,21 @@
                             {% endif %}">
             </a>
             <div class="media-body p-0 pl-2" data-id="{{ editing_comment_id }}">
-
-                <b>
-                    <a href="{% url 'profile' request.user %}">{{ request.user }}</a>:
-                    {% if editing_comment_id %} edit comment {% else %} leave comment {% endif %}
-                </b>
+                <b><a href="{% url 'profile' request.user %}">{{ request.user }}</a>:
+                    {% if editing_comment_id %} edit comment {% else %} leave comment {% endif %}</b>
                 {% csrf_token %}
                 {{ form|bootstrap }}
                 {% if editing_comment_id %}
-                    <button class="btn btn-primary" id="saveEditComment">Save</button>
-                    <button class="btn btn-primary" id="cancelEditComment">Cancel</button>
+                    <button class="btn btn-primary" type="button" id="save_edit_comment">Save</button>
+                    <button class="btn btn-primary" type="button" id="cancel_edit_comment">Cancel</button>
                 {% else %}
-                    <button class="btn btn-primary" id="submitComment">Submit</button>
+                    <button class="btn btn-primary" type="button" id="submit_comment">Submit</button>
                 {% endif %}
-
-
             </div>
         {% else %}
             <div class="media-body">
                 <h5>To leave a comment you have to:</h5>
-                <b><a href="{% url 'login' %}">Log in </a></b>or<b><a href="{% url 'register' %}"> Sign up</a></b>
+                <b><a href="{% url 'login' %}">Log in</a></b> or <b><a href="{% url 'register' %}">Sign up</a></b>
             </div>
         {% endif %}
     </div>

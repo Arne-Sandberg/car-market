@@ -53,7 +53,6 @@ class CommentForm(forms.ModelForm):
         fields = ('content', 'rating')
         widgets = {
             'content': forms.Textarea(attrs={'rows': 2}),
-            'rating': forms.NumberInput(attrs={'min': 1, 'max': 5})
         }
 
 

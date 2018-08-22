@@ -2,6 +2,11 @@ $(document).ready(function () {
         let brand_id = window.location.href.split('/')[4];
         let car_id = window.location.href.split('/')[5];
         let csrf_token = jQuery("[name=csrfmiddlewaretoken]").val();
+        let comments = $("#comments");
+
+        $("#submit_search").click(function () {
+
+        });
 
         $("#submit_filter").click(function () {
             let min_year = $('#id_min_year').val();
@@ -10,19 +15,23 @@ $(document).ready(function () {
             let colour = $('#id_colour').val();
             let in_stock_only = $('#id_in_stock_only').prop('checked');
             let price = $('#id_price').val().split(/\D+/);
+            let key_word = $("#search_content").val();
+            let data_dict = {
+                'min_year': min_year,
+                'max_year': max_year,
+                'number_of_seats': number_of_seats,
+                'colour': colour,
+                'in_stock_only': in_stock_only,
+                'min_price': price[1],
+                'max_price': price[2]
+            };
+            if (key_word)
+                data_dict['key_word'] = key_word;
             if ("number" != typeof(brand_id))
                 brand_id = 0;
             $.get(
                 '/filter/' + brand_id + '/',
-                {
-                    'min_year': min_year,
-                    'max_year': max_year,
-                    'number_of_seats': number_of_seats,
-                    'colour': colour,
-                    'in_stock_only': in_stock_only,
-                    'min_price': price[1],
-                    'max_price': price[2]
-                },
+                data_dict,
                 function (data) {
                     $("#brand_content").html(data)
                 }
@@ -40,7 +49,7 @@ $(document).ready(function () {
             );
         });
 
-        $("#comments").on("click", "#submitComment", function () {
+        $(comments).on("click", "#submit_comment", function () {
             let new_comment_content = $('#id_content').val();
             let new_comment_rating = $('#id_rating').val();
 
@@ -59,7 +68,7 @@ $(document).ready(function () {
             );
         });
 
-        $("#comments").on("click", "#saveEditComment", function () {
+        $(comments).on("click", "#save_ddit_comment", function () {
             let new_comment_content = $('#id_content').val();
             let new_comment_rating = $('#id_rating').val();
             let comment_id = $(this).parents().attr("data-id");
@@ -80,7 +89,7 @@ $(document).ready(function () {
             );
         });
 
-        $("#comments").on("click", "#cancelEditComment", function () {
+        $(comments).on("click", "#cancel_edit_comment", function () {
             $.post(
                 '/comment/',
                 {
@@ -94,7 +103,7 @@ $(document).ready(function () {
             );
         });
 
-        $("#comments").on("click", 'a.deleteComment', function () {
+        $(comments).on("click", '.delete_comment', function () {
             let comment_id = $(this).parents().attr("data-id");
 
             $.post(
@@ -111,7 +120,7 @@ $(document).ready(function () {
             );
         });
 
-        $("#comments").on("click", 'a.editComment', function () {
+        $(comments).on("click", '.edit_comment', function () {
             let comment_id = $(this).parents().attr("data-id");
             let old_comment_content = $(this).parents().children("#comment_content").text();
             let old_comment_rating = $(this).parents().children("#comment_rating").text();
@@ -132,7 +141,7 @@ $(document).ready(function () {
             );
         });
 
-        $("#users_cars").on("click", ".deleteCar", function () {
+        $("#users_cars").on("click", ".delete_car", function () {
             let car_id = $(this).attr("data-id");
 
             $.post(
