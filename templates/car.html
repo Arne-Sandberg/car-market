@@ -12,10 +12,10 @@
                                  alt="no-image.jpg">
                         </div>
                     {% else %}
-                        {% for im in images %}
+                        {% for img in images %}
                             <div class="carousel-item {% if not forloop.counter0 %} active {% endif %}">
-                                <img class="car_img rounded w-100" src="{% static im.image.url %}"
-                                     alt="{{ im.image.url }}">
+                                <img class="car_img rounded w-100" src="{{ img.image.url }}"
+                                     alt="{{ img.image.url }}">
                             </div>
                         {% endfor %}
                     {% endif %}

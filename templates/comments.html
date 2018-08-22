@@ -5,9 +5,9 @@
         <div class="media my-3">
             <a href="{% url 'profile' comment.user %}">
                 <img class="comment_img img-thumbnail"
-                     src="{% if comment.user.image %}{% static comment.user.image.url %}
-                            {% else %}{% static 'images/default_user.png' %}
-                            {% endif %}">
+                     {% if comment.user.image %}src="{{ comment.user.image.url }}"
+                     {% else %}src="{% static 'images/default_user.png' %}"
+                     {% endif %}>
             </a>
             <div class="media-body p-0 pl-2" data-id="{{ comment.id }}">
                 <b><a href="{% url 'profile' comment.user %}">{{ comment.user }}</a>:</b>
@@ -30,9 +30,9 @@
         {% if request.user.is_authenticated %}
             <a href="{% url 'profile' request.user %}">
                 <img class="comment_img img-thumbnail"
-                     src="{% if request.user.image %}{% static request.user.image.url %}
-                            {% else %}{% static 'images/default_user.png' %}
-                            {% endif %}">
+                     {% if request.user.image %}src="{{ request.user.image.url }}"
+                     {% else %}src="{% static 'images/default_user.png' %}"
+                     {% endif %}>
             </a>
             <div class="media-body p-0 pl-2" data-id="{{ editing_comment_id }}">
                 <b><a href="{% url 'profile' request.user %}">{{ request.user }}</a>:

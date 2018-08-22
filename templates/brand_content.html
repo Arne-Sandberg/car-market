@@ -21,7 +21,7 @@
                                         <div class="carousel-item {% if not forloop.counter0 %} active {% endif %}">
                                             <a href="{% url 'car' car.brand_id car.id %}">
                                                 <img class="brand_img d-block w-100"
-                                                     src="{% static img.image.url %}" alt="{{ img.image.url }}">
+                                                     src="{{ img.image.url }}" alt="{{ img.image.url }}">
                                             </a>
                                         </div>
                                     {% endfor %}
