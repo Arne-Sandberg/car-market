@@ -3,12 +3,9 @@ $(document).ready(function () {
         let car_id = window.location.href.split('/')[5];
         let csrf_token = jQuery("[name=csrfmiddlewaretoken]").val();
         let comments = $("#comments");
+        let filter = $("#filter");
 
-        $("#submit_search").click(function () {
-
-        });
-
-        $("#submit_filter").click(function () {
+        $(filter).on("click", "#submit_filter", function () {
             let min_year = $('#id_min_year').val();
             let max_year = $('#id_max_year').val();
             let number_of_seats = $('#id_number_of_seats').val();
@@ -16,40 +13,53 @@ $(document).ready(function () {
             let in_stock_only = $('#id_in_stock_only').prop('checked');
             let price = $('#id_price').val().split(/\D+/);
             let search_content = $("#search_content").attr("data-content");
-            let data_dict = {
-                'min_year': min_year,
-                'max_year': max_year,
-                'number_of_seats': number_of_seats,
-                'colour': colour,
-                'in_stock_only': in_stock_only,
-                'min_price': price[1],
-                'max_price': price[2]
-            };
-            if (search_content)
-                data_dict['search_content'] = search_content;
+
             if (isNaN(brand_id))
                 brand_id = 0;
+
             $.get(
-                '/filter/' + brand_id + '/',
-                data_dict,
+                '/filter/submit/' + brand_id + '/',
+                {
+                    'min_year': min_year,
+                    'max_year': max_year,
+                    'number_of_seats': number_of_seats,
+                    'colour': colour,
+                    'in_stock_only': in_stock_only,
+                    'min_price': price[1],
+                    'max_price': price[2],
+                    'search_content': search_content,
+                },
                 function (data) {
-                    $("#brand_content").html(data)
+                    $("#filter").html(data)
                 }
             );
         });
 
-        $("#cancel_filter").click(function () {
+        $(filter).on("click", "#cancel_filter", function () {
+            let min_year = $('#id_min_year').val();
+            let max_year = $('#id_max_year').val();
+            let number_of_seats = $('#id_number_of_seats').val();
+            let colour = $('#id_colour').val();
+            let in_stock_only = $('#id_in_stock_only').prop('checked');
+            let price = $('#id_price').val().split(/\D+/);
             let search_content = $("#search_content").attr("data-content");
-            let data_dict = {};
             if (isNaN(brand_id))
                 brand_id = 0;
-            if (search_content)
-                data_dict['search_content'] = search_content;
+
             $.get(
-                '/filter/' + brand_id + '/',
-                data_dict,
+                '/filter/cancel/' + brand_id + '/',
+                {
+                    'min_year': min_year,
+                    'max_year': max_year,
+                    'number_of_seats': number_of_seats,
+                    'colour': colour,
+                    'in_stock_only': in_stock_only,
+                    'min_price': price[1],
+                    'max_price': price[2],
+                    'search_content': search_content
+                },
                 function (data) {
-                    $("#brand_content").html(data);
+                    $("#filter").html(data);
                 }
             );
         });

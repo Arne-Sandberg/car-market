@@ -1,5 +1,4 @@
 {% extends "index.html" %}
-{% load bootstrap %}
 {% block content %}
     {% if flag == 'search' %}
         <form class="mb-4" method="get" action="{% url 'search' %}">
@@ -14,19 +13,7 @@
             </div>
         </form>
     {% endif %}
-    <div class="row">
-        <div class="col-lg-2">
-            <h3 id="brandName">{{ brand_name }}</h3>
-            {{ form | bootstrap }}
-            <a href="#brand_content">
-                <button type="button" class="btn btn-primary" id="submit_filter">Filter</button>
-            </a>
-            <a href="#brand_content">
-                <button type="button" class="btn btn-primary" id="cancel_filter">Cancel</button>
-            </a>
-        </div>
-        <div class="col-lg-10" id="brand_content">
-            {% include 'brand_content.html' %}
-        </div>
+    <div class="row" id="filter">
+        {% include 'brand_content.html' %}
     </div>
 {% endblock %}

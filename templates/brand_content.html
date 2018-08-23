@@ -1,76 +1,90 @@
 {% load static %}
+{% load bootstrap %}
 {% block brand_content %}
-    {% if flag == 'search' %}
-        <p>Showing results for: <b>{{ search_content }}</b></p>
-    {% endif %}
-    <div class="row">
-        {% if not cars %}
-            <h3 class="col-lg">Sorry. Nothing was found, try something else...</h3>
-        {% else %}
-            {% for car in cars %}
-                <div class="col-lg-4 mb-4">
-                    <div class="card h-100">
-                        <div id="car_{{ car.id }}" class="carousel slide" data-ride="carousel">
-                            <div class="carousel-inner">
-                                {% if not car.image_set.all %}
-                                    <div class="carousel-item active">
-                                        <a href="{% url 'car' car.brand_id car.id %}">
-                                            <img class="brand_img w-100"
-                                                 src="{% static 'images/no-image.jpg' %}" alt="no-image.jpg">
-                                        </a>
-                                    </div>
-                                {% else %}
-                                    {% for img in car.image_set.all %}
-                                        <div class="carousel-item {% if not forloop.counter0 %} active {% endif %}">
+    <div class="col-lg-2">
+        <h3 id="brandName">{{ brand_name }}</h3>
+        {{ form|bootstrap }}
+        <a href="#top">
+            <button type="button" class="btn btn-primary" id="submit_filter">Filter</button>
+        </a>
+        <a href="#top">
+            <button type="button" class="btn btn-primary" id="cancel_filter">Cancel</button>
+        </a>
+    </div>
+    <div class="col-lg-10">
+        {% if flag == 'search' %}
+            <p>Showing results for: <b>{{ search_content }}</b></p>
+        {% endif %}
+        <div class="row">
+            {% if not cars %}
+                <h3 class="col-lg">Sorry. Nothing was found, try something else...</h3>
+            {% else %}
+                {% for car in cars %}
+                    <div class="col-lg-4 mb-4">
+                        <div class="card h-100">
+                            <div id="car_{{ car.id }}" class="carousel slide" data-ride="carousel">
+                                <div class="carousel-inner">
+                                    {% if not car.image_set.all %}
+                                        <div class="carousel-item active">
                                             <a href="{% url 'car' car.brand_id car.id %}">
-                                                <img class="brand_img d-block w-100"
-                                                     src="{{ img.image.url }}" alt="{{ img.image.url }}">
+                                                <img class="brand_img w-100"
+                                                     src="{% static 'images/no-image.jpg' %}" alt="no-image.jpg">
                                             </a>
                                         </div>
-                                    {% endfor %}
+                                    {% else %}
+                                        {% for img in car.image_set.all %}
+                                            <div class="carousel-item {% if not forloop.counter0 %} active {% endif %}">
+                                                <a href="{% url 'car' car.brand_id car.id %}">
+                                                    <img class="brand_img d-block w-100"
+                                                         src="{{ img.image.url }}" alt="{{ img.image.url }}">
+                                                </a>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                                <ol class="carousel-indicators">
+                                    {% if not car.image_set.all %}
+                                        <li data-target="#car_{{ car.id }}" data-slide-to="0" class="active"></li>
+                                    {% else %}
+                                        {% for img in car.image_set.all %}
+                                            <li data-target="#car_{{ car.id }}"
+                                                data-slide-to="{{ forloop.counter0 }}" {% if not forloop.counter0 %}
+                                                class="active"{% endif %}></li>
+                                        {% endfor %}
+                                    {% endif %}
+                                </ol>
+                                <a class="carousel-control-prev" href="#car_{{ car.id }}" role="button"
+                                   data-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="carousel-control-next" href="#car_{{ car.id }}" role="button"
+                                   data-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div>
+
+                            <div class="card-body">
+                                <h4 class="card-title">
+                                    <a href="{% url 'car' car.brand_id car.id %}">{{ car }}</a>
+                                </h4>
+                                <h5>{{ car.price }}$</h5>
+                                <p class="card-text">Colour: {{ car.colour }}</p>
+                                <p class="card-text">{{ car.description|truncatechars:256 }}</p>
+                            </div>
+                            <div class="card-footer">
+                                {% if car.stock_count != 0 %}
+                                    In stock: {{ car.stock_count }}
+                                {% else %}
+                                    Out of stock
                                 {% endif %}
                             </div>
-                            <ol class="carousel-indicators">
-                                {% if not car.image_set.all %}
-                                    <li data-target="#car_{{ car.id }}" data-slide-to="0" class="active"></li>
-                                {% else %}
-                                    {% for img in car.image_set.all %}
-                                        <li data-target="#car_{{ car.id }}"
-                                            data-slide-to="{{ forloop.counter0 }}" {% if not forloop.counter0 %}
-                                            class="active"{% endif %}></li>
-                                    {% endfor %}
-                                {% endif %}
-                            </ol>
-                            <a class="carousel-control-prev" href="#car_{{ car.id }}" role="button"
-                               data-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="sr-only">Previous</span>
-                            </a>
-                            <a class="carousel-control-next" href="#car_{{ car.id }}" role="button"
-                               data-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="sr-only">Next</span>
-                            </a>
-                        </div>
-
-                        <div class="card-body">
-                            <h4 class="card-title">
-                                <a href="{% url 'car' car.brand_id car.id %}">{{ car }}</a>
-                            </h4>
-                            <h5>{{ car.price }}$</h5>
-                            <p class="card-text">Colour: {{ car.colour }}</p>
-                            <p class="card-text">{{ car.description|truncatechars:256 }}</p>
-                        </div>
-                        <div class="card-footer">
-                            {% if car.stock_count != 0 %}
-                                In stock: {{ car.stock_count }}
-                            {% else %}
-                                Out of stock
-                            {% endif %}
                         </div>
                     </div>
-                </div>
-            {% endfor %}
-        {% endif %}
+                {% endfor %}
+            {% endif %}
+        </div>
     </div>
+
 {% endblock %}

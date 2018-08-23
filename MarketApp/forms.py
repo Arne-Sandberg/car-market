@@ -27,18 +27,19 @@ class FilterForm(forms.Form):
         choices += car_colours
         self.fields['colour'] = forms.ChoiceField(choices=choices, initial='any colour')
         self.fields['price'] = RangeSliderField(label='Price', minimum=min_p, maximum=max_p, name='$')
-        self.fields['min_year'] = forms.IntegerField(min_value=min_y, max_value=max_y, initial=min_y)
-        self.fields['max_year'] = forms.IntegerField(min_value=min_y, max_value=max_y, initial=max_y)
+        self.fields['min_year'] = forms.IntegerField(min_value=1, initial=min_y)
+        self.fields['max_year'] = forms.IntegerField(min_value=1, initial=max_y)
+        self.fields['price'].required = False
 
 
 class UserEditForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(UserEditForm, self).__init__(*args, **kwargs)
-        self.fields['image'].required = False
-
     class Meta:
         model = get_user_model()
         fields = ('image', 'first_name', 'last_name', 'email')
+
+    def __init__(self, *args, **kwargs):
+        super(UserEditForm, self).__init__(*args, **kwargs)
+        self.fields['image'].required = False
 
 
 class UserCreateForm(RegistrationForm):
@@ -51,33 +52,33 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = models.Comment
         fields = ('content', 'rating')
-        widgets = {
-            'content': forms.Textarea(attrs={'rows': 2}),
-        }
+        widgets = {'content': forms.Textarea(attrs={'rows': 2}), }
+
+    def __init__(self, *args, **kwargs):
+        super(CommentForm, self).__init__(*args, **kwargs)
+        self.fields['rating'] = forms.IntegerField(max_value=5, min_value=1, initial=1)
 
 
 class ImageForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(ImageForm, self).__init__(*args, **kwargs)
-        self.fields['image'].required = False
-
     class Meta:
         model = models.Image
         fields = ('image',)
 
+    def __init__(self, *args, **kwargs):
+        super(ImageForm, self).__init__(*args, **kwargs)
+        self.fields['image'].required = False
+
 
 class CarForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(CarForm, self).__init__(*args, **kwargs)
-        self.fields['description'].required = False
-
     class Meta:
         model = models.Car
         fields = ('car_model', 'car_type', 'year', 'number_of_seats', 'colour', 'description', 'stock_count', 'price',
                   'brand',)
-        widgets = {
-            'year': forms.NumberInput(attrs={'min': 0, 'max': timezone.now().year}),
-            'number_of_seats': forms.NumberInput(attrs={'min': 1, 'max': 100}),
-            'stock_count': forms.NumberInput(attrs={'min': 1}),
-            'price': forms.NumberInput(attrs={'min': 10}),
-        }
+
+    def __init__(self, *args, **kwargs):
+        super(CarForm, self).__init__(*args, **kwargs)
+        self.fields['description'].required = False
+        self.fields['year'] = forms.IntegerField(max_value=timezone.now().year, min_value=0)
+        self.fields['number_of_seats'] = forms.IntegerField(max_value=100, min_value=1, initial=4)
+        self.fields['stock_count'] = forms.IntegerField(min_value=1, initial=1)
+        self.fields['price'] = forms.IntegerField(min_value=100, initial=100)

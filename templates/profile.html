@@ -5,7 +5,7 @@
         <div class="col-lg-3">
             <div class="card p-2">
                 <img class="profile_img mx-auto thumbnail rounded"
-                     {% if user.image %}src="{{ img.image.url }}"
+                     {% if user.image %}src="{{ user.image.url }}"
                      {% else %}src="{% static 'images/default_user.png' %}"
                      {% endif %}
                      alt="User Pic">

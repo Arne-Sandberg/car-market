@@ -26,7 +26,7 @@ urlpatterns = [
                       views.CheckoutResultView.as_view(),
                       name='checkout_result'),
 
-                  url('^filter/(?P<brand_id>\d+)/', views.BrandContent.as_view(), name='filter'),
+                  url('^filter/(?P<filter_flag>\w+)/(?P<brand_id>\d+)/', views.BrandContent.as_view(), name='filter'),
 
                   url('^search/$', views.SearchView.as_view(), name='search'),
 
