@@ -80,7 +80,7 @@
                                     <div class="carousel-item {% if not forloop.counter0 %} active {% endif %}">
                                         <a href="{% url 'car' car.brand_id car.id %}">
                                             <img class="car_img w-100 rounded"
-                                                 {% if car.image_set.all %}src="{{ car.image_set.all.first.image.url }}"
+                                                 {% if car.image_set.all %}src="{{ car.image_set.first.image.url }}"
                                                  {% else %}src="{% static 'images/no-image.jpg' %}"
                                                  {% endif %}
                                                  alt="{{ car }}">
