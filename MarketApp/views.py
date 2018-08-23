@@ -7,7 +7,6 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.core.files.storage import FileSystemStorage
 from django.forms import inlineformset_factory, formset_factory
-from django.forms.utils import ErrorList
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.utils import timezone
@@ -53,6 +52,23 @@ class BrandView(FormView):
         return kwargs
 
 
+class SearchView(FormView):
+    template_name = 'filter.html'
+    form_class = forms.FilterForm
+
+    def get_context_data(self, **kwargs):
+        context = super(SearchView, self).get_context_data(**kwargs)
+        context['flag'] = 'search'
+        context['brand_name'] = 'All'
+        context['cars'] = models.Car.objects.all()
+        data = self.request.GET
+        if 'search_content' in data:
+            context['cars'] = context['cars'].filter(car_model__icontains=data['search_content']).select_related(
+                'brand').prefetch_related('image_set')
+            context['search_content'] = data['search_content']
+        return context
+
+
 class BrandContent(TemplateView):
     template_name = 'brand_content.html'
 
@@ -61,11 +77,13 @@ class BrandContent(TemplateView):
         data = self.request.GET
         if int(kwargs['brand_id']):
             context['cars'] = models.Car.objects.filter(brand_id=kwargs['brand_id'])
-        elif 'key_word' in data:
-            context['cars'] = models.Car.objects.filter(car_model__contains=data['key_word'])
+        elif 'search_content' in data:
+            context['cars'] = models.Car.objects.filter(car_model__icontains=data['search_content'])
+            context['flag'] = 'search'
+            context['search_content'] = data['search_content']
         else:
             context['cars'] = models.Car.objects.all()
-        if data:
+        if len(data) > 1:
             if data['colour'] != 'any colour':
                 context['cars'] = context['cars'].filter(colour=data['colour'])
             if data['in_stock_only']:
@@ -304,15 +322,3 @@ class DeleteCarView(TemplateView):
         context = self.get_context_data()
         context['user'] = self.request.user
         return self.render_to_response(context)
-
-
-class SearchView(FormView):
-    template_name = 'filter.html'
-    form_class = forms.FilterForm
-
-    def get_context_data(self, **kwargs):
-        context = super(SearchView, self).get_context_data(**kwargs)
-        context['flag'] = 'search'
-        context['brand_name'] = 'All'
-        context['cars'] = models.Car.objects.all().select_related('brand').prefetch_related('image_set')
-        return context

@@ -1,8 +1,11 @@
 {% load static %}
 {% block brand_content %}
+    {% if flag == 'search' %}
+        <p>Showing results for: <b>{{ search_content }}</b></p>
+    {% endif %}
     <div class="row">
         {% if not cars %}
-            <h3>Sorry. Nothing was found, try another filters...</h3>
+            <h3>Sorry. Nothing was found, try something else...</h3>
         {% else %}
             {% for car in cars %}
                 <div class="col-lg-4 mb-4">

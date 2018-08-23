@@ -15,7 +15,7 @@ $(document).ready(function () {
             let colour = $('#id_colour').val();
             let in_stock_only = $('#id_in_stock_only').prop('checked');
             let price = $('#id_price').val().split(/\D+/);
-            let key_word = $("#search_content").val();
+            let search_content = $("#search_content").attr("data-content");
             let data_dict = {
                 'min_year': min_year,
                 'max_year': max_year,
@@ -25,9 +25,9 @@ $(document).ready(function () {
                 'min_price': price[1],
                 'max_price': price[2]
             };
-            if (key_word)
-                data_dict['key_word'] = key_word;
-            if ("number" != typeof(brand_id))
+            if (search_content)
+                data_dict['search_content'] = search_content;
+            if (isNaN(brand_id))
                 brand_id = 0;
             $.get(
                 '/filter/' + brand_id + '/',
@@ -39,10 +39,15 @@ $(document).ready(function () {
         });
 
         $("#cancel_filter").click(function () {
-            if ("number" != typeof(brand_id))
+            let search_content = $("#search_content").attr("data-content");
+            let data_dict = {};
+            if (isNaN(brand_id))
                 brand_id = 0;
+            if (search_content)
+                data_dict['search_content'] = search_content;
             $.get(
                 '/filter/' + brand_id + '/',
+                data_dict,
                 function (data) {
                     $("#brand_content").html(data);
                 }
