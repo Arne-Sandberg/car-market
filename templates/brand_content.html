@@ -58,6 +58,7 @@
                                 <a href="{% url 'car' car.brand_id car.id %}">{{ car }}</a>
                             </h4>
                             <h5>{{ car.price }}$</h5>
+                            <p class="card-text">Colour: {{ car.colour }}</p>
                             <p class="card-text">{{ car.description|truncatechars:256 }}</p>
                         </div>
                         <div class="card-footer">

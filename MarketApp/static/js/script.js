@@ -73,7 +73,7 @@ $(document).ready(function () {
             );
         });
 
-        $(comments).on("click", "#save_ddit_comment", function () {
+        $(comments).on("click", "#save_edit_comment", function () {
             let new_comment_content = $('#id_content').val();
             let new_comment_rating = $('#id_rating').val();
             let comment_id = $(this).parents().attr("data-id");
@@ -110,7 +110,6 @@ $(document).ready(function () {
 
         $(comments).on("click", '.delete_comment', function () {
             let comment_id = $(this).parents().attr("data-id");
-
             $.post(
                 '/comment/',
                 {

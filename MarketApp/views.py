@@ -12,6 +12,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.views.generic import TemplateView, FormView, DetailView
 from django.views.generic.base import View
+from django.db.models import Q
 from formtools.wizard.views import SessionWizardView
 
 from Market import settings
@@ -63,9 +64,12 @@ class SearchView(FormView):
         context['cars'] = models.Car.objects.all()
         data = self.request.GET
         if 'search_content' in data:
-            context['cars'] = context['cars'].filter(car_model__icontains=data['search_content']).select_related(
-                'brand').prefetch_related('image_set')
+            context['cars'] = context['cars'].filter(
+                Q(car_model__icontains=data['search_content']) | Q(description__icontains=data['search_content']) | Q(
+                    brand__name__icontains=data['search_content']) | Q(
+                    colour__icontains=data['search_content']))
             context['search_content'] = data['search_content']
+        context['cars'] = context['cars'].select_related('brand').prefetch_related('image_set')
         return context
 
 
@@ -78,7 +82,10 @@ class BrandContent(TemplateView):
         if int(kwargs['brand_id']):
             context['cars'] = models.Car.objects.filter(brand_id=kwargs['brand_id'])
         elif 'search_content' in data:
-            context['cars'] = models.Car.objects.filter(car_model__icontains=data['search_content'])
+            context['cars'] = models.Car.objects.filter(
+                Q(car_model__icontains=data['search_content']) | Q(description__icontains=data['search_content']) | Q(
+                    brand__name__icontains=data['search_content']) | Q(
+                    colour__icontains=data['search_content']))
             context['flag'] = 'search'
             context['search_content'] = data['search_content']
         else:
@@ -92,7 +99,7 @@ class BrandContent(TemplateView):
                                                      number_of_seats=data['number_of_seats'],
                                                      price__gte=data['min_price'],
                                                      price__lte=data['max_price'])
-        context['cars'].select_related('brand').prefetch_related('image_set')
+        context['cars'] = context['cars'].select_related('brand').prefetch_related('image_set')
         return context
 
 
@@ -230,21 +237,24 @@ class CommentContent(TemplateView):
     def post(self, request, *args, **kwargs):
         data = request.POST
         form = forms.CommentForm(data)
-        if data['rating']:
-            if int(data['rating']) < 1 or int(data['rating']) > 5:
-                form.add_error('rating', 'Rating score can not be greater than 5 or less than 1.')
         context = self.get_context_data()
         context['object'] = models.Car.objects.get(id=data['car_id'])
         context['form'] = forms.CommentForm()
         if data['flag'] == 'delete':
             models.Comment.objects.get(id=data['comment_id']).delete()
         elif data['flag'] == 'edit':
+            if data['rating']:
+                if int(data['rating']) < 1 or int(data['rating']) > 5:
+                    form.add_error('rating', 'Rating score can not be greater than 5 or less than 1.')
             if form.is_valid():
                 forms.CommentForm(data, instance=models.Comment.objects.get(id=data['comment_id'])).save()
             else:
                 context['editing_comment_id'] = int(data['comment_id'])
                 context['form'] = form
         elif data['flag'] == 'create':
+            if data['rating']:
+                if int(data['rating']) < 1 or int(data['rating']) > 5:
+                    form.add_error('rating', 'Rating score can not be greater than 5 or less than 1.')
             if form.is_valid():
                 comment = form.save(commit=False)
                 comment.car_id = data['car_id']

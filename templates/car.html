@@ -39,20 +39,20 @@
                     <span class="sr-only">Next</span>
                 </a>
             </div>
-
             <h4>{{ object.price }}$</h4>
             {% if object.owner %}
                 <p>Owner: <a href="{% url 'profile' object.owner %}">{{ object.owner }}</a></p>
             {% endif %}
             <p class="card-text">{{ car.description }}</p>
-            <p>Year: {{ object.year }}</p>
-            <p>Seats number: {{ object.number_of_seats }}</p>
-            <p>Colour: {{ object.colour }}
-            <p>{% if object.stock_count %}In stock: {{ object.stock_count }}{% else %}Out of stock{% endif %}</p>
+            <p class="card-text">Year: {{ object.year }}</p>
+            <p class="card-text">Seats number: {{ object.number_of_seats }}</p>
+            <p class="card-text">Colour: {{ object.colour }}
+            <p class="card-text">{% if object.stock_count %}In stock: {{ object.stock_count }}{% else %}Out of
+                stock{% endif %}</p>
         </div>
         <div class="card-footer">
-            {% if request.user.is_authenticated and object.stock_count %}
-                {% if flag == 'show_button' %}
+            {% if request.user.is_authenticated %}
+                {% if flag == 'show_button' and object.stock_count %}
                     <form action="{% url 'checkout' object.brand_id object.id %}" method="POST">
                         {% csrf_token %}
                         <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
@@ -64,6 +64,9 @@
                         </script>
                     </form>
                 {% endif %}
+            {% elif object.stock_count %}
+                In order to buy this car you have to <b><a href="{% url 'login' %}">Log in</a></b> or
+                <b><a href="{% url 'register' %}">Sign up</a></b>
             {% endif %}
         </div>
     </div>
