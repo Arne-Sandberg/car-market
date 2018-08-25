@@ -40,9 +40,8 @@ class CarManager(models.Manager):
             cars = cars.filter(stock_count__gt=0)
             print()
         cars = cars.filter(year__lte=data['max_year'], year__gte=data['min_year'],
-                           number_of_seats=data['number_of_seats'], )
-        # price__gte = data['min_price'],
-        # price__lte = data['max_price']
+                           number_of_seats=data['number_of_seats'], price__gte=data['min_price'],
+                           price__lte=data['max_price'])
         return cars
 
 

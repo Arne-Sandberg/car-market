@@ -3,7 +3,6 @@ from django.contrib.auth.admin import UserAdmin
 
 from MarketApp.models import Comment, Purchase
 from .models import Brand, Car, Image, User
-from django.utils.translation import ugettext_lazy as _
 
 
 class ImageInline(admin.StackedInline):
@@ -25,10 +24,9 @@ class CarAdmin(admin.ModelAdmin):
 class CustomUserAdmin(UserAdmin):
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
-        (_('Personal info'), {'fields': ('first_name', 'last_name', 'email', 'image', 'stripe_user_id')}),
-        (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser',
-                                       'groups', 'user_permissions')}),
-        (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
+        ('Personal info', {'fields': ('first_name', 'last_name', 'email', 'image', 'stripe_user_id')}),
+        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
+        ('Important dates', {'fields': ('last_login', 'date_joined')}),
     )
 
 
