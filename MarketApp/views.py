@@ -74,7 +74,7 @@ class BrandContent(TemplateView):
         context = super(BrandContent, self).get_context_data(**kwargs)
         data = self.request.GET
         objects = models.Car.objects
-        brand_id = int(kwargs['brand_id'])
+        brand_id = kwargs['brand_id']
         form = forms.FilterForm(brand_id, data)
         if kwargs['filter_flag'] == 'submit':
             if form.is_valid():
@@ -237,7 +237,7 @@ class CommentContent(TemplateView):
             if form.is_valid():
                 forms.CommentForm(data, instance=models.Comment.objects.get(id=data['comment_id'])).save()
             else:
-                context['editing_comment_id'] = int(data['comment_id'])
+                context['editing_comment_id'] = data['comment_id']
                 context['form'] = form
         elif data['flag'] == 'create':
             if form.is_valid():
@@ -248,9 +248,8 @@ class CommentContent(TemplateView):
             else:
                 context['form'] = form
         elif data['flag'] == 'editing':
-            context['editing_comment_id'] = int(data['comment_id'])
-            initial = {'content': data['content'], 'rating': data['rating']}
-            context['form'] = forms.CommentForm(initial=initial)
+            context['editing_comment_id'] = data['comment_id']
+            context['form'] = forms.CommentForm(data, instance=models.Comment.objects.get(id=data['comment_id']))
         return self.render_to_response(context)
 
 
