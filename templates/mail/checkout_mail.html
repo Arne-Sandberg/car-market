@@ -1,0 +1,8 @@
+{% if flag == 'purchase' %}
+Thank you, for purchasing {{ car }}.
+The information about purchase would be available at:
+{% elif flag == 'register' %}
+Thank you {{ user }}, for registration.
+You can view your profile at:
+{% endif %}
+http://{{ domain }}{% url 'profile' user %}

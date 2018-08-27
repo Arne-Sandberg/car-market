@@ -117,9 +117,9 @@ USE_TZ = True
 
 ACCOUNT_ACTIVATION_DAYS = 2
 
-LOGOUT_REDIRECT_URL = '/home'
+LOGOUT_REDIRECT_URL = '/'
 
-LOGIN_REDIRECT_URL = '/home'
+LOGIN_REDIRECT_URL = '/'
 
 STRIPE_PUBLIC_KEY = os.environ.get("STRIPE_SECRET_KEY", "pk_test_0iZ2ciCzQWinzLyvzEzkuWiE")
 
@@ -139,3 +139,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'MarketApp/static')
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'MarketApp/media')
+
+EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'

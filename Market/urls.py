@@ -2,13 +2,13 @@ from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.conf import settings
-from registration.backends.simple.views import RegistrationView
 
 from MarketApp import views
 from MarketApp.forms import UserCreateForm
 
 urlpatterns = [
-                  url('^accounts/register/$', RegistrationView.as_view(form_class=UserCreateForm), name='register'),
+                  url('^accounts/register/$', views.CustomUserRegistration.as_view(form_class=UserCreateForm),
+                      name='register'),
                   url('^accounts/', include('django.contrib.auth.urls')),
                   url('^accounts/profile/(?P<username>\w+)/$', views.ProfileView.as_view(), name='profile'),
                   url('^accounts/profile/settings/profile/$', views.EditProfileView.as_view(), name='edit_profile'),

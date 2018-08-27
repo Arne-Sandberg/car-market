@@ -5,18 +5,36 @@ import requests
 import stripe
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.sites.shortcuts import get_current_site
 from django.core.files.storage import FileSystemStorage
 from django.forms import inlineformset_factory, formset_factory
 from django.http import HttpResponseRedirect
+from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import timezone
 from django.views.generic import TemplateView, FormView, DetailView
 from django.views.generic.base import View
 from formtools.wizard.views import SessionWizardView
+from registration.backends.simple.views import RegistrationView
 
 from Market import settings
 from MarketApp import models, forms
 from random import shuffle
+
+from MarketApp.tasks import send_message
+
+
+class CustomUserRegistration(RegistrationView):
+    def register(self, form):
+        new_user = super(CustomUserRegistration, self).register(form)
+        reciever = new_user.email
+        msg = render_to_string('mail/checkout_mail.html', {
+            'flag': 'register',
+            'user': new_user,
+            'domain': get_current_site(self.request).domain,
+        })
+        send_message(reciever, 'Registration', msg)
+        return new_user
 
 
 class IndexView(TemplateView):
@@ -149,6 +167,14 @@ class CheckoutView(View):
             kwargs['flag'] = 'error'
             return HttpResponseRedirect(reverse('checkout_result', kwargs=kwargs))
         else:
+            reciever = request.POST.get('stripeEmail')
+            msg = render_to_string('mail/checkout_mail.html', {
+                'flag': 'purchase',
+                'car': car,
+                'user': request.user,
+                'domain': get_current_site(request).domain,
+            })
+            send_message(reciever, 'Car purchasing', msg)
             models.Purchase.objects.create(user=request.user, price=car.price, date=timezone.now(), car=car)
             car.save()
             kwargs['flag'] = 'success'
