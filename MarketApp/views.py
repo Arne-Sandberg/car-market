@@ -74,8 +74,8 @@ class BrandContent(TemplateView):
         context = super(BrandContent, self).get_context_data(**kwargs)
         data = self.request.GET
         objects = models.Car.objects
-        brand_id = kwargs['brand_id']
-        form = forms.FilterForm(brand_id, data)
+        brand_id = int(kwargs['brand_id'])
+        form = forms.FilterForm(brand_id, data['min_price'], data['max_price'], data)
         if kwargs['filter_flag'] == 'submit':
             if form.is_valid():
                 context['cars'] = objects.filter_cars(data, brand_id, data[
