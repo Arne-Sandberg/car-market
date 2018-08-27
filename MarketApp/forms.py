@@ -1,3 +1,5 @@
+import re
+
 from django import forms
 from django.db.models import Max, Min
 from django.utils import timezone
@@ -5,7 +7,6 @@ from registration.forms import RegistrationForm
 from django.contrib.auth import get_user_model
 from MarketApp import models
 from django.utils.safestring import mark_safe
-import re
 
 
 class RangeSlider(forms.TextInput):

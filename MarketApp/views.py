@@ -1,8 +1,7 @@
 import os
-
 import requests
-
 import stripe
+
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.sites.shortcuts import get_current_site
@@ -11,48 +10,43 @@ from django.forms import inlineformset_factory, formset_factory
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.utils import timezone
-from django.views.generic import TemplateView, FormView, DetailView
-from django.views.generic.base import View
+from django.views.generic import TemplateView, FormView, DetailView, View
 from formtools.wizard.views import SessionWizardView
 from registration.backends.simple.views import RegistrationView
-
-from Market import settings
-from MarketApp import models, forms, tasks
-from random import shuffle
-
 from rest_framework import viewsets
-from MarketApp.serializers import UserSerializer, CarSerializer, BrandSerializer, ImageSerializer, PurchaseSerializer, \
-    CommentSerializer
+from Market import settings
+from MarketApp import models, forms, tasks, serializers
+from random import shuffle
 
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = models.User.objects.all().order_by('-date_joined')
-    serializer_class = UserSerializer
+    serializer_class = serializers.UserSerializer
 
 
 class CarViewSet(viewsets.ModelViewSet):
     queryset = models.Car.objects.all()
-    serializer_class = CarSerializer
+    serializer_class = serializers.CarSerializer
 
 
 class BrandViewSet(viewsets.ModelViewSet):
     queryset = models.Brand.objects.all()
-    serializer_class = BrandSerializer
+    serializer_class = serializers.BrandSerializer
 
 
 class ImageViewSet(viewsets.ModelViewSet):
     queryset = models.Image.objects.all()
-    serializer_class = ImageSerializer
+    serializer_class = serializers.ImageSerializer
 
 
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = models.Comment.objects.all()
-    serializer_class = CommentSerializer
+    serializer_class = serializers.CommentSerializer
 
 
 class PurchaseViewSet(viewsets.ModelViewSet):
     queryset = models.Purchase.objects.all()
-    serializer_class = PurchaseSerializer
+    serializer_class = serializers.PurchaseSerializer
 
 
 class CustomUserRegistration(RegistrationView):

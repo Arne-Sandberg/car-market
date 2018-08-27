@@ -1,21 +1,18 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-
-from MarketApp.models import Comment, Purchase
-from .models import Brand, Car, Image, User
+from MarketApp import models
 
 
 class ImageInline(admin.StackedInline):
-    model = Image
+    model = models.Image
 
 
 class BrandAdmin(admin.ModelAdmin):
-    list_display = ['name', 'owner']
+    list_display = [f.name for f in models.Brand._meta.fields if f.name != 'id']
 
 
 class CarAdmin(admin.ModelAdmin):
-    list_display = ['car_model', 'car_type', 'year', 'number_of_seats', 'colour',
-                    'description', 'stock_count', 'price', 'is_advertised', 'brand']
+    list_display = [f.name for f in models.Car._meta.fields if f.name != 'id']
     inlines = [
         ImageInline,
     ]
@@ -31,15 +28,15 @@ class CustomUserAdmin(UserAdmin):
 
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ['car', 'user', 'content', 'rating', 'creation_date']
+    list_display = [f.name for f in models.Comment._meta.fields if f.name != 'id']
 
 
 class PurchaseAdmin(admin.ModelAdmin):
-    list_display = ['user', 'car', 'price', 'date']
+    list_display = [f.name for f in models.Purchase._meta.fields if f.name != 'id']
 
 
-admin.site.register(Comment, CommentAdmin)
-admin.site.register(Purchase, PurchaseAdmin)
-admin.site.register(User, CustomUserAdmin)
-admin.site.register(Brand, BrandAdmin)
-admin.site.register(Car, CarAdmin)
+admin.site.register(models.Comment, CommentAdmin)
+admin.site.register(models.Purchase, PurchaseAdmin)
+admin.site.register(models.User, CustomUserAdmin)
+admin.site.register(models.Brand, BrandAdmin)
+admin.site.register(models.Car, CarAdmin)
