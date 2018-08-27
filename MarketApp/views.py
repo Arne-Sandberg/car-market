@@ -9,7 +9,6 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.core.files.storage import FileSystemStorage
 from django.forms import inlineformset_factory, formset_factory
 from django.http import HttpResponseRedirect
-from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import timezone
 from django.views.generic import TemplateView, FormView, DetailView
@@ -18,22 +17,51 @@ from formtools.wizard.views import SessionWizardView
 from registration.backends.simple.views import RegistrationView
 
 from Market import settings
-from MarketApp import models, forms
+from MarketApp import models, forms, tasks
 from random import shuffle
 
-from MarketApp.tasks import send_message
+from rest_framework import viewsets
+from MarketApp.serializers import UserSerializer, CarSerializer, BrandSerializer, ImageSerializer, PurchaseSerializer, \
+    CommentSerializer
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = models.User.objects.all().order_by('-date_joined')
+    serializer_class = UserSerializer
+
+
+class CarViewSet(viewsets.ModelViewSet):
+    queryset = models.Car.objects.all()
+    serializer_class = CarSerializer
+
+
+class BrandViewSet(viewsets.ModelViewSet):
+    queryset = models.Brand.objects.all()
+    serializer_class = BrandSerializer
+
+
+class ImageViewSet(viewsets.ModelViewSet):
+    queryset = models.Image.objects.all()
+    serializer_class = ImageSerializer
+
+
+class CommentViewSet(viewsets.ModelViewSet):
+    queryset = models.Comment.objects.all()
+    serializer_class = CommentSerializer
+
+
+class PurchaseViewSet(viewsets.ModelViewSet):
+    queryset = models.Purchase.objects.all()
+    serializer_class = PurchaseSerializer
 
 
 class CustomUserRegistration(RegistrationView):
     def register(self, form):
         new_user = super(CustomUserRegistration, self).register(form)
         reciever = new_user.email
-        msg = render_to_string('mail/checkout_mail.html', {
-            'flag': 'register',
-            'user': new_user,
-            'domain': get_current_site(self.request).domain,
-        })
-        send_message(reciever, 'Registration', msg)
+        msg = f'Thank you {new_user}, for registration\nYou can view your profile at:\n' + \
+              f'http://{ get_current_site(self.request).domain}/accounts/profile/{new_user}'
+        tasks.send_message(reciever, 'Registration', msg)
         return new_user
 
 
@@ -168,13 +196,9 @@ class CheckoutView(View):
             return HttpResponseRedirect(reverse('checkout_result', kwargs=kwargs))
         else:
             reciever = request.POST.get('stripeEmail')
-            msg = render_to_string('mail/checkout_mail.html', {
-                'flag': 'purchase',
-                'car': car,
-                'user': request.user,
-                'domain': get_current_site(request).domain,
-            })
-            send_message(reciever, 'Car purchasing', msg)
+            msg = f'Thank you, for purchasing {car}.\nThe information about purchase would be available at:\n' + \
+                  f'http://{get_current_site(self.request).domain}/accounts/profile/{request.user}'
+            tasks.send_message(reciever, 'Car purchasing', msg)
             models.Purchase.objects.create(user=request.user, price=car.price, date=timezone.now(), car=car)
             car.save()
             kwargs['flag'] = 'success'

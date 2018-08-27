@@ -5,13 +5,22 @@ from django.conf import settings
 
 from MarketApp import views
 from MarketApp.forms import UserCreateForm
+from rest_framework import routers
+
+router = routers.DefaultRouter()
+router.register(r'users', views.UserViewSet)
+router.register(r'cars', views.CarViewSet)
+router.register(r'brands', views.BrandViewSet)
+router.register(r'images', views.ImageViewSet)
+router.register(r'comments', views.CommentViewSet)
+router.register(r'purchases', views.PurchaseViewSet)
 
 urlpatterns = [
                   url('^accounts/register/$', views.CustomUserRegistration.as_view(form_class=UserCreateForm),
                       name='register'),
                   url('^accounts/', include('django.contrib.auth.urls')),
                   url('^accounts/profile/(?P<username>\w+)/$', views.ProfileView.as_view(), name='profile'),
-                  url('^accounts/profile/settings/profile/$', views.EditProfileView.as_view(), name='edit_profile'),
+                  url('^accounts/profile/settings/profile/$', views.EditProfileView.as_view, name='edit_profile'),
                   url('^accounts/profile/settings/password/$', views.EditPasswordView.as_view(), name='edit_password'),
                   url('^accounts/profile/settings/create_car/$', views.CreateCarView.as_view(), name='create_car'),
                   url('^accounts/profile/settings/edit_car/(?P<car_id>\d+)/$', views.EditCarView.as_view(),
@@ -37,6 +46,8 @@ urlpatterns = [
                   url('^home$|^$', views.IndexView.as_view(), name='home'),
 
                   url('^admin/', include(admin.site.urls)),
+
+                  url(r'^api/', include(router.urls)),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'bootstrapform',
     'debug_toolbar',
     'formtools',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -58,8 +59,7 @@ ROOT_URLCONF = 'Market.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
-        ,
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -101,6 +101,15 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+# REST framework
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
