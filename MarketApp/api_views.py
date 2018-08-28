@@ -64,3 +64,11 @@ class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
 
     def perform_update(self, serializer):
         serializer.save(date=timezone.now())
+
+
+class PurchaseList(generics.ListCreateAPIView):
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    queryset = models.Purchase.objects.all()
+    serializer_class = serializers.PurchaseSerializer
+
+

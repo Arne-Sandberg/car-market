@@ -13,7 +13,6 @@ from django.utils import timezone
 from django.views.generic import TemplateView, FormView, DetailView, View
 from formtools.wizard.views import SessionWizardView
 from registration.backends.simple.views import RegistrationView
-from registration.backends.simple.views import RegistrationView
 
 from Market import settings
 from MarketApp import models, forms, tasks

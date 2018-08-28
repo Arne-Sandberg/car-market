@@ -38,3 +38,18 @@ class CommentSerializer(serializers.ModelSerializer):
     def __init__(self, *args, **kwargs):
         super(CommentSerializer, self).__init__(*args, **kwargs)
         self.fields['date'].read_only = True
+
+
+class PurchaseSerializer(serializers.ModelSerializer):
+    user = serializers.ReadOnlyField(source='user.username')
+    car = serializers.ReadOnlyField(source='car.__str__')
+
+    class Meta:
+        model = models.Purchase
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(PurchaseSerializer, self).__init__(*args, **kwargs)
+        self.fields['date'].read_only = True
+        self.fields['price'].read_only = True
+
