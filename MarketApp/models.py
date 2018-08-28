@@ -59,7 +59,7 @@ class Car(models.Model):
     price = models.IntegerField()
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
     is_advertised = models.BooleanField(default=False)
-    owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     objects = CarManager()
 
     def __str__(self):
@@ -74,7 +74,7 @@ class Image(models.Model):
 class Comment(models.Model):
     content = models.TextField()
     rating = models.IntegerField(default=1)
-    creation_date = models.DateTimeField(default=timezone.now)
+    date = models.DateTimeField(default=timezone.now)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
 

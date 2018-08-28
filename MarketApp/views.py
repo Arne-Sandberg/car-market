@@ -13,40 +13,11 @@ from django.utils import timezone
 from django.views.generic import TemplateView, FormView, DetailView, View
 from formtools.wizard.views import SessionWizardView
 from registration.backends.simple.views import RegistrationView
-from rest_framework import viewsets
+from registration.backends.simple.views import RegistrationView
+
 from Market import settings
-from MarketApp import models, forms, tasks, serializers
+from MarketApp import models, forms, tasks
 from random import shuffle
-
-
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = models.User.objects.all().order_by('-date_joined')
-    serializer_class = serializers.UserSerializer
-
-
-class CarViewSet(viewsets.ModelViewSet):
-    queryset = models.Car.objects.all()
-    serializer_class = serializers.CarSerializer
-
-
-class BrandViewSet(viewsets.ModelViewSet):
-    queryset = models.Brand.objects.all()
-    serializer_class = serializers.BrandSerializer
-
-
-class ImageViewSet(viewsets.ModelViewSet):
-    queryset = models.Image.objects.all()
-    serializer_class = serializers.ImageSerializer
-
-
-class CommentViewSet(viewsets.ModelViewSet):
-    queryset = models.Comment.objects.all()
-    serializer_class = serializers.CommentSerializer
-
-
-class PurchaseViewSet(viewsets.ModelViewSet):
-    queryset = models.Purchase.objects.all()
-    serializer_class = serializers.PurchaseSerializer
 
 
 class CustomUserRegistration(RegistrationView):
@@ -144,9 +115,9 @@ class CarView(DetailView):
         context['stripe_key'] = settings.STRIPE_PUBLIC_KEY
         context['flag'] = 'show_button'
         context['form'] = forms.CommentForm
-        owner = context['object'].owner
+        user = context['object'].user
         context['comments'] = context['object'].comment_set.all().select_related('user')
-        if owner and (owner == self.request.user or not owner.stripe_user_id):
+        if user and (user == self.request.user or not user.stripe_user_id):
             context['flag'] = 'no_button'
         return context
 
@@ -169,14 +140,14 @@ class CheckoutView(View):
         car.stock_count -= 1
         stripe.api_key = settings.STRIPE_SECRET_KEY
         try:
-            if car.owner:
+            if car.user:
                 stripe.Charge.create(
                     amount=int(car.price * 92.9 + 30),
                     currency="usd",
                     source=token,
                     description=f"{car} {car.colour} was sold to {request.user}",
                     application_fee=int(car.price * 7.1 - 30),
-                    stripe_account=car.owner.stripe_user_id,
+                    stripe_account=car.user.stripe_user_id,
                 )
             else:
                 stripe.Charge.create(
@@ -313,7 +284,7 @@ class CreateCarView(SessionWizardView):
     def done(self, form_list, **kwargs):
         form_data = [form for form in form_list]
         car = form_data[0].save(commit=False)
-        car.owner = self.request.user
+        car.user = self.request.user
         car.save()
         for image_form in form_data[1]:
             if image_form.cleaned_data:
@@ -335,7 +306,7 @@ class EditCarView(SessionWizardView):
         context['user'] = self.request.user
         if not self.request.user.stripe_user_id:
             context['flag'] = 'no_keys'
-        elif car.owner != self.request.user:
+        elif car.user != self.request.user:
             context['flag'] = 'editing_not_allowed'
         return context
 

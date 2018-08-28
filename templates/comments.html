@@ -12,7 +12,7 @@
             <div class="media-body p-0 pl-2" data-id="{{ comment.id }}">
                 <b><a href="{% url 'profile' comment.user %}">{{ comment.user }}</a>:</b>
                 <b id="comment_rating">{{ comment.rating }}</b>★
-                <small>{{ comment.creation_date }}</small>
+                <small>{{ comment.date }}</small>
                 {% if comment.user == request.user %}
                     {% if comment.id == editing_comment_id %}
                         editing...

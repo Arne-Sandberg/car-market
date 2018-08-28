@@ -2,17 +2,9 @@ from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.conf import settings
-from MarketApp import views
-from MarketApp.forms import UserCreateForm
-from rest_framework import routers
 
-router = routers.DefaultRouter()
-router.register(r'users', views.UserViewSet)
-router.register(r'cars', views.CarViewSet)
-router.register(r'brands', views.BrandViewSet)
-router.register(r'images', views.ImageViewSet)
-router.register(r'comments', views.CommentViewSet)
-router.register(r'purchases', views.PurchaseViewSet)
+from MarketApp import views, api_views
+from MarketApp.forms import UserCreateForm
 
 urlpatterns = [
                   url('^accounts/register/$', views.CustomUserRegistration.as_view(form_class=UserCreateForm),
@@ -46,7 +38,15 @@ urlpatterns = [
 
                   url('^admin/', include(admin.site.urls)),
 
-                  url(r'^api/', include(router.urls)),
+                  url(r'^api/v1/', include('rest_framework.urls')),
+                  url(r'^api/v1/advertisement/', api_views.AdvertisementList.as_view()),
+                  url(r'^api/v1/cars/$', api_views.CarList.as_view()),
+                  url(r'^api/v1/cars/(?P<pk>\d+)/$', api_views.CarDetail.as_view(), name='car-detail'),
+                  url(r'^api/v1/users/$', api_views.UserList.as_view()),
+                  url(r'^api/v1/users/(?P<pk>\d+)/$', api_views.UserDetail.as_view(), name='user-detail'),
+                  url(r'^api/v1/me/$', api_views.MyDetail.as_view()),
+                  url(r'^api/v1/comments/$', api_views.CommentList.as_view()),
+                  url(r'^api/v1/comments/(?P<pk>\d+)/$', api_views.CommentDetail.as_view(), name='comment-detail'),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
