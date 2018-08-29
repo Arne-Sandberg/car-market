@@ -2,43 +2,50 @@ from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.conf import settings
+from rest_auth.registration.views import RegisterView
+from rest_auth.views import LoginView
 
 from MarketApp import views, api_views
 from MarketApp.forms import UserCreateForm
+from MarketApp.serializers import RegSerializer, LogSerializer
 
 urlpatterns = [
-                  url('^accounts/register/$', views.CustomUserRegistration.as_view(form_class=UserCreateForm),
+                  url(r'^accounts/register/$', views.CustomUserRegistration.as_view(form_class=UserCreateForm),
                       name='register'),
-                  url('^accounts/', include('django.contrib.auth.urls')),
-                  url('^accounts/profile/(?P<username>\w+)/$', views.ProfileView.as_view(), name='profile'),
-                  url('^accounts/profile/settings/profile/$', views.EditProfileView.as_view, name='edit_profile'),
-                  url('^accounts/profile/settings/password/$', views.EditPasswordView.as_view(), name='edit_password'),
-                  url('^accounts/profile/settings/create_car/$', views.CreateCarView.as_view(), name='create_car'),
-                  url('^accounts/profile/settings/edit_car/(?P<car_id>\d+)/$', views.EditCarView.as_view(),
+                  url(r'^accounts/', include('django.contrib.auth.urls')),
+                  url(r'^accounts/profile/(?P<username>\w+)/$', views.ProfileView.as_view(), name='profile'),
+                  url(r'^accounts/profile/settings/profile/$', views.EditProfileView.as_view(), name='edit_profile'),
+                  url(r'^accounts/profile/settings/password/$', views.EditPasswordView.as_view(), name='edit_password'),
+                  url(r'^accounts/profile/settings/create_car/$', views.CreateCarView.as_view(), name='create_car'),
+                  url(r'^accounts/profile/settings/edit_car/(?P<car_id>\d+)/$', views.EditCarView.as_view(),
                       name='edit_car'),
-                  url('^accounts/profile/settings/connect_stripe/$', views.StripeConnectView.as_view(),
+                  url(r'^accounts/profile/settings/connect_stripe/$', views.StripeConnectView.as_view(),
                       name='connect_stripe'),
 
-                  url('^brand/(?P<brand_id>\d+)/$', views.BrandView.as_view(), name='brand'),
-                  url('^brand/(?P<brand_id>\d+)/(?P<pk>\d+)/$', views.CarView.as_view(), name='car'),
-                  url('^brand/(?P<brand_id>\d+)/(?P<pk>\d+)/checkout/$', views.CheckoutView.as_view(), name='checkout'),
-                  url('^brand/(?P<brand_id>\d+)/(?P<pk>\d+)/checkout/(?P<flag>\w+)/$',
+                  url(r'^brand/(?P<brand_id>\d+)/$', views.BrandView.as_view(), name='brand'),
+                  url(r'^brand/(?P<brand_id>\d+)/(?P<pk>\d+)/$', views.CarView.as_view(), name='car'),
+                  url(r'^brand/(?P<brand_id>\d+)/(?P<pk>\d+)/checkout/$', views.CheckoutView.as_view(),
+                      name='checkout'),
+                  url(r'^brand/(?P<brand_id>\d+)/(?P<pk>\d+)/checkout/(?P<flag>\w+)/$',
                       views.CheckoutResultView.as_view(),
                       name='checkout_result'),
 
-                  url('^filter/(?P<filter_flag>\w+)/(?P<brand_id>\d+)/', views.BrandContent.as_view(), name='filter'),
+                  url(r'^filter/(?P<filter_flag>\w+)/(?P<brand_id>\d+)/', views.BrandContent.as_view(), name='filter'),
 
-                  url('^search/$', views.SearchView.as_view(), name='search'),
+                  url(r'^search/$', views.SearchView.as_view(), name='search'),
 
-                  url('^comment/$', views.CommentContent.as_view(), name='comment'),
+                  url(r'^comment/$', views.CommentContent.as_view(), name='comment'),
 
-                  url('^delete/car/$', views.DeleteCarView.as_view(), name='delete_car'),
+                  url(r'^delete/car/$', views.DeleteCarView.as_view(), name='delete_car'),
 
-                  url('^home$|^$', views.IndexView.as_view(), name='home'),
+                  url(r'^home$|^$', views.IndexView.as_view(), name='home'),
 
-                  url('^admin/', include(admin.site.urls)),
+                  url(r'^admin/', include(admin.site.urls)),
 
-                  url(r'^api/v1/advertisement/', api_views.AdvertisementList.as_view()),
+                  url(r'^api/v1/login/$', LoginView.as_view(serializer_class=LogSerializer)),
+                  url(r'^api/v1/', include('rest_auth.urls')),
+                  url(r'^api/v1/register/$', RegisterView.as_view(serializer_class=RegSerializer)),
+                  url(r'^api/v1/advertisement/$', api_views.AdvertisementList.as_view()),
                   url(r'^api/v1/cars/$', api_views.CarList.as_view()),
                   url(r'^api/v1/cars/(?P<pk>\d+)/$', api_views.CarDetail.as_view(), name='car-detail'),
                   url(r'^api/v1/users/$', api_views.UserList.as_view()),

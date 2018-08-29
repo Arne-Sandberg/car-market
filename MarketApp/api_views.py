@@ -24,7 +24,7 @@ class CarList(generics.ListCreateAPIView):
         serializer.save(user=self.request.user)
 
 
-class CarDetail(generics.RetrieveUpdateAPIView):
+class CarDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
     queryset = models.Car.objects.all()
     serializer_class = serializers.CarSerializer
@@ -40,7 +40,7 @@ class UserDetail(generics.RetrieveAPIView):
     serializer_class = serializers.UserSerializer
 
 
-class MyDetail(generics.RetrieveUpdateDestroyAPIView):
+class MyDetail(generics.RetrieveUpdateAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     serializer_class = serializers.UserSerializer
 
@@ -88,15 +88,8 @@ class Checkout(generics.CreateAPIView):
         data = self.request.data
         car = models.Car.objects.get(id=data['car'])
         car.stock_count -= 1
+        token = data['stripe_token']
         try:
-            token = stripe.Token.create(
-                card={
-                    "number": data['card_number'],
-                    "exp_month": data['expire_month'],
-                    "exp_year": data['expire_year'],
-                    "cvc": data['cvc']
-                },
-            ).get('id')
             if car.user:
                 stripe.Charge.create(
                     amount=int(car.price * 92.9 + 30),

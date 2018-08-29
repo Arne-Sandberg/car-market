@@ -35,12 +35,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'MarketApp.apps.MarketappConfig',
     'bootstrapform',
     'debug_toolbar',
     'formtools',
     'rest_framework',
     'rest_framework.authtoken',
+    'rest_auth',
+    'allauth',
+    'allauth.account',
+    'rest_auth.registration',
 ]
 
 MIDDLEWARE = [
@@ -142,3 +147,5 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'MarketApp/media')
 
 EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'
+
+SITE_ID = 1

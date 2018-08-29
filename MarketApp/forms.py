@@ -3,7 +3,7 @@ import re
 from django import forms
 from django.db.models import Max, Min
 from django.utils import timezone
-from registration.forms import RegistrationForm
+from registration.forms import RegistrationForm, RegistrationFormUniqueEmail
 from django.contrib.auth import get_user_model
 from MarketApp import models
 from django.utils.safestring import mark_safe
@@ -79,14 +79,14 @@ class FilterForm(forms.Form):
 class UserEditForm(forms.ModelForm):
     class Meta:
         model = get_user_model()
-        fields = ('image', 'first_name', 'last_name', 'email')
+        fields = ('image', 'first_name', 'last_name')
 
     def __init__(self, *args, **kwargs):
         super(UserEditForm, self).__init__(*args, **kwargs)
         self.fields['image'].required = False
 
 
-class UserCreateForm(RegistrationForm):
+class UserCreateForm(RegistrationFormUniqueEmail):
     class Meta:
         model = models.User
         fields = ('username', 'email', 'password1', 'password2', 'image')

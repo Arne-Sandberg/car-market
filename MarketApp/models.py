@@ -9,6 +9,7 @@ from django.utils import timezone
 class User(AbstractUser):
     image = models.ImageField(null=True, blank=True)
     stripe_user_id = models.CharField(max_length=256, blank=True, null=True)
+    email = models.EmailField(max_length=150, unique=True, blank=False, null=False)
 
 
 class Brand(models.Model):

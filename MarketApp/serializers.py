@@ -1,6 +1,18 @@
+from rest_auth.registration.serializers import RegisterSerializer
+from rest_auth.serializers import LoginSerializer
 from rest_framework import serializers
 
 from MarketApp import models
+
+
+class RegSerializer(RegisterSerializer):
+    email = serializers.EmailField(required=True)
+
+
+class LogSerializer(LoginSerializer):
+    username = serializers.CharField(required=True)
+    read_only_fields = ['email']
+
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -31,17 +43,12 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class PurchaseSerializer(serializers.ModelSerializer):
-    email = serializers.EmailField(required=True)
-    card_number = serializers.IntegerField(required=True)
-    expire_month = serializers.IntegerField(required=True, min_value=1, max_value=12)
-    expire_year = serializers.IntegerField(required=True, min_value=1)
-    cvc = serializers.IntegerField(required=True)
+    stripe_token = serializers.CharField(required=True)
 
     class Meta:
         model = models.Purchase
-        fields = ['car', 'price', 'user', 'date', 'email', 'card_number', 'expire_month', 'expire_year', 'cvc']
+        fields = ['car', 'price', 'user', 'date', 'stripe_token']
         read_only_fields = ['price', 'user', 'date']
-        write_only_fields = ['email', 'card_number', 'expire_month', 'expire_year', 'cvc']
 
     def __init__(self, current_user, *args, **kwargs):
         super(PurchaseSerializer, self).__init__(*args, **kwargs)
