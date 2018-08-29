@@ -2,7 +2,6 @@ from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.conf import settings
-from registration.backends.simple.views import RegistrationView
 
 from MarketApp import views, api_views
 from MarketApp.forms import UserCreateForm
@@ -39,7 +38,6 @@ urlpatterns = [
 
                   url('^admin/', include(admin.site.urls)),
 
-                  url(r'^api/v1/', include('rest_framework.urls')),
                   url(r'^api/v1/advertisement/', api_views.AdvertisementList.as_view()),
                   url(r'^api/v1/cars/$', api_views.CarList.as_view()),
                   url(r'^api/v1/cars/(?P<pk>\d+)/$', api_views.CarDetail.as_view(), name='car-detail'),
@@ -48,7 +46,8 @@ urlpatterns = [
                   url(r'^api/v1/me/$', api_views.MyDetail.as_view()),
                   url(r'^api/v1/comments/$', api_views.CommentList.as_view()),
                   url(r'^api/v1/comments/(?P<pk>\d+)/$', api_views.CommentDetail.as_view(), name='comment-detail'),
-                  url(r'^api/v1/purchases/$', api_views.PurchaseList.as_view()),
+                  url(r'^api/v1/checkout/$', api_views.Checkout.as_view()),
+
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

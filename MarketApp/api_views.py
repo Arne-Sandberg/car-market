@@ -1,6 +1,10 @@
+import stripe
+from django.contrib.sites.shortcuts import get_current_site
 from django.utils import timezone
 from rest_framework import generics, permissions
-from MarketApp import models, serializers
+
+from Market import settings
+from MarketApp import models, serializers, tasks
 
 
 class IsOwnerOrReadOnly(permissions.BasePermission):
@@ -66,9 +70,52 @@ class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
         serializer.save(date=timezone.now())
 
 
-class PurchaseList(generics.ListCreateAPIView):
+class Checkout(generics.CreateAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-    queryset = models.Purchase.objects.all()
     serializer_class = serializers.PurchaseSerializer
 
+    def get_serializer(self, *args, **kwargs):
+        serializer_class = self.get_serializer_class()
+        kwargs['context'] = self.get_serializer_context()
+        kwargs['current_user'] = self.request.user
+        return serializer_class(*args, **kwargs)
 
+    def perform_create(self, serializer):
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        data = self.request.data
+        car = models.Car.objects.get(id=data['car'])
+        car.stock_count -= 1
+        token = stripe.Token.create(
+            card={
+                "number": data['card_number'],
+                "exp_month": data['expire_month'],
+                "exp_year": data['expire_year'],
+                "cvc": data['cvc']
+            },
+        ).get('id')
+        try:
+            if car.user:
+                stripe.Charge.create(
+                    amount=int(car.price * 92.9 + 30),
+                    currency="usd",
+                    source=token,
+                    description=f"{car} {car.colour} was sold to {self.request.user}",
+                    application_fee=int(car.price * 7.1 - 30),
+                    stripe_account=car.user.stripe_user_id,
+                )
+            else:
+                stripe.Charge.create(
+                    amount=car.price * 100,
+                    currency="usd",
+                    source=token,
+                    description=f"{car} {car.colour} was sold to {self.request.user}",
+                )
+        except stripe.error.CardError as e:
+            pass
+        else:
+            reciever = data['email']
+            msg = f'Thank you, for purchasing {car}.\nThe information about purchase would be available at:\n' + \
+                  f'http://{get_current_site(self.request).domain}/accounts/profile/{self.request.user}'
+            tasks.send_message(reciever, 'Car purchasing', msg)
+            models.Purchase.objects.create(user=self.request.user, price=car.price, date=timezone.now(), car=car)
+            car.save()
