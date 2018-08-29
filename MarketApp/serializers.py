@@ -11,22 +11,23 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class CarSerializer(serializers.ModelSerializer):
-    user = serializers.ReadOnlyField(source='user.username')
+    user = serializers.HyperlinkedRelatedField(view_name='user-detail', read_only=True)
 
     class Meta:
         model = models.Car
         fields = ['url', 'car_model', 'car_type', 'year', 'number_of_seats', 'colour', 'description', 'stock_count',
                   'price', 'brand', 'is_advertised', 'user', 'comment_set', 'image_set']
-        read_only_fields = ['comment_set', 'image_set']
+        read_only_fields = ['user', 'comment_set', 'image_set']
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    user = serializers.ReadOnlyField(source='user.username')
+    user = serializers.HyperlinkedRelatedField(view_name='user-detail', read_only=True)
+    car = serializers.HyperlinkedRelatedField(view_name='car-detail', read_only=True)
 
     class Meta:
         model = models.Comment
         fields = ['url', 'car', 'user', 'content', 'rating', 'date']
-        read_only_fields = ['date']
+        read_only_fields = ['user', 'date']
 
 
 class PurchaseSerializer(serializers.ModelSerializer):

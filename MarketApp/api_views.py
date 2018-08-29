@@ -1,7 +1,8 @@
 import stripe
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils import timezone
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, status
+from rest_framework.response import Response
 
 from Market import settings
 from MarketApp import models, serializers, tasks
@@ -80,20 +81,22 @@ class Checkout(generics.CreateAPIView):
         kwargs['current_user'] = self.request.user
         return serializer_class(*args, **kwargs)
 
-    def perform_create(self, serializer):
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
         stripe.api_key = settings.STRIPE_SECRET_KEY
         data = self.request.data
         car = models.Car.objects.get(id=data['car'])
         car.stock_count -= 1
-        token = stripe.Token.create(
-            card={
-                "number": data['card_number'],
-                "exp_month": data['expire_month'],
-                "exp_year": data['expire_year'],
-                "cvc": data['cvc']
-            },
-        ).get('id')
         try:
+            token = stripe.Token.create(
+                card={
+                    "number": data['card_number'],
+                    "exp_month": data['expire_month'],
+                    "exp_year": data['expire_year'],
+                    "cvc": data['cvc']
+                },
+            ).get('id')
             if car.user:
                 stripe.Charge.create(
                     amount=int(car.price * 92.9 + 30),
@@ -110,8 +113,8 @@ class Checkout(generics.CreateAPIView):
                     source=token,
                     description=f"{car} {car.colour} was sold to {self.request.user}",
                 )
-        except stripe.error.CardError as e:
-            pass
+        except stripe.error.CardError:
+            return Response({"detail": "Your card was declined"}, status=status.HTTP_406_NOT_ACCEPTABLE, )
         else:
             reciever = data['email']
             msg = f'Thank you, for purchasing {car}.\nThe information about purchase would be available at:\n' + \
@@ -119,3 +122,5 @@ class Checkout(generics.CreateAPIView):
             tasks.send_message(reciever, 'Car purchasing', msg)
             models.Purchase.objects.create(user=self.request.user, price=car.price, date=timezone.now(), car=car)
             car.save()
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
