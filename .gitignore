@@ -1,4 +1,4 @@
 .idea
-MarketApp/__pycache__
+market_app/__pycache__
 Market/__pycache__
 db.sqlite3
