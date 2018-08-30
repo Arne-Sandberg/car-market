@@ -4,9 +4,9 @@ from django.contrib import admin
 from django.conf import settings
 from rest_auth.registration.views import RegisterView
 
-from MarketApp import views, api_views
-from MarketApp.forms import UserCreateForm
-from MarketApp.serializers import RegSerializer
+from market_app import views, api_views
+from market_app.forms import UserCreateForm
+from market_app.serializers import RegSerializer
 
 urlpatterns = [
                   url(r'^accounts/register/$', views.CustomUserRegistration.as_view(form_class=UserCreateForm),

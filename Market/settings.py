@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'MarketApp.apps.MarketappConfig',
+    'market_app.apps.MarketappConfig',
     'bootstrapform',
     'debug_toolbar',
     'formtools',
@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'rest_auth',
     'allauth',
     'allauth.account',
+    'allauth.socialaccount',
     'rest_auth.registration',
 ]
 
@@ -121,8 +122,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-ACCOUNT_ACTIVATION_DAYS = 2
-
 LOGOUT_REDIRECT_URL = '/'
 
 LOGIN_REDIRECT_URL = '/'
@@ -133,19 +132,19 @@ STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "sk_test_v8wWUdop2kxCHBz
 
 INTERNAL_IPS = ['127.0.0.1']
 
-AUTH_USER_MODEL = 'MarketApp.User'
+AUTH_USER_MODEL = 'market_app.User'
+
+EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'
+
+SITE_ID = 1
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'MarketApp/static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'market_app/static')
 
 MEDIA_URL = '/media/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'MarketApp/media')
-
-EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'
-
-SITE_ID = 1
+MEDIA_ROOT = os.path.join(BASE_DIR, 'market_app/media')
