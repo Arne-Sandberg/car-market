@@ -8,23 +8,6 @@ class RegSerializer(RegisterSerializer):
     email = serializers.EmailField(required=True)
 
 
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.User
-        fields = ['url', 'image', 'username', 'email', 'first_name', 'last_name', 'car_set', 'purchase_set']
-        read_only_fields = ['username', 'car_set', 'purchase_set']
-
-
-class CarSerializer(serializers.ModelSerializer):
-    user = serializers.HyperlinkedRelatedField(view_name='user-detail', read_only=True)
-
-    class Meta:
-        model = models.Car
-        fields = ['url', 'car_model', 'car_type', 'year', 'number_of_seats', 'colour', 'description', 'stock_count',
-                  'price', 'brand', 'is_advertised', 'user', 'comment_set', 'image_set']
-        read_only_fields = ['user', 'comment_set', 'image_set']
-
-
 class CommentSerializer(serializers.ModelSerializer):
     user = serializers.HyperlinkedRelatedField(view_name='user-detail', read_only=True)
     car = serializers.HyperlinkedRelatedField(view_name='car-detail', read_only=True)
@@ -35,6 +18,24 @@ class CommentSerializer(serializers.ModelSerializer):
         read_only_fields = ['user', 'date']
 
 
+class ImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Image
+        fields = ['image']
+
+
+class CarSerializer(serializers.ModelSerializer):
+    user = serializers.HyperlinkedRelatedField(view_name='user-detail', read_only=True)
+    comment_set = CommentSerializer(many=True, read_only=True)
+    image_set = ImageSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = models.Car
+        fields = ['url', 'car_model', 'car_type', 'year', 'number_of_seats', 'colour', 'description', 'stock_count',
+                  'price', 'brand', 'is_advertised', 'user', 'comment_set', 'image_set']
+        read_only_fields = ['user', 'comment_set', 'image_set']
+
+
 class PurchaseSerializer(serializers.ModelSerializer):
     stripe_token = serializers.CharField(required=True)
 
@@ -43,7 +44,18 @@ class PurchaseSerializer(serializers.ModelSerializer):
         fields = ['car', 'price', 'user', 'date', 'stripe_token']
         read_only_fields = ['price', 'user', 'date']
 
-    def __init__(self, current_user, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super(PurchaseSerializer, self).__init__(*args, **kwargs)
-        self.fields['car'].queryset = models.Car.objects.filter(stock_count__gt=0).exclude(user=current_user)
+        self.fields['car'].queryset = models.Car.objects.filter(stock_count__gt=0).exclude(
+            user=kwargs.get('current_user'))
         self.fields['car'].allow_null = False
+
+
+class UserSerializer(serializers.ModelSerializer):
+    purchase_set = PurchaseSerializer(many=True, read_only=True)
+    car_set = CarSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = models.User
+        fields = ['url', 'image', 'username', 'email', 'first_name', 'last_name', 'car_set', 'purchase_set']
+        read_only_fields = ['username', 'car_set', 'purchase_set']

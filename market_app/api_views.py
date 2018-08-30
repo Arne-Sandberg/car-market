@@ -76,7 +76,8 @@ class Checkout(generics.CreateAPIView):
     def get_serializer(self, *args, **kwargs):
         serializer_class = self.get_serializer_class()
         kwargs['context'] = self.get_serializer_context()
-        return serializer_class(self.request.user, *args, **kwargs)
+        kwargs['current_user'] = self.request.user
+        return serializer_class(*args, **kwargs)
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
