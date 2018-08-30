@@ -3,11 +3,10 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.conf import settings
 from rest_auth.registration.views import RegisterView
-from rest_auth.views import LoginView
 
 from MarketApp import views, api_views
 from MarketApp.forms import UserCreateForm
-from MarketApp.serializers import RegSerializer, LogSerializer
+from MarketApp.serializers import RegSerializer
 
 urlpatterns = [
                   url(r'^accounts/register/$', views.CustomUserRegistration.as_view(form_class=UserCreateForm),
@@ -42,7 +41,6 @@ urlpatterns = [
 
                   url(r'^admin/', include(admin.site.urls)),
 
-                  url(r'^api/v1/login/$', LoginView.as_view(serializer_class=LogSerializer)),
                   url(r'^api/v1/', include('rest_auth.urls')),
                   url(r'^api/v1/register/$', RegisterView.as_view(serializer_class=RegSerializer)),
                   url(r'^api/v1/advertisement/$', api_views.AdvertisementList.as_view()),

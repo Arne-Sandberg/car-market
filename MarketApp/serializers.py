@@ -1,5 +1,4 @@
 from rest_auth.registration.serializers import RegisterSerializer
-from rest_auth.serializers import LoginSerializer
 from rest_framework import serializers
 
 from MarketApp import models
@@ -7,12 +6,6 @@ from MarketApp import models
 
 class RegSerializer(RegisterSerializer):
     email = serializers.EmailField(required=True)
-
-
-class LogSerializer(LoginSerializer):
-    username = serializers.CharField(required=True)
-    read_only_fields = ['email']
-
 
 
 class UserSerializer(serializers.ModelSerializer):

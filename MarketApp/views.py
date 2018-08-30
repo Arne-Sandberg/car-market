@@ -1,6 +1,5 @@
 import os
 import requests
-import stripe
 
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
@@ -9,7 +8,6 @@ from django.core.files.storage import FileSystemStorage
 from django.forms import inlineformset_factory, formset_factory
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from django.utils import timezone
 from django.views.generic import TemplateView, FormView, DetailView, View
 from formtools.wizard.views import SessionWizardView
 from registration.backends.simple.views import RegistrationView
@@ -17,6 +15,8 @@ from registration.backends.simple.views import RegistrationView
 from Market import settings
 from MarketApp import models, forms, tasks
 from random import shuffle
+
+from MarketApp.utils import create_charge
 
 
 class CustomUserRegistration(RegistrationView):
@@ -56,11 +56,6 @@ class BrandView(FormView):
             'brand').prefetch_related('image_set')
         return context
 
-    def get_form_kwargs(self):
-        kwargs = super(BrandView, self).get_form_kwargs()
-        kwargs['brand_id'] = self.kwargs['brand_id']
-        return kwargs
-
 
 class SearchView(FormView):
     template_name = 'filter.html'
@@ -71,7 +66,7 @@ class SearchView(FormView):
         context['flag'] = 'search'
         context['brand_name'] = 'All'
         data = self.request.GET
-        context['cars'] = models.Car.objects.search_cars(data['search_content'])
+        context['cars'] = models.Car.objects.search_cars(data.get('search_content'))
         context['search_content'] = data['search_content']
         context['cars'] = context['cars'].select_related('brand').prefetch_related('image_set')
         return context
@@ -85,11 +80,11 @@ class BrandContent(TemplateView):
         data = self.request.GET
         objects = models.Car.objects
         brand_id = int(kwargs['brand_id'])
-        form = forms.FilterForm(brand_id, data['min_price'], data['max_price'], data)
+        form = forms.FilterForm(brand_id, data.get('min_price'), data.get('max_price'), data)
         if kwargs['filter_flag'] == 'submit':
             if form.is_valid():
-                context['cars'] = objects.filter_cars(data, brand_id, data[
-                    'search_content']) if 'search_content' in data else objects.filter_cars(data, brand_id)
+                context['cars'] = objects.filter_cars(data, brand_id, data['search_content']) if data.get(
+                    'search_content') else objects.filter_cars(data, brand_id)
                 context['cars'] = context['cars'].select_related('brand').prefetch_related('image_set')
         else:
             context['cars'] = objects.filter(brand_id=kwargs['brand_id']) if brand_id else objects.search_cars(
@@ -110,14 +105,13 @@ class CarView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(CarView, self).get_context_data(**kwargs)
         context['brands'] = models.Brand.objects.all()
-        context['images'] = context['object'].image_set.all()
+        context['images'] = self.get_object().image_set.all()
         context['stripe_key'] = settings.STRIPE_PUBLIC_KEY
-        context['flag'] = 'show_button'
         context['form'] = forms.CommentForm
-        user = context['object'].user
-        context['comments'] = context['object'].comment_set.all().select_related('user')
-        if user and (user == self.request.user or not user.stripe_user_id):
-            context['flag'] = 'no_button'
+        context['comments'] = self.get_object().comment_set.all().select_related('user')
+        user = self.get_object().user
+        context['flag'] = 'no_button' if user and (
+                user == self.request.user or not user.stripe_user_id) else 'show_button'
         return context
 
 
@@ -134,39 +128,16 @@ class CheckoutResultView(TemplateView):
 
 class CheckoutView(View):
     def post(self, request, *args, **kwargs):
-        token = request.POST.get("stripeToken")
-        car = models.Car.objects.get(id=kwargs['pk'])
-        car.stock_count -= 1
-        stripe.api_key = settings.STRIPE_SECRET_KEY
-        try:
-            if car.user:
-                stripe.Charge.create(
-                    amount=int(car.price * 92.9 + 30),
-                    currency="usd",
-                    source=token,
-                    description=f"{car} {car.colour} was sold to {request.user}",
-                    application_fee=int(car.price * 7.1 - 30),
-                    stripe_account=car.user.stripe_user_id,
-                )
-            else:
-                stripe.Charge.create(
-                    amount=car.price * 100,
-                    currency="usd",
-                    source=token,
-                    description=f"{car} {car.colour} was sold to {request.user}",
-                )
-        except stripe.error.CardError as e:
-            kwargs['flag'] = 'error'
-            return HttpResponseRedirect(reverse('checkout_result', kwargs=kwargs))
-        else:
-            reciever = request.POST.get('stripeEmail')
-            msg = f'Thank you, for purchasing {car}.\nThe information about purchase would be available at:\n' + \
-                  f'http://{get_current_site(self.request).domain}/accounts/profile/{request.user}'
-            tasks.send_message(reciever, 'Car purchasing', msg)
-            models.Purchase.objects.create(user=request.user, price=car.price, date=timezone.now(), car=car)
-            car.save()
+        result = create_charge(request, kwargs['pk'], request.POST.get("stripeToken"))
+        if result:
+            car = models.Car.objects.get(id=kwargs['pk'])
             kwargs['flag'] = 'success'
-            return HttpResponseRedirect(reverse('checkout_result', kwargs=kwargs))
+            msg = f'Thank you, for purchasing {car}.\nThe information about purchase would be available at:\n' + \
+                  f'http://{get_current_site(request).domain}/accounts/profile/{request.user}'
+            tasks.send_message(request.POST.get('stripeEmail'), 'Car purchasing', msg)
+        else:
+            kwargs['flag'] = 'error'
+        return HttpResponseRedirect(reverse('checkout_result', kwargs=kwargs))
 
 
 class ProfileView(TemplateView):
@@ -184,12 +155,13 @@ class EditProfileView(FormView):
 
     def get_context_data(self, **kwargs):
         context = super(EditProfileView, self).get_context_data(**kwargs)
-        context['flag'] = 'profile'
-        if not self.request.user.is_authenticated:
-            context['flag'] = 'not_authenticated'
-        else:
-            context['form'] = forms.UserEditForm(instance=self.request.user)
+        context['flag'] = 'profile' if self.request.user.is_authenticated else 'not_authenticated'
         return context
+
+    def get_form_kwargs(self):
+        kwargs = super(EditProfileView, self).get_form_kwargs()
+        kwargs['instance'] = self.request.user
+        return kwargs
 
     def form_valid(self, form):
         forms.UserEditForm(self.request.POST, self.request.FILES, instance=self.request.user).save()
@@ -207,9 +179,7 @@ class EditPasswordView(FormView):
 
     def get_context_data(self, **kwargs):
         context = super(EditPasswordView, self).get_context_data(**kwargs)
-        context['flag'] = 'password'
-        if not self.request.user.is_authenticated:
-            context['flag'] = 'not_authenticated'
+        context['flag'] = 'password' if self.request.user.is_authenticated else 'not_authenticated'
         return context
 
     def form_valid(self, form):
@@ -223,11 +193,10 @@ class StripeConnectView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(StripeConnectView, self).get_context_data(**kwargs)
-        code = self.request.GET['code']
+        code = self.request.GET.get('code')
         data = {'client_secret': settings.STRIPE_SECRET_KEY, 'code': code, 'grant_type': 'authorization_code'}
         response = requests.post('https://connect.stripe.com/oauth/token', params=data).json()
-        context['flag'] = 'password'
-        if 'stripe_user_id' in response:
+        if response.get('stripe_user_id'):
             self.request.user.stripe_user_id = response['stripe_user_id']
             self.request.user.save()
             context['flag'] = 'stripe_success'
@@ -245,25 +214,25 @@ class CommentContent(TemplateView):
         context = self.get_context_data()
         context['comments'] = models.Car.objects.get(id=data['car_id']).comment_set.all().select_related('user')
         context['form'] = forms.CommentForm()
-        if data['flag'] == 'delete':
-            models.Comment.objects.get(id=data['comment_id']).delete()
-        elif data['flag'] == 'edit':
+        if data.get('flag') == 'delete':
+            models.Comment.objects.get(id=data.get('comment_id')).delete()
+        elif data.get('flag') == 'edit':
             if form.is_valid():
-                forms.CommentForm(data, instance=models.Comment.objects.get(id=data['comment_id'])).save()
+                forms.CommentForm(data, instance=models.Comment.objects.get(id=data.get('comment_id'))).save()
             else:
-                context['editing_comment_id'] = data['comment_id']
+                context['editing_comment_id'] = data.get('comment_id')
                 context['form'] = form
-        elif data['flag'] == 'create':
+        elif data.get('flag') == 'create':
             if form.is_valid():
                 comment = form.save(commit=False)
-                comment.car_id = data['car_id']
+                comment.car_id = data.get('car_id')
                 comment.user = self.request.user
                 comment.save()
             else:
                 context['form'] = form
-        elif data['flag'] == 'editing':
-            context['editing_comment_id'] = data['comment_id']
-            context['form'] = forms.CommentForm(data, instance=models.Comment.objects.get(id=data['comment_id']))
+        elif data.get('flag') == 'editing':
+            context['editing_comment_id'] = data.get('comment_id')
+            context['form'] = forms.CommentForm(data, instance=models.Comment.objects.get(id=data.get('comment_id')))
         return self.render_to_response(context)
 
 
