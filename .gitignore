@@ -3,3 +3,4 @@ market_app/__pycache__
 Market/__pycache__
 market_app/media
 db.sqlite3
+npm-debug.log
