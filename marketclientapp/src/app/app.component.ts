@@ -1,12 +1,12 @@
 import {Component} from '@angular/core';
 import {Http, Response} from '@angular/http';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Car market';
   url: string = 'http://127.0.0.1:8000/api/v1/';
   multinfo;
   singleinfo;
@@ -34,7 +34,7 @@ export class AppComponent {
   public register(username, email, password1, password2) {
     let data = {
       'username': username,
-      'email':email,
+      'email': email,
       'password1': password1,
       'password2': password2,
     };

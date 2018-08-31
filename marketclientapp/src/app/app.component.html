@@ -1,12 +1,8 @@
-<div align="center">
-  <h1>
-    Welcome to {{ title }}
-  </h1>
-</div>
 <div class="row">
-  <!--<div class="col-lg-3">
+  <div class="col-lg-4">
     <div class="list-group">
-      <input type="number" class="list-group-item my-2" (keyup)="makePk($event)">
+      <h2>Get</h2>
+      <input title="Number" class="list-group-item mb-2" type="number" (keyup)="makePk($event)">
       <button class="list-group-item list-group-item-action" (click)="getMultipleInfo('cars')">Get cars</button>
       <button class="list-group-item list-group-item-action" (click)="getMultipleInfo('users')">Get users</button>
       <button class="list-group-item list-group-item-action" (click)="getMultipleInfo('comments')">Get comments</button>
@@ -17,6 +13,31 @@
         # {{ pk }}</button>
     </div>
   </div>
+  <div class="col-lg-4">
+    <h2>Register</h2>
+    Username
+    <input title="Username" class="form-control" type="text" #regusername>
+    Email
+    <input title="Email" class="form-control" type="email" #email>
+    Password
+    <input title="Password" class="form-control" type="password" #password1>
+    Confirm password
+    <input title="Confirm password" class="form-control" type="password" #password2>
+    <button class="btn btn-primary mt-2"
+            (click)="register(regusername.value, email.value, password1.value, password2.value)"> Register
+    </button>
+  </div>
+  <div class="col-lg-4">
+    <h2>Login</h2>
+    Username
+    <input title="user" class="form-control" type="text" #username>
+    Password
+    <input title="Password" class="form-control" type="password" #password>
+    <button class="btn btn-primary mt-2 mr-2" (click)="login(username.value,password.value)">Login</button>
+    <button class="btn btn-primary mt-2" (click)="logout()">Logout</button>
+  </div>
+</div>
+<div class="row">
   <div class="col-lg-9">
     <ul>
       <li *ngFor="let obj of multinfo">
@@ -24,21 +45,7 @@
       </li>
     </ul>
     {{ singleinfo | json }}
-  </div>-->
-  <div class="col-lg-3">
-    <input title="Username" class="form-control" type="text" #regusername>
-    <input title="Email" class="form-control" type="email" #email>
-    <input title="Password" class="form-control" type="text" #password1>
-    <input title="Confirm password" class="form-control" type="text" #password2>
-    <button class="btn btn-primary" (click)="register(regusername.value, email.value, password1.value, password2.value)"> Register</button>
   </div>
-  <div class="col-lg-3">
-    <input title="user" class="form-control" type="text" #username>
-    <input title="Password" class="form-control" type="password" #password>
-    <button class="btn btn-primary" (click)="login(username.value,password.value)">Login</button>
-    <button class="btn btn-primary" (click)="logout()">Logout</button>
-  </div>
-  {{ singleinfo| json }}
 </div>
 
 
