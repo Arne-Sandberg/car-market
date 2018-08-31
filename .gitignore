@@ -1,6 +1,6 @@
 .idea
-market_app/__pycache__
+marketapp/__pycache__
 Market/__pycache__
-market_app/media
+marketapp/media
 db.sqlite3
 npm-debug.log
