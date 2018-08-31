@@ -56,6 +56,11 @@ class BrandView(FormView):
             'brand').prefetch_related('image_set')
         return context
 
+    def get_form_kwargs(self):
+        kwargs = super(BrandView, self).get_form_kwargs()
+        kwargs['brand_id'] = self.kwargs['brand_id']
+        return kwargs
+
 
 class SearchView(FormView):
     template_name = 'filter.html'
