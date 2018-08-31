@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'market_app.apps.MarketappConfig',
+    'marketapp.apps.MarketappConfig',
     'bootstrapform',
     'debug_toolbar',
     'formtools',
@@ -132,7 +132,7 @@ STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "sk_test_v8wWUdop2kxCHBz
 
 INTERNAL_IPS = ['127.0.0.1']
 
-AUTH_USER_MODEL = 'market_app.User'
+AUTH_USER_MODEL = 'marketapp.User'
 
 EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'
 
@@ -143,8 +143,8 @@ SITE_ID = 1
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'market_app/static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'marketapp/static')
 
 MEDIA_URL = '/media/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'market_app/media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'marketapp/media')
