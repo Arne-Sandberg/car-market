@@ -1,52 +1,37 @@
-<div class="row">
-  <div class="col-lg-4">
-    <div class="list-group">
-      <h2>Get</h2>
-      <input title="Number" class="list-group-item mb-2" type="number" (keyup)="makePk($event)">
-      <button class="list-group-item list-group-item-action" (click)="getMultipleInfo('cars')">Get cars</button>
-      <button class="list-group-item list-group-item-action" (click)="getMultipleInfo('users')">Get users</button>
-      <button class="list-group-item list-group-item-action" (click)="getMultipleInfo('comments')">Get comments</button>
-      <button class="list-group-item list-group-item-action" (click)="getSingleInfo('users')">Get user
-        # {{ pk }}</button>
-      <button class="list-group-item list-group-item-action" (click)="getSingleInfo('cars')">Get car # {{ pk }}</button>
-      <button class="list-group-item list-group-item-action" (click)="getSingleInfo('comments')">Get comment
-        # {{ pk }}</button>
-    </div>
-  </div>
-  <div class="col-lg-4">
-    <h2>Register</h2>
-    Username
-    <input title="Username" class="form-control" type="text" #regusername>
-    Email
-    <input title="Email" class="form-control" type="email" #email>
-    Password
-    <input title="Password" class="form-control" type="password" #password1>
-    Confirm password
-    <input title="Confirm password" class="form-control" type="password" #password2>
-    <button class="btn btn-primary mt-2"
-            (click)="register(regusername.value, email.value, password1.value, password2.value)"> Register
-    </button>
-  </div>
-  <div class="col-lg-4">
-    <h2>Login</h2>
-    Username
-    <input title="user" class="form-control" type="text" #username>
-    Password
-    <input title="Password" class="form-control" type="password" #password>
-    <button class="btn btn-primary mt-2 mr-2" (click)="login(username.value,password.value)">Login</button>
-    <button class="btn btn-primary mt-2" (click)="logout()">Logout</button>
-  </div>
-</div>
-<div class="row">
-  <div class="col-lg-9">
-    <ul>
-      <li *ngFor="let obj of multinfo">
-        {{ obj | json }}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <a routerLink="/"><b class="navbar-brand">Car market</b></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/register">Sign up</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/login">Log In</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/" (click)="logout()">Log out</a>
       </li>
     </ul>
-    {{ singleinfo | json }}
+  </div>
+</nav>
+
+<div class="main p-3">
+  <div class="container">
+      <router-outlet></router-outlet>
   </div>
 </div>
+
+
+
+
+
+
+
+
 
 
 

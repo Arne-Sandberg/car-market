@@ -44,7 +44,7 @@ urlpatterns = [
                   url(r'^api/v1/', include('rest_auth.urls')),
                   url(r'^api/v1/register/$', RegisterView.as_view(serializer_class=RegSerializer)),
                   url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
-                  url(r'^api/v1/advertisement/$', api_views.AdvertisementList.as_view()),
+                  url(r'^api/v1/adds/$', api_views.AdvertisementList.as_view()),
                   url(r'^api/v1/cars/$', api_views.CarList.as_view()),
                   url(r'^api/v1/cars/(?P<pk>\d+)/$', api_views.CarDetail.as_view(), name='car-detail'),
                   url(r'^api/v1/users/$', api_views.UserList.as_view()),
