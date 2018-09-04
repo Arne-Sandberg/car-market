@@ -42,21 +42,21 @@ class FilterTestCase(TestCase):
                                    {'min_year': 2000, 'max_year': 2010, 'in_stock_only': False, 'min_price': 1500,
                                     'max_price': 3000, 'colour': 'any colour', 'number_of_seats': 4})
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.context['cars']), 2)
+        self.assertEqual(len(response.context['list']), 2)
 
-        # filtering, displayed 1 item of brand#2
+        # filtering, displayed 1 key of brand#2
         brand_id = 2
         response = self.client.get(f'/filter/{brand_id}/',
                                    {'min_year': 2005, 'max_year': 2010, 'in_stock_only': False, 'min_price': 1000,
                                     'max_price': 2000, 'colour': 'yellow', 'number_of_seats': 4})
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.context['cars']), 1)
+        self.assertEqual(len(response.context['list']), 1)
 
         # cancel filter, displayed items of brand#1- 3
         brand_id = 1
         response = self.client.get(f'/filter/{brand_id}/')
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.context['cars']), len(Car.objects.filter(brand_id=brand_id)))
+        self.assertEqual(len(response.context['list']), len(Car.objects.filter(brand_id=brand_id)))
 
 
 class IndexTestCase(TestCase):

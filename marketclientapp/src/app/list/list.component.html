@@ -1,0 +1,20 @@
+<label for="list">Select table:</label>
+<select class="form-control" id="list" required (change)="getList($event.target.value)">
+  <option *ngFor="let name of list_names" [value]="name">
+    {{ name }}
+  </option>
+</select>
+<div class="row my-4">
+  <div *ngIf="!list.length">
+    <b>Nothing found</b>
+  </div>
+  <div class="col-lg-4 mb-4" *ngFor="let item of list">
+    <div class="card h-100">
+      <div class="card-body">
+        <p *ngFor="let key of list_keys">
+          <b>{{ key }}</b>: {{ item[key] }}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

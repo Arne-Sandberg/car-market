@@ -148,7 +148,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    ('marketclientapp', os.path.join(BASE_DIR, 'marketclientapp/dist')),
+    # ('marketclientapp', os.path.join(BASE_DIR, 'marketclientapp/dist')),
     os.path.join(BASE_DIR, 'static'),
 ]
 

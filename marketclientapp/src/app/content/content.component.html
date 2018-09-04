@@ -2,14 +2,14 @@
   <div class="col-lg-4">
     <div class="list-group">
       <h2>Get</h2>
-      <div class="list-group-item list-group-item-action" (click)="getMultipleInfo('cars')">Get cars</div>
+      <div class="list-group-item list-group-item-action" (click)="getMultipleInfo('list')">Get cars</div>
       <div class="list-group-item list-group-item-action" (click)="getMultipleInfo('users')">Get users</div>
       <div class="list-group-item list-group-item-action" (click)="getMultipleInfo('comments')">Get comments</div>
       <div class="list-group-item list-group-item-action" (click)="getMultipleInfo('adds')">Get advertised cars</div>
 
       <input title="Number" class="list-group-item my-2" type="number" (keyup)="makePk($event)" placeholder="ID">
       <div class="list-group-item list-group-item-action" (click)="getSingleInfo('users')">Get user # {{ pk }}</div>
-      <div class="list-group-item list-group-item-action" (click)="getSingleInfo('cars')">Get car # {{ pk }}</div>
+      <div class="list-group-item list-group-item-action" (click)="getSingleInfo('list')">Get car # {{ pk }}</div>
       <div class="list-group-item list-group-item-action" (click)="getSingleInfo('comments')">Get comment
         # {{ pk }}</div>
     </div>

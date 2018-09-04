@@ -25,7 +25,8 @@ class ImageSerializer(serializers.ModelSerializer):
 
 
 class CarSerializer(serializers.ModelSerializer):
-    user = serializers.HyperlinkedRelatedField(view_name='user-detail', read_only=True)
+    user = serializers.PrimaryKeyRelatedField(read_only=True, source='user.username')
+    brand = serializers.PrimaryKeyRelatedField(read_only=True, source='brand.name')
     comment_set = CommentSerializer(many=True, read_only=True)
     image_set = ImageSerializer(many=True, read_only=True)
 

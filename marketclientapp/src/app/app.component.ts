@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
-import {Http} from '@angular/http';
+import {HttpClient} from '@angular/common/http';
+import {APIService} from "./api.service";
 
 @Component({
   selector: 'app-root',
@@ -9,14 +10,13 @@ import {Http} from '@angular/http';
 export class AppComponent {
   url: string = 'http://127.0.0.1:8000/api/v1/logout';
 
-
-  constructor(private http: Http) {
+  constructor(private  apiService: APIService) {
   }
 
 
   public logout() {
-    this.http.post(this.url, null).toPromise().then((res) => {
-      console.log(res);
+    this.apiService.logout().subscribe((response) => {
+      console.log(response);
     });
   }
 }

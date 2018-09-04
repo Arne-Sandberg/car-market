@@ -52,7 +52,7 @@ class BrandView(FormView):
         context = super(BrandView, self).get_context_data(**kwargs)
         context['flag'] = 'brand'
         context['brand_name'] = models.Brand.objects.get(id=self.kwargs['brand_id']).name
-        context['cars'] = models.Car.objects.filter(brand_id=self.kwargs['brand_id']).select_related(
+        context['list'] = models.Car.objects.filter(brand_id=self.kwargs['brand_id']).select_related(
             'brand').prefetch_related('image_set')
         return context
 
@@ -71,9 +71,9 @@ class SearchView(FormView):
         context['flag'] = 'search'
         context['brand_name'] = 'All'
         data = self.request.GET
-        context['cars'] = models.Car.objects.search_cars(data.get('search_content'))
+        context['list'] = models.Car.objects.search_cars(data.get('search_content'))
         context['search_content'] = data['search_content']
-        context['cars'] = context['cars'].select_related('brand').prefetch_related('image_set')
+        context['list'] = context['list'].select_related('brand').prefetch_related('image_set')
         return context
 
 
@@ -88,13 +88,13 @@ class BrandContent(TemplateView):
         form = forms.FilterForm(brand_id, data.get('min_price'), data.get('max_price'), data)
         if kwargs['filter_flag'] == 'submit':
             if form.is_valid():
-                context['cars'] = objects.filter_cars(data, brand_id, data['search_content']) if data.get(
+                context['list'] = objects.filter_cars(data, brand_id, data['search_content']) if data.get(
                     'search_content') else objects.filter_cars(data, brand_id)
-                context['cars'] = context['cars'].select_related('brand').prefetch_related('image_set')
+                context['list'] = context['list'].select_related('brand').prefetch_related('image_set')
         else:
-            context['cars'] = objects.filter(brand_id=kwargs['brand_id']) if brand_id else objects.search_cars(
+            context['list'] = objects.filter(brand_id=kwargs['brand_id']) if brand_id else objects.search_cars(
                 data['search_content'])
-            context['cars'] = context['cars'].select_related('brand').prefetch_related('image_set')
+            context['list'] = context['list'].select_related('brand').prefetch_related('image_set')
         if not brand_id:
             context['flag'] = 'search'
             context['search_content'] = data['search_content']
