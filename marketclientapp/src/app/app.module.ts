@@ -14,7 +14,7 @@ import {ContentComponent} from './content/content.component';
     AppComponent,
     RegisterComponent,
     LoginComponent,
-    ContentComponent
+    ContentComponent,
   ],
   imports: [
     BrowserModule,

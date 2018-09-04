@@ -147,8 +147,11 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'marketapp/static')
+STATICFILES_DIRS = [
+    ('marketclientapp', os.path.join(BASE_DIR, 'marketclientapp/dist')),
+    os.path.join(BASE_DIR, 'static'),
+]
 
 MEDIA_URL = '/media/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'marketapp/media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
