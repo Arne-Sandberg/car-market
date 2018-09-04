@@ -3,4 +3,6 @@ marketapp/__pycache__
 Market/__pycache__
 media
 db.sqlite3
-npm-debug.log
+static/admin
+static/debug_toolbar
+static/rest_framework
