@@ -13,14 +13,14 @@ export class RegisterComponent implements OnInit {
   ngOnInit() {
   }
 
-  public registerUser(username, email, password1, password2) {
+  public register(username, email, password1, password2) {
     let data = {
       'username': username,
       'email': email,
       'password1': password1,
       'password2': password2,
     };
-    this.apiService.registerUser(data).subscribe((response) => {
+    this.apiService.register(data).subscribe((response) => {
       console.log(response);
     });
   };

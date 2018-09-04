@@ -15,8 +15,16 @@ export class APIService {
     return this.httpClient.get(`${this.API_URL}${list}/`);
   }
 
-  registerUser(data) {
+  getItem(list, item_id) {
+    return this.httpClient.get(`${this.API_URL}${list}/${item_id}/`);
+  }
+
+  register(data) {
     return this.httpClient.post(`${this.API_URL}register/`, data);
+  }
+
+  login(data) {
+    return this.httpClient.post(`${this.API_URL}login/`, data);
   }
 
   logout() {

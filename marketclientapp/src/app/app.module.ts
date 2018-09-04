@@ -7,16 +7,16 @@ import {AppComponent} from './app.component';
 import {RegisterComponent} from './register/register.component';
 import {LoginComponent} from './login/login.component';
 import {AppRoutingModule} from './app-routing.module';
-import {ContentComponent} from './content/content.component';
 import {ListComponent} from './list/list.component';
+import {ItemComponent} from './item/item.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     RegisterComponent,
     LoginComponent,
-    ContentComponent,
     ListComponent,
+    ItemComponent,
   ],
   imports: [
     BrowserModule,

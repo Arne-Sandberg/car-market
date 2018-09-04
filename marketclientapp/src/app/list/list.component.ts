@@ -10,13 +10,11 @@ export class ListComponent implements OnInit {
   list: Array<object> = [];
   list_keys: Array<string> = [];
   list_names: Array<string> = ['cars', 'users', 'comments', 'adds'];
-  title: string;
 
   constructor(private  apiService: APIService) {
   }
 
   ngOnInit() {
-    this.getList('cars');
   }
 
   public getList(list) {
@@ -25,6 +23,5 @@ export class ListComponent implements OnInit {
       this.list_keys = this.list.length ? Object.keys(this.list[0]) : [];
       console.log(data);
     });
-    this.title = list;
   }
 }

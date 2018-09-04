@@ -1,13 +1,11 @@
 <label for="list">Select table:</label>
-<select class="form-control" id="list" required (change)="getList($event.target.value)">
+<select class="form-control mb-2" id="list" required #list_name>
   <option *ngFor="let name of list_names" [value]="name">
     {{ name }}
   </option>
 </select>
+<button class="btn btn-primary" (click)="getList(list_name.value)">Show</button>
 <div class="row my-4">
-  <div *ngIf="!list.length">
-    <b>Nothing found</b>
-  </div>
   <div class="col-lg-4 mb-4" *ngFor="let item of list">
     <div class="card h-100">
       <div class="card-body">
