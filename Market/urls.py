@@ -10,24 +10,8 @@ from marketapp import views, api_views
 from marketapp.forms import UserCreateForm
 from marketapp.serializers import RegSerializer
 
-# urlpatterns = [
-#     url(r'^$', serve, kwargs={'path': 'marketclientapp/index.html'}),
-#     url(r'^(?!/?static/)(?!/?media/)(?P<path>.*\..*)$',
-#         RedirectView.as_view(url='/static/marketclientapp/%(path)s', permanent=False)),
-#     url(r'^api/v1/', include('rest_auth.urls')),
-#     url(r'^api/v1/register/$', RegisterView.as_view(serializer_class=RegSerializer)),
-#     url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
-#     url(r'^api/v1/adds/$', api_views.AdvertisementList.as_view()),
-#     url(r'^api/v1/list/$', api_views.CarList.as_view()),
-#     url(r'^api/v1/list/(?P<pk>\d+)/$', api_views.CarDetail.as_view(), name='car-detail'),
-#     url(r'^api/v1/users/$', api_views.UserList.as_view()),
-#     url(r'^api/v1/users/(?P<pk>\d+)/$', api_views.UserDetail.as_view(), name='user-detail'),
-#     url(r'^api/v1/me/$', api_views.MyDetail.as_view()),
-#     url(r'^api/v1/comments/$', api_views.CommentList.as_view()),
-#     url(r'^api/v1/comments/(?P<pk>\d+)/$', api_views.CommentDetail.as_view(), name='comment-detail'),
-#     url(r'^api/v1/checkout/$', api_views.Checkout.as_view()),
-# ]
 urlpatterns = [
+
                   url(r'^accounts/register/$', views.CustomUserRegistration.as_view(form_class=UserCreateForm),
                       name='register'),
                   url(r'^accounts/', include('django.contrib.auth.urls')),
@@ -73,6 +57,9 @@ urlpatterns = [
                   url(r'^api/v1/comments/(?P<pk>\d+)/$', api_views.CommentDetail.as_view(), name='comment-detail'),
                   url(r'^api/v1/checkout/$', api_views.Checkout.as_view()),
 
+                  url(r'^angular/$', serve, kwargs={'path': 'marketclientapp/index.html'}),
+                  url(r'^(?!/?static/)(?!/?media/)(?P<path>.*\..*)$',
+                      RedirectView.as_view(url='/static/marketclientapp/%(path)s', permanent=False)),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

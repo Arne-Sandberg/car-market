@@ -47,14 +47,12 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'rest_auth.registration',
-    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -140,16 +138,18 @@ EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'
 
 SITE_ID = 1
 
-CORS_ORIGIN_ALLOW_ALL = True
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+ANGULAR_APP_DIR = os.path.join(BASE_DIR, 'marketclientapp/dist')
+
 STATICFILES_DIRS = [
-    # ('marketclientapp', os.path.join(BASE_DIR, 'marketclientapp/dist')),
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(ANGULAR_APP_DIR),
+    os.path.join(BASE_DIR, 'marketapp/static')
 ]
 
 MEDIA_URL = '/media/'
