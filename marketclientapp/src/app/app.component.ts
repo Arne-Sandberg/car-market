@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {APIService} from "./api.service";
+import {ApiService} from "./api.service";
 
 @Component({
   selector: 'app-root',
@@ -10,7 +9,7 @@ import {APIService} from "./api.service";
 export class AppComponent {
   url: string = 'http://127.0.0.1:8000/api/v1/logout';
 
-  constructor(private  apiService: APIService) {
+  constructor(private apiService: ApiService) {
   }
 
 

@@ -9,7 +9,8 @@ import {LoginComponent} from './login/login.component';
 import {AppRoutingModule} from './app-routing.module';
 import {ListComponent} from './list/list.component';
 import {ItemComponent} from './item/item.component';
-import { CreateComponent } from './create/create.component';
+import {CreateComponent} from './create/create.component';
+import {ApiService} from "./api.service";
 
 @NgModule({
   declarations: [
@@ -26,7 +27,7 @@ import { CreateComponent } from './create/create.component';
     AppRoutingModule,
     FormsModule,
   ],
-  providers: [],
+  providers: [ApiService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

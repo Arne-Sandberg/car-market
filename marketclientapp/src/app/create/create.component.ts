@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {APIService} from "../api.service";
+import {ApiService} from "../api.service";
 
 @Component({
   selector: 'app-create',
@@ -10,7 +10,7 @@ export class CreateComponent implements OnInit {
   form_name: string;
   list_names: Array<string> = ['cars', 'comments'];
 
-  constructor(private apiService: APIService) {
+  constructor(private apiService: ApiService) {
   }
 
   ngOnInit() {

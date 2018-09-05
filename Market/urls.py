@@ -57,9 +57,9 @@ urlpatterns = [
                   url(r'^api/v1/comments/(?P<pk>\d+)/$', api_views.CommentDetail.as_view(), name='comment-detail'),
                   url(r'^api/v1/checkout/$', api_views.Checkout.as_view()),
 
-                  url(r'^angular/', serve, kwargs={'path': 'marketclientapp/index.html'}),
+                  url(r'^angular/', serve, kwargs={'path': 'index.html'}),
                   url(r'^(?!/?static/)(?!/?media/)(?P<path>.*\..*)$',
-                      RedirectView.as_view(url='/static/marketclientapp/%(path)s', permanent=False)),
+                      RedirectView.as_view(url='/static/%(path)s', permanent=False)),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

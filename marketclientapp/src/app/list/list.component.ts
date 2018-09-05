@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {APIService} from '../api.service';
+import {ApiService} from '../api.service';
 
 @Component({
   selector: 'app-car-list',
@@ -11,7 +11,7 @@ export class ListComponent implements OnInit {
   list_keys: Array<string> = [];
   list_names: Array<string> = ['cars', 'users', 'comments', 'adds'];
 
-  constructor(private  apiService: APIService) {
+  constructor(private  apiService: ApiService) {
   }
 
   ngOnInit() {

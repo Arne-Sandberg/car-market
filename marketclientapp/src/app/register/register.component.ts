@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {APIService} from '../api.service';
+import {ApiService} from '../api.service';
 
 @Component({
   selector: 'app-register',
@@ -7,7 +7,7 @@ import {APIService} from '../api.service';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-  constructor(private apiService: APIService) {
+  constructor(private apiService: ApiService) {
   }
 
   ngOnInit() {

@@ -1,10 +1,6 @@
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([["styles"],{
+webpackJsonp(["styles"],{
 
 /***/ "./node_modules/raw-loader/index.js!./node_modules/postcss-loader/lib/index.js??embedded!./src/styles.css":
-/*!**********************************************************************************************!*\
-  !*** ./node_modules/raw-loader!./node_modules/postcss-loader/lib??embedded!./src/styles.css ***!
-  \**********************************************************************************************/
-/*! no static exports found */
 /***/ (function(module, exports) {
 
 module.exports = "/* You can add global styles to this file, and also import other style files */\n.main {\n    margin-top: 65px;\n    min-height: calc(95vh - 65px);\n}\nfooter {\n    min-height: 5vh;\n}\n.brand_img {\n    height: 180px;\n}\n.car_img {\n    height: 500px;\n}\n.comment_img {\n    width: 70px;\n    height: 70px;\n}\n.profile_img {\n    width: 200px;\n    height: 200px;\n}\n#slider-range-price{\n    margin-top: 15px;\n}\n"
@@ -12,10 +8,6 @@ module.exports = "/* You can add global styles to this file, and also import oth
 /***/ }),
 
 /***/ "./node_modules/style-loader/lib/addStyles.js":
-/*!****************************************************!*\
-  !*** ./node_modules/style-loader/lib/addStyles.js ***!
-  \****************************************************/
-/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -43,26 +35,14 @@ var isOldIE = memoize(function () {
 	return window && document && document.all && !window.atob;
 });
 
-var getTarget = function (target) {
-  return document.querySelector(target);
-};
-
 var getElement = (function (fn) {
 	var memo = {};
 
-	return function(target) {
-                // If passing function in options, then use it for resolve "head" element.
-                // Useful for Shadow Root style i.e
-                // {
-                //   insertInto: function () { return document.querySelector("#foo").shadowRoot }
-                // }
-                if (typeof target === 'function') {
-                        return target();
-                }
-                if (typeof memo[target] === "undefined") {
-			var styleTarget = getTarget.call(this, target);
+	return function(selector) {
+		if (typeof memo[selector] === "undefined") {
+			var styleTarget = fn.call(this, selector);
 			// Special case to return head of iframe instead of iframe itself
-			if (window.HTMLIFrameElement && styleTarget instanceof window.HTMLIFrameElement) {
+			if (styleTarget instanceof window.HTMLIFrameElement) {
 				try {
 					// This will throw an exception if access to iframe is blocked
 					// due to cross-origin restrictions
@@ -71,17 +51,19 @@ var getElement = (function (fn) {
 					styleTarget = null;
 				}
 			}
-			memo[target] = styleTarget;
+			memo[selector] = styleTarget;
 		}
-		return memo[target]
+		return memo[selector]
 	};
-})();
+})(function (target) {
+	return document.querySelector(target)
+});
 
 var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(/*! ./urls */ "./node_modules/style-loader/lib/urls.js");
+var	fixUrls = __webpack_require__("./node_modules/style-loader/lib/urls.js");
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -97,7 +79,7 @@ module.exports = function(list, options) {
 	if (!options.singleton && typeof options.singleton !== "boolean") options.singleton = isOldIE();
 
 	// By default, add <style> tags to the <head> element
-        if (!options.insertInto) options.insertInto = "head";
+	if (!options.insertInto) options.insertInto = "head";
 
 	// By default, add <style> tags to the bottom of the target
 	if (!options.insertAt) options.insertAt = "bottom";
@@ -221,9 +203,7 @@ function removeStyleElement (style) {
 function createStyleElement (options) {
 	var style = document.createElement("style");
 
-	if(options.attrs.type === undefined) {
-		options.attrs.type = "text/css";
-	}
+	options.attrs.type = "text/css";
 
 	addAttrs(style, options.attrs);
 	insertStyleElement(options, style);
@@ -234,9 +214,7 @@ function createStyleElement (options) {
 function createLinkElement (options) {
 	var link = document.createElement("link");
 
-	if(options.attrs.type === undefined) {
-		options.attrs.type = "text/css";
-	}
+	options.attrs.type = "text/css";
 	options.attrs.rel = "stylesheet";
 
 	addAttrs(link, options.attrs);
@@ -403,10 +381,6 @@ function updateLink (link, options, obj) {
 /***/ }),
 
 /***/ "./node_modules/style-loader/lib/urls.js":
-/*!***********************************************!*\
-  !*** ./node_modules/style-loader/lib/urls.js ***!
-  \***********************************************/
-/*! no static exports found */
 /***/ (function(module, exports) {
 
 
@@ -473,7 +447,7 @@ module.exports = function (css) {
 			.replace(/^'(.*)'$/, function(o, $1){ return $1; });
 
 		// already a full url? no change
-		if (/^(#|data:|http:\/\/|https:\/\/|file:\/\/\/|\s*$)/i.test(unquotedOrigUrl)) {
+		if (/^(#|data:|http:\/\/|https:\/\/|file:\/\/\/)/i.test(unquotedOrigUrl)) {
 		  return fullMatch;
 		}
 
@@ -503,46 +477,44 @@ module.exports = function (css) {
 /***/ }),
 
 /***/ "./src/styles.css":
-/*!************************!*\
-  !*** ./src/styles.css ***!
-  \************************/
-/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+// style-loader: Adds some css to the DOM by adding a <style> tag
 
-var content = __webpack_require__(/*! !../node_modules/raw-loader!../node_modules/postcss-loader/lib??embedded!./styles.css */ "./node_modules/raw-loader/index.js!./node_modules/postcss-loader/lib/index.js??embedded!./src/styles.css");
-
+// load the styles
+var content = __webpack_require__("./node_modules/raw-loader/index.js!./node_modules/postcss-loader/lib/index.js??embedded!./src/styles.css");
 if(typeof content === 'string') content = [[module.i, content, '']];
-
+// Prepare cssTransformation
 var transform;
-var insertInto;
-
-
 
 var options = {"hmr":true}
-
 options.transform = transform
-options.insertInto = undefined;
-
-var update = __webpack_require__(/*! ../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
-
+// add the styles to the DOM
+var update = __webpack_require__("./node_modules/style-loader/lib/addStyles.js")(content, options);
 if(content.locals) module.exports = content.locals;
-
-if(false) {}
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../node_modules/raw-loader/index.js!../node_modules/postcss-loader/lib/index.js??embedded!./styles.css", function() {
+			var newContent = require("!!../node_modules/raw-loader/index.js!../node_modules/postcss-loader/lib/index.js??embedded!./styles.css");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
 
 /***/ }),
 
 /***/ 2:
-/*!******************************!*\
-  !*** multi ./src/styles.css ***!
-  \******************************/
-/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/mikehoang/PycharmProjects/Market/marketclientapp/src/styles.css */"./src/styles.css");
+module.exports = __webpack_require__("./src/styles.css");
 
 
 /***/ })
 
-},[[2,"runtime"]]]);
-//# sourceMappingURL=styles.js.map
+},[2]);
+//# sourceMappingURL=styles.bundle.js.map

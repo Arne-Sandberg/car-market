@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {APIService} from "../api.service";
+import {ApiService} from "../api.service";
 
 @Component({
   selector: 'app-login',
@@ -9,7 +9,7 @@ import {APIService} from "../api.service";
 export class LoginComponent implements OnInit {
   url: string = 'http://127.0.0.1:8000/api/v1/login/';
 
-  constructor(private apiService: APIService) {
+  constructor(private apiService: ApiService) {
   }
 
   ngOnInit() {
