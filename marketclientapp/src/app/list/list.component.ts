@@ -18,10 +18,10 @@ export class ListComponent implements OnInit {
   }
 
   public getList(list_name) {
-    this.apiService.getList(list_name).subscribe((data: Array<object>) => {
-      this.list = data;
+    this.apiService.getList(list_name).subscribe((response: Array<object>) => {
+      this.list = response;
       this.list_keys = this.list.length ? Object.keys(this.list[0]) : [];
-      console.log(data);
+      console.log(response);
     });
   }
 }

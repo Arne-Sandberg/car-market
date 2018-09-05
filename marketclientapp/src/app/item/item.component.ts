@@ -19,8 +19,8 @@ export class ItemComponent implements OnInit {
     this.getIds(this.list_names[0]);
   }
 
-  public getIds(list) {
-    this.apiService.getList(list).subscribe((data: Array<object>) => {
+  public getIds(list_name) {
+    this.apiService.getList(list_name).subscribe((data: Array<object>) => {
       this.ids = [];
       for (let i of data) {
         this.ids.push(i['id']);
@@ -31,10 +31,10 @@ export class ItemComponent implements OnInit {
 
   public getItem(list_name, item_id) {
     if (this.ids.length) {
-      this.apiService.getItem(list_name, item_id).subscribe((data: object) => {
-        this.item = data;
+      this.apiService.getItem(list_name, item_id).subscribe((response: object) => {
+        this.item = response;
         this.item_keys = Object.keys(this.item);
-        console.log(data);
+        console.log(response);
       });
     }
     else {

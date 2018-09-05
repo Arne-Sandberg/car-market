@@ -19,11 +19,7 @@ export class LoginComponent implements OnInit {
 
   }
   public login(data) {
-    let data_dict = {
-      'username': data.username,
-      'password': data.password,
-    };
-    this.apiService.login(data_dict).subscribe((response) => {
+    this.apiService.login(data).subscribe((response) => {
       console.log(response);
     });
   };

@@ -11,12 +11,16 @@ export class APIService {
   constructor(private  httpClient: HttpClient) {
   }
 
-  getList(list) {
-    return this.httpClient.get(`${this.api_url}${list}/`);
+  getList(list_name) {
+    return this.httpClient.get(`${this.api_url}${list_name}/`);
   }
 
-  getItem(list, item_id) {
-    return this.httpClient.get(`${this.api_url}${list}/${item_id}/`);
+  getItem(list_name, item_id) {
+    return this.httpClient.get(`${this.api_url}${list_name}/${item_id}/`);
+  }
+
+  createItem(list_name, data){
+     return this.httpClient.post(`${this.api_url}${list_name}/`, data);
   }
 
   register(data) {

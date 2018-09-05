@@ -79,7 +79,7 @@ class FilterForm(forms.Form):
 class UserEditForm(forms.ModelForm):
     class Meta:
         model = get_user_model()
-        fields = ('image', 'first_name', 'last_name')
+        fields = ('image', 'email', 'first_name', 'last_name')
 
     def __init__(self, *args, **kwargs):
         super(UserEditForm, self).__init__(*args, **kwargs)

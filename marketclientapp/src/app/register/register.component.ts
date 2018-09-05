@@ -14,13 +14,7 @@ export class RegisterComponent implements OnInit {
   }
 
   public register(data) {
-    let data_dict = {
-      'username': data.username,
-      'email': data.email,
-      'password1': data.password1,
-      'password2': data.password2,
-    };
-    this.apiService.register(data_dict).subscribe((response) => {
+    this.apiService.register(data).subscribe((response) => {
       console.log(response);
     });
   };

@@ -10,7 +10,6 @@ class RegSerializer(RegisterSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True, source='user.username')
-    car = serializers.CharField(read_only=True, source='car.__str__')
 
     class Meta:
         model = models.Comment
@@ -26,7 +25,6 @@ class ImageSerializer(serializers.ModelSerializer):
 
 class CarSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True, source='user.username')
-    brand = serializers.PrimaryKeyRelatedField(read_only=True, source='brand.name')
     comment_set = CommentSerializer(many=True, read_only=True, source='comment.content')
     image_set = ImageSerializer(many=True, read_only=True)
 

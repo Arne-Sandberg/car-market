@@ -51,11 +51,14 @@ var APIService = /** @class */ (function () {
         this.httpClient = httpClient;
         this.api_url = 'http://127.0.0.1:8000/api/v1/';
     }
-    APIService.prototype.getList = function (list) {
-        return this.httpClient.get("" + this.api_url + list + "/");
+    APIService.prototype.getList = function (list_name) {
+        return this.httpClient.get("" + this.api_url + list_name + "/");
     };
-    APIService.prototype.getItem = function (list, item_id) {
-        return this.httpClient.get("" + this.api_url + list + "/" + item_id + "/");
+    APIService.prototype.getItem = function (list_name, item_id) {
+        return this.httpClient.get("" + this.api_url + list_name + "/" + item_id + "/");
+    };
+    APIService.prototype.createItem = function (list_name, data) {
+        return this.httpClient.post("" + this.api_url + list_name + "/", data);
     };
     APIService.prototype.register = function (data) {
         return this.httpClient.post(this.api_url + "register/", data);
@@ -95,6 +98,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _register_register_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./register/register.component */ "./src/app/register/register.component.ts");
 /* harmony import */ var _list_list_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./list/list.component */ "./src/app/list/list.component.ts");
 /* harmony import */ var _item_item_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./item/item.component */ "./src/app/item/item.component.ts");
+/* harmony import */ var _create_create_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./create/create.component */ "./src/app/create/create.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -107,11 +111,13 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 
 
 
+
 var routes = [
     { path: 'login', component: _login_login_component__WEBPACK_IMPORTED_MODULE_2__["LoginComponent"] },
     { path: 'register', component: _register_register_component__WEBPACK_IMPORTED_MODULE_3__["RegisterComponent"] },
     { path: 'list', component: _list_list_component__WEBPACK_IMPORTED_MODULE_4__["ListComponent"] },
     { path: 'item', component: _item_item_component__WEBPACK_IMPORTED_MODULE_5__["ItemComponent"] },
+    { path: 'create', component: _create_create_component__WEBPACK_IMPORTED_MODULE_6__["CreateComponent"] },
 ];
 var AppRoutingModule = /** @class */ (function () {
     function AppRoutingModule() {
@@ -147,7 +153,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-expand-lg navbar-dark bg-dark fixed-top\">\n  <a routerLink=\"/\"><b class=\"navbar-brand\">Car market</b></a>\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarSupportedContent\"\n          aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <div class=\"collapse navbar-collapse\" id=\"navbarSupportedContent\">\n    <ul class=\"navbar-nav ml-auto\">\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/list\">List</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/item\">Item</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/register\">Sign up</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/login\">Log In</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/\" (click)=\"logout()\">Log out</a>\n      </li>\n    </ul>\n  </div>\n</nav>\n\n<div class=\"main p-3\">\n  <div class=\"container\">\n    <router-outlet></router-outlet>\n  </div>\n</div>\n\n\n\n\n\n\n\n\n\n\n\n\n"
+module.exports = "<nav class=\"navbar navbar-expand-lg navbar-dark bg-dark fixed-top\">\n  <a routerLink=\"/\"><b class=\"navbar-brand\">Car market</b></a>\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarSupportedContent\"\n          aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <div class=\"collapse navbar-collapse\" id=\"navbarSupportedContent\">\n    <ul class=\"navbar-nav ml-auto\">\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/create\">Create</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/list\">List</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/item\">Item</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/register\">Sign up</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/login\">Log In</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/\" (click)=\"logout()\">Log out</a>\n      </li>\n    </ul>\n  </div>\n</nav>\n\n<div class=\"main p-3\">\n  <div class=\"container\">\n    <router-outlet></router-outlet>\n  </div>\n</div>\n\n\n\n\n\n\n\n\n\n\n\n\n"
 
 /***/ }),
 
@@ -219,12 +225,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _app_routing_module__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./app-routing.module */ "./src/app/app-routing.module.ts");
 /* harmony import */ var _list_list_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./list/list.component */ "./src/app/list/list.component.ts");
 /* harmony import */ var _item_item_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./item/item.component */ "./src/app/item/item.component.ts");
+/* harmony import */ var _create_create_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./create/create.component */ "./src/app/create/create.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -246,6 +254,7 @@ var AppModule = /** @class */ (function () {
                 _login_login_component__WEBPACK_IMPORTED_MODULE_6__["LoginComponent"],
                 _list_list_component__WEBPACK_IMPORTED_MODULE_8__["ListComponent"],
                 _item_item_component__WEBPACK_IMPORTED_MODULE_9__["ItemComponent"],
+                _create_create_component__WEBPACK_IMPORTED_MODULE_10__["CreateComponent"],
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
@@ -258,6 +267,82 @@ var AppModule = /** @class */ (function () {
         })
     ], AppModule);
     return AppModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/create/create.component.css":
+/*!*********************************************!*\
+  !*** ./src/app/create/create.component.css ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ""
+
+/***/ }),
+
+/***/ "./src/app/create/create.component.html":
+/*!**********************************************!*\
+  !*** ./src/app/create/create.component.html ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<form (ngSubmit)=\"showForm(list_name.value)\">\n  <label for=\"list\">Select item to create:</label>\n  <select class=\"form-control mb-2\" name=\"list\" required #list_name>\n    <option *ngFor=\"let name of list_names\" [value]=\"name\">\n      {{ name }}\n    </option>\n  </select>\n  <button class=\"btn btn-primary\" type=\"submit\">Show</button>\n</form>\n<div class=\"row my-4\">\n  <div class=\"col-lg\">\n\n    <form *ngIf=\"form_name == 'cars'\" #car_create=\"ngForm\" (ngSubmit)=\"createItem(car_create.value)\">\n      <h2>Create car</h2>\n      <div class=\"form-group row\">\n        <label for=\"car_model\" class=\"col-lg-2 col-form-label\">Model</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"car_model\" placeholder=\"model\" type=\"text\" ngModel>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"car_type\" class=\"col-lg-2 col-form-label\">Type</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"car_type\" placeholder=\"type\" type=\"text\" ngModel>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"year\" class=\"col-lg-2 col-form-label\">Year</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"year\" placeholder=\"username\" type=\"number\" ngModel>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"number_of_seats\" class=\"col-lg-2 col-form-label\">Number of seats</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"number_of_seats\" placeholder=\"number of seats\" type=\"number\" ngModel>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"colour\" class=\"col-lg-2 col-form-label\">Colour</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"colour\" placeholder=\"colour\" type=\"text\" ngModel>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"description\" class=\"col-lg-2 col-form-label\">Description</label>\n        <div class=\"col-lg-10\">\n          <textarea class=\"form-control mb-2\" name=\"description\" placeholder=\"description\" cols=\"3\" ngModel></textarea>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"stock_count\" class=\"col-lg-2 col-form-label\">Stock count</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"stock_count\" placeholder=\"stock count\" type=\"number\" ngModel>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"price\" class=\"col-lg-2 col-form-label\">Price</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"price\" placeholder=\"price\" type=\"number\" ngModel>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"brand\" class=\"col-lg-2 col-form-label\">Brand</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"brand\" placeholder=\"brand\" type=\"text\" ngModel>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"is_advertised\" class=\"col-lg-2 col-form-label\">Is advertised</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"is_advertised\" type=\"checkbox\" ngModel>\n        </div>\n      </div>\n      <button class=\"btn btn-primary\" type=\"submit\">Submit</button>\n    </form>\n\n    <form *ngIf=\"form_name == 'comments'\" #comment_create=\"ngForm\" (ngSubmit)=\"createItem(comment_create.value)\">\n      <h2>Create comment</h2>\n      <div class=\"form-group row\">\n        <label for=\"content\" class=\"col-lg-2 col-form-label\">Model</label>\n        <div class=\"col-lg-10\">\n          <textarea class=\"form-control mb-2\" name=\"content\" placeholder=\"content\" cols=\"3\" ngModel></textarea>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"rating\" class=\"col-lg-2 col-form-label\">Type</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"rating\" placeholder=\"rating\" type=\"number\" ngModel>\n        </div>\n      </div>\n      <button class=\"btn btn-primary\" type=\"submit\">Submit</button>\n    </form>\n  </div>\n</div>\n\n"
+
+/***/ }),
+
+/***/ "./src/app/create/create.component.ts":
+/*!********************************************!*\
+  !*** ./src/app/create/create.component.ts ***!
+  \********************************************/
+/*! exports provided: CreateComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CreateComponent", function() { return CreateComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _api_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../api.service */ "./src/app/api.service.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var CreateComponent = /** @class */ (function () {
+    function CreateComponent(apiService) {
+        this.apiService = apiService;
+        this.list_names = ['cars', 'comments'];
+    }
+    CreateComponent.prototype.ngOnInit = function () {
+    };
+    CreateComponent.prototype.createItem = function (data) {
+        console.log(data);
+        this.apiService.createItem(this.form_name, data).subscribe((function (response) {
+            console.log(response);
+        }));
+    };
+    CreateComponent.prototype.showForm = function (list_name) {
+        this.form_name = list_name;
+    };
+    CreateComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-create',
+            template: __webpack_require__(/*! ./create.component.html */ "./src/app/create/create.component.html"),
+            styles: [__webpack_require__(/*! ./create.component.css */ "./src/app/create/create.component.css")]
+        }),
+        __metadata("design:paramtypes", [_api_service__WEBPACK_IMPORTED_MODULE_1__["APIService"]])
+    ], CreateComponent);
+    return CreateComponent;
 }());
 
 
@@ -320,9 +405,9 @@ var ItemComponent = /** @class */ (function () {
     ItemComponent.prototype.ngOnInit = function () {
         this.getIds(this.list_names[0]);
     };
-    ItemComponent.prototype.getIds = function (list) {
+    ItemComponent.prototype.getIds = function (list_name) {
         var _this = this;
-        this.apiService.getList(list).subscribe(function (data) {
+        this.apiService.getList(list_name).subscribe(function (data) {
             _this.ids = [];
             for (var _i = 0, data_1 = data; _i < data_1.length; _i++) {
                 var i = data_1[_i];
@@ -334,10 +419,10 @@ var ItemComponent = /** @class */ (function () {
     ItemComponent.prototype.getItem = function (list_name, item_id) {
         var _this = this;
         if (this.ids.length) {
-            this.apiService.getItem(list_name, item_id).subscribe(function (data) {
-                _this.item = data;
+            this.apiService.getItem(list_name, item_id).subscribe(function (response) {
+                _this.item = response;
                 _this.item_keys = Object.keys(_this.item);
-                console.log(data);
+                console.log(response);
             });
         }
         else {
@@ -416,10 +501,10 @@ var ListComponent = /** @class */ (function () {
     };
     ListComponent.prototype.getList = function (list_name) {
         var _this = this;
-        this.apiService.getList(list_name).subscribe(function (data) {
-            _this.list = data;
+        this.apiService.getList(list_name).subscribe(function (response) {
+            _this.list = response;
             _this.list_keys = _this.list.length ? Object.keys(_this.list[0]) : [];
-            console.log(data);
+            console.log(response);
         });
     };
     ListComponent = __decorate([
@@ -492,11 +577,7 @@ var LoginComponent = /** @class */ (function () {
     LoginComponent.prototype.onSubmit = function () {
     };
     LoginComponent.prototype.login = function (data) {
-        var data_dict = {
-            'username': data.username,
-            'password': data.password,
-        };
-        this.apiService.login(data_dict).subscribe(function (response) {
+        this.apiService.login(data).subscribe(function (response) {
             console.log(response);
         });
     };
@@ -568,13 +649,7 @@ var RegisterComponent = /** @class */ (function () {
     RegisterComponent.prototype.ngOnInit = function () {
     };
     RegisterComponent.prototype.register = function (data) {
-        var data_dict = {
-            'username': data.username,
-            'email': data.email,
-            'password1': data.password1,
-            'password2': data.password2,
-        };
-        this.apiService.register(data_dict).subscribe(function (response) {
+        this.apiService.register(data).subscribe(function (response) {
             console.log(response);
         });
     };

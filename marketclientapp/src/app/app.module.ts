@@ -9,6 +9,7 @@ import {LoginComponent} from './login/login.component';
 import {AppRoutingModule} from './app-routing.module';
 import {ListComponent} from './list/list.component';
 import {ItemComponent} from './item/item.component';
+import { CreateComponent } from './create/create.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import {ItemComponent} from './item/item.component';
     LoginComponent,
     ListComponent,
     ItemComponent,
+    CreateComponent,
   ],
   imports: [
     BrowserModule,
