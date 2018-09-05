@@ -13,14 +13,14 @@ export class RegisterComponent implements OnInit {
   ngOnInit() {
   }
 
-  public register(username, email, password1, password2) {
-    let data = {
-      'username': username,
-      'email': email,
-      'password1': password1,
-      'password2': password2,
+  public register(data) {
+    let data_dict = {
+      'username': data.username,
+      'email': data.email,
+      'password1': data.password1,
+      'password2': data.password2,
     };
-    this.apiService.register(data).subscribe((response) => {
+    this.apiService.register(data_dict).subscribe((response) => {
       console.log(response);
     });
   };

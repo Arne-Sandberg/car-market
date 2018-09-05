@@ -282,7 +282,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<label for=\"list\">Select table:</label>\n<select class=\"form-control mb-2\" id=\"list\" required #list_name (change)=\"getIds($event.target.value)\">\n  <option *ngFor=\"let name of list_names\" [value]=\"name\">\n    {{ name }}\n  </option>\n</select>\n<label for=\"item_ids\">Select item ID:</label>\n<select class=\"form-control mb-2\" id=\"item_ids\" required #item_id>\n  <option *ngFor=\"let id of ids\" [value]=\"id\">\n    {{ id }}\n  </option>\n</select>\n<button class=\"btn btn-primary\" (click)=\"getItem(list_name.value, item_id.value)\">Show</button>\n<div class=\"row my-4\">\n    <div class=\"card h-100 w-100\" *ngIf=\"item\">\n      <div class=\"card-body\">\n        <p *ngFor=\"let key of item_keys\">\n          <b>{{ key }}</b>: {{ item[key] }}\n        </p>\n      </div>\n    </div>\n</div>\n"
+module.exports = "<form (ngSubmit)=\"getItem(list_name.value, item_id.value)\">\n  <label for=\"list\">Select table:</label>\n  <select class=\"form-control mb-2\" id=\"list\" required #list_name (change)=\"getIds($event.target.value)\">\n    <option *ngFor=\"let name of list_names\" [value]=\"name\">\n      {{ name }}\n    </option>\n  </select>\n  <label for=\"item_ids\">Select item ID:</label>\n  <select class=\"form-control mb-2\" id=\"item_ids\" required #item_id>\n    <option *ngFor=\"let id of ids\" [value]=\"id\">\n      {{ id }}\n    </option>\n  </select>\n  <button class=\"btn btn-primary\" type=\"submit\">Show</button>\n</form>\n<div class=\"row my-4\">\n  <div class=\"card h-100 w-100\" *ngIf=\"item\">\n    <div class=\"card-body\">\n      <p *ngFor=\"let key of item_keys\">\n        <b>{{ key }}</b>: {{ item[key] }}\n      </p>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -378,7 +378,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<label for=\"list\">Select table:</label>\n<select class=\"form-control mb-2\" id=\"list\" required #list_name>\n  <option *ngFor=\"let name of list_names\" [value]=\"name\">\n    {{ name }}\n  </option>\n</select>\n<button class=\"btn btn-primary\" (click)=\"getList(list_name.value)\">Show</button>\n<div class=\"row my-4\">\n  <div class=\"col-lg-4 mb-4\" *ngFor=\"let item of list\">\n    <div class=\"card h-100\">\n      <div class=\"card-body\">\n        <p *ngFor=\"let key of list_keys\">\n          <b>{{ key }}</b>: {{ item[key] }}\n        </p>\n      </div>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<form (ngSubmit)=\"getList(list_name.value)\">\n  <label for=\"list\">Select table:</label>\n  <select class=\"form-control mb-2\" name=\"list\" required #list_name>\n    <option *ngFor=\"let name of list_names\" [value]=\"name\">\n      {{ name }}\n    </option>\n  </select>\n  <button class=\"btn btn-primary\" type=\"submit\">Show</button>\n</form>\n<div class=\"row my-4\">\n  <div class=\"col-lg-4 mb-4\" *ngFor=\"let item of list\">\n    <div class=\"card h-100\">\n      <div class=\"card-body\">\n        <p *ngFor=\"let key of list_keys\">\n          <b>{{ key }}</b>: {{ item[key] }}\n        </p>\n      </div>\n    </div>\n  </div>\n</div>\n\n"
 
 /***/ }),
 
@@ -414,9 +414,9 @@ var ListComponent = /** @class */ (function () {
     }
     ListComponent.prototype.ngOnInit = function () {
     };
-    ListComponent.prototype.getList = function (list) {
+    ListComponent.prototype.getList = function (list_name) {
         var _this = this;
-        this.apiService.getList(list).subscribe(function (data) {
+        this.apiService.getList(list_name).subscribe(function (data) {
             _this.list = data;
             _this.list_keys = _this.list.length ? Object.keys(_this.list[0]) : [];
             console.log(data);
@@ -455,7 +455,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\n  <div class=\"col-lg\">\n    <h2>Login</h2>\n    Username\n    <input title=\"user\" class=\"form-control\" type=\"text\" #username>\n    Password\n    <input title=\"Password\" class=\"form-control\" type=\"password\" #password>\n    <button class=\"btn btn-primary mt-2 mr-2\" (click)=\"login(username.value,password.value)\">Login</button>\n  </div>\n</div>\n\n"
+module.exports = "<div class=\"row\">\n  <div class=\"col-lg\">\n    <form #userlogin=\"ngForm\" (ngSubmit)=\"login(userlogin.value)\">\n      <h2>Login</h2>\n      <div class=\"form-group\">\n        <label for=\"username\">Username</label>\n        <input class=\"form-control mb-2\" name=\"username\" placeholder=\"username\" type=\"text\" ngModel>\n      </div>\n      <div class=\"form-group\">\n        <label for=\"password\">Password</label>\n        <input class=\"form-control mb-2\" name=\"password\" placeholder=\"password\" type=\"password\" ngModel>\n      </div>\n      <button class=\"btn btn-primary\" type=\"submit\">Login</button>\n    </form>\n  </div>\n</div>\n\n"
 
 /***/ }),
 
@@ -489,12 +489,14 @@ var LoginComponent = /** @class */ (function () {
     }
     LoginComponent.prototype.ngOnInit = function () {
     };
-    LoginComponent.prototype.login = function (username, password) {
-        var data = {
-            'username': username,
-            'password': password,
+    LoginComponent.prototype.onSubmit = function () {
+    };
+    LoginComponent.prototype.login = function (data) {
+        var data_dict = {
+            'username': data.username,
+            'password': data.password,
         };
-        this.apiService.login(data).subscribe(function (response) {
+        this.apiService.login(data_dict).subscribe(function (response) {
             console.log(response);
         });
     };
@@ -532,7 +534,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\n  <div class=\"col-lg\">\n    <h2>Register</h2>\n    Username\n    <input title=\"Username\" class=\"form-control\" type=\"text\" #username>\n    Email\n    <input title=\"Email\" class=\"form-control\" type=\"email\" #email>\n    Password\n    <input title=\"Password\" class=\"form-control\" type=\"password\" #password1>\n    Confirm password\n    <input title=\"Confirm password\" class=\"form-control\" type=\"password\" #password2>\n    <button class=\"btn btn-primary my-2\"\n            (click)=\"register(username.value, email.value, password1.value, password2.value)\"> Register\n    </button>\n  </div>\n</div>\n\n"
+module.exports = "<div class=\"row\">\n  <div class=\"col-lg\">\n    <form #userregister=\"ngForm\" (ngSubmit)=\"register(userregister.value)\">\n      <h2>Register</h2>\n      <div class=\"form-group\">\n        <label for=\"username\">Username</label>\n        <input class=\"form-control\" name=\"username\" placeholder=\"username\" type=\"text\" ngModel>\n      </div>\n      <div class=\"form-group\">\n        <label for=\"email\">Email</label>\n        <input class=\"form-control\" name=\"email\" placeholder=\"email\" type=\"email\" ngModel>\n      </div>\n      <div class=\"form-group\">\n        <label for=\"password1\">Password</label>\n        <input class=\"form-control\" name=\"password1\" placeholder=\"password\" type=\"password\" ngModel>\n      </div>\n      <div class=\"form-group\">\n        <label for=\"password2\">Confirm password</label>\n        <input class=\"form-control\" name=\"password2\" placeholder=\"confirm password\" type=\"password\" ngModel>\n      </div>\n      <button class=\"btn btn-primary my-2\" type=\"submit\">Register</button>\n    </form>\n  </div>\n</div>\n\n"
 
 /***/ }),
 
@@ -565,14 +567,14 @@ var RegisterComponent = /** @class */ (function () {
     }
     RegisterComponent.prototype.ngOnInit = function () {
     };
-    RegisterComponent.prototype.register = function (username, email, password1, password2) {
-        var data = {
-            'username': username,
-            'email': email,
-            'password1': password1,
-            'password2': password2,
+    RegisterComponent.prototype.register = function (data) {
+        var data_dict = {
+            'username': data.username,
+            'email': data.email,
+            'password1': data.password1,
+            'password2': data.password2,
         };
-        this.apiService.register(data).subscribe(function (response) {
+        this.apiService.register(data_dict).subscribe(function (response) {
             console.log(response);
         });
     };

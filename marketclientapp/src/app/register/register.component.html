@@ -1,17 +1,25 @@
 <div class="row">
   <div class="col-lg">
-    <h2>Register</h2>
-    Username
-    <input title="Username" class="form-control" type="text" #username>
-    Email
-    <input title="Email" class="form-control" type="email" #email>
-    Password
-    <input title="Password" class="form-control" type="password" #password1>
-    Confirm password
-    <input title="Confirm password" class="form-control" type="password" #password2>
-    <button class="btn btn-primary my-2"
-            (click)="register(username.value, email.value, password1.value, password2.value)"> Register
-    </button>
+    <form #userregister="ngForm" (ngSubmit)="register(userregister.value)">
+      <h2>Register</h2>
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input class="form-control" name="username" placeholder="username" type="text" ngModel>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input class="form-control" name="email" placeholder="email" type="email" ngModel>
+      </div>
+      <div class="form-group">
+        <label for="password1">Password</label>
+        <input class="form-control" name="password1" placeholder="password" type="password" ngModel>
+      </div>
+      <div class="form-group">
+        <label for="password2">Confirm password</label>
+        <input class="form-control" name="password2" placeholder="confirm password" type="password" ngModel>
+      </div>
+      <button class="btn btn-primary my-2" type="submit">Register</button>
+    </form>
   </div>
 </div>
 

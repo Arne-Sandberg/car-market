@@ -15,13 +15,15 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
+  onSubmit(){
 
-  public login(username, password) {
-    let data = {
-      'username': username,
-      'password': password,
+  }
+  public login(data) {
+    let data_dict = {
+      'username': data.username,
+      'password': data.password,
     };
-    this.apiService.login(data).subscribe((response) => {
+    this.apiService.login(data_dict).subscribe((response) => {
       console.log(response);
     });
   };

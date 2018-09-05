@@ -10,7 +10,6 @@ const routes: Routes = [
   {path: 'register', component: RegisterComponent},
   {path: 'list', component: ListComponent},
   {path: 'item', component: ItemComponent},
-
 ];
 
 @NgModule({

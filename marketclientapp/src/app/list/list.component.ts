@@ -17,8 +17,8 @@ export class ListComponent implements OnInit {
   ngOnInit() {
   }
 
-  public getList(list) {
-    this.apiService.getList(list).subscribe((data: Array<object>) => {
+  public getList(list_name) {
+    this.apiService.getList(list_name).subscribe((data: Array<object>) => {
       this.list = data;
       this.list_keys = this.list.length ? Object.keys(this.list[0]) : [];
       console.log(data);

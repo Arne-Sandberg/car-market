@@ -1,10 +1,12 @@
-<label for="list">Select table:</label>
-<select class="form-control mb-2" id="list" required #list_name>
-  <option *ngFor="let name of list_names" [value]="name">
-    {{ name }}
-  </option>
-</select>
-<button class="btn btn-primary" (click)="getList(list_name.value)">Show</button>
+<form (ngSubmit)="getList(list_name.value)">
+  <label for="list">Select table:</label>
+  <select class="form-control mb-2" name="list" required #list_name>
+    <option *ngFor="let name of list_names" [value]="name">
+      {{ name }}
+    </option>
+  </select>
+  <button class="btn btn-primary" type="submit">Show</button>
+</form>
 <div class="row my-4">
   <div class="col-lg-4 mb-4" *ngFor="let item of list">
     <div class="card h-100">
@@ -16,3 +18,4 @@
     </div>
   </div>
 </div>
+
