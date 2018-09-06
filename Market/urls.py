@@ -1,6 +1,6 @@
 from django.conf.urls import include, url
 from django.conf.urls.static import static
-from django.views.generic import RedirectView
+from django.views.generic import RedirectView, TemplateView
 from django.contrib.staticfiles.views import serve
 from django.contrib import admin
 from django.conf import settings
@@ -47,7 +47,7 @@ urlpatterns = [
                   url(r'^api/v1/', include('rest_auth.urls')),
                   url(r'^api/v1/register/$', RegisterView.as_view(serializer_class=RegSerializer)),
                   url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
-                  url(r'^api/v1/adds/$', api_views.AdvertisementList.as_view()),
+                  url(r'^api/v1/ads/$', api_views.AdvertisementList.as_view()),
                   url(r'^api/v1/cars/$', api_views.CarList.as_view()),
                   url(r'^api/v1/cars/(?P<pk>\d+)/$', api_views.CarDetail.as_view(), name='car-detail'),
                   url(r'^api/v1/users/$', api_views.UserList.as_view()),
@@ -56,10 +56,11 @@ urlpatterns = [
                   url(r'^api/v1/comments/$', api_views.CommentList.as_view()),
                   url(r'^api/v1/comments/(?P<pk>\d+)/$', api_views.CommentDetail.as_view(), name='comment-detail'),
                   url(r'^api/v1/checkout/$', api_views.Checkout.as_view()),
+                  url(r'^api/v1/colours/$', api_views.ColourList.as_view()),
+                  url(r'^api/v1/brands/$', api_views.BrandList.as_view()),
 
-                  url(r'^angular/', serve, kwargs={'path': 'index.html'}),
-                  url(r'^(?!/?static/)(?!/?media/)(?P<path>.*\..*)$',
-                      RedirectView.as_view(url='/static/%(path)s', permanent=False)),
+                  url(r'^angular/', TemplateView.as_view(template_name='angular_index.html')),
+
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

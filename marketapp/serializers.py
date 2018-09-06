@@ -23,10 +23,17 @@ class ImageSerializer(serializers.ModelSerializer):
         fields = ['image']
 
 
+class BrandSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Brand
+        fields = ['id', 'name', 'owner']
+
+
 class CarSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True, source='user.username')
-    comment_set = CommentSerializer(many=True, read_only=True, source='comment.content')
+    comment_set = CommentSerializer(many=True, read_only=True)
     image_set = ImageSerializer(many=True, read_only=True)
+    brand = serializers.PrimaryKeyRelatedField(queryset=models.Brand.objects.all(), source='brand.name')
 
     class Meta:
         model = models.Car
@@ -61,3 +68,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = models.User
         fields = ['id', 'image', 'username', 'email', 'first_name', 'last_name', 'car_set', 'purchase_set']
         read_only_fields = ['username', 'car_set', 'purchase_set']
+
+
+class ColourSerializer(serializers.Serializer):
+    colour = serializers.CharField(read_only=True)

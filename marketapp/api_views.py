@@ -1,3 +1,4 @@
+import webcolors
 from django.utils import timezone
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
@@ -11,6 +12,23 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS:
             return True
         return obj.user == request.user
+
+
+class Colour(object):
+    def __init__(self, colour):
+        self.colour = colour
+
+
+class ColourList(generics.ListAPIView):
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    queryset = [Colour(i) for i in webcolors.HTML4_HEX_TO_NAMES.values()]
+    serializer_class = serializers.ColourSerializer
+
+
+class BrandList(generics.ListAPIView):
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    queryset = models.Brand.objects.all()
+    serializer_class = serializers.BrandSerializer
 
 
 class CarList(generics.ListCreateAPIView):

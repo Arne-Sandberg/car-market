@@ -46,17 +46,34 @@ var ApiService = /** @class */ (function () {
     ApiService.prototype.getItem = function (list_name, item_id) {
         return this.httpClient.get("" + this.api_url + list_name + "/" + item_id + "/");
     };
+    ApiService.prototype.getMe = function () {
+        return this.httpClient.get(this.api_url + "me/");
+    };
+    ApiService.prototype.editMe = function (data) {
+        return this.httpClient.put(this.api_url + "me/", data, { headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpHeaders */]({ 'X-CSRFTOKEN': this.getCsrfToken() }) });
+    };
+    ApiService.prototype.getCsrfToken = function () {
+        var cookies = document.cookie.split(';');
+        for (var _i = 0, cookies_1 = cookies; _i < cookies_1.length; _i++) {
+            var cookie = cookies_1[_i];
+            cookie = cookie.trim();
+            var re = new RegExp('^csrftoken=');
+            if (re.test(cookie)) {
+                return cookie.substr(10, cookie.length);
+            }
+        }
+    };
     ApiService.prototype.createItem = function (list_name, data) {
-        return this.httpClient.post("" + this.api_url + list_name + "/", data);
+        return this.httpClient.post("" + this.api_url + list_name + "/", data, { headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpHeaders */]({ 'X-CSRFTOKEN': this.getCsrfToken() }) });
     };
     ApiService.prototype.register = function (data) {
-        return this.httpClient.post(this.api_url + "register/", data);
+        return this.httpClient.post(this.api_url + "register/", data, { headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpHeaders */]({ 'X-CSRFTOKEN': this.getCsrfToken() }) });
     };
     ApiService.prototype.login = function (data) {
-        return this.httpClient.post(this.api_url + "login/", data);
+        return this.httpClient.post(this.api_url + "login/", data, { headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpHeaders */]({ 'X-CSRFTOKEN': this.getCsrfToken() }) });
     };
     ApiService.prototype.logout = function () {
-        return this.httpClient.post(this.api_url + "logout/", null);
+        return this.httpClient.post(this.api_url + "logout/", null, { headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpHeaders */]({ 'X-CSRFTOKEN': this.getCsrfToken() }) });
     };
     ApiService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])(),
@@ -81,6 +98,7 @@ var ApiService = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__list_list_component__ = __webpack_require__("./src/app/list/list.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__item_item_component__ = __webpack_require__("./src/app/item/item.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__create_create_component__ = __webpack_require__("./src/app/create/create.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__profile_profile_component__ = __webpack_require__("./src/app/profile/profile.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -94,20 +112,22 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
+
 var routes = [
     { path: 'login', component: __WEBPACK_IMPORTED_MODULE_2__login_login_component__["a" /* LoginComponent */] },
     { path: 'register', component: __WEBPACK_IMPORTED_MODULE_3__register_register_component__["a" /* RegisterComponent */] },
     { path: 'list', component: __WEBPACK_IMPORTED_MODULE_4__list_list_component__["a" /* ListComponent */] },
     { path: 'item', component: __WEBPACK_IMPORTED_MODULE_5__item_item_component__["a" /* ItemComponent */] },
     { path: 'create', component: __WEBPACK_IMPORTED_MODULE_6__create_create_component__["a" /* CreateComponent */] },
+    { path: 'profile', component: __WEBPACK_IMPORTED_MODULE_7__profile_profile_component__["a" /* ProfileComponent */] },
 ];
 var AppRoutingModule = /** @class */ (function () {
     function AppRoutingModule() {
     }
     AppRoutingModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
-            exports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]],
-            imports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forRoot(routes)],
+            exports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* RouterModule */]],
+            imports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* RouterModule */].forRoot(routes)],
         })
     ], AppRoutingModule);
     return AppRoutingModule;
@@ -127,7 +147,7 @@ module.exports = ""
 /***/ "./src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-expand-lg navbar-dark bg-dark fixed-top\">\n  <a routerLink=\"/\"><b class=\"navbar-brand\">Car market</b></a>\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarSupportedContent\"\n          aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <div class=\"collapse navbar-collapse\" id=\"navbarSupportedContent\">\n    <ul class=\"navbar-nav ml-auto\">\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/create\">Create</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/list\">List</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/item\">Item</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/register\">Sign up</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/login\">Log In</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/\" (click)=\"logout()\">Log out</a>\n      </li>\n    </ul>\n  </div>\n</nav>\n\n<div class=\"main p-3\">\n  <div class=\"container\">\n    <router-outlet></router-outlet>\n  </div>\n</div>\n\n\n\n\n\n\n\n\n\n\n\n\n"
+module.exports = "<nav class=\"navbar navbar-expand-lg navbar-dark bg-dark fixed-top\">\n  <a routerLink=\"/\"><b class=\"navbar-brand\">Car market</b></a>\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarSupportedContent\"\n          aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <div class=\"collapse navbar-collapse\" id=\"navbarSupportedContent\">\n    <ul class=\"navbar-nav ml-auto\">\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/create\">Create</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/list\">List</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/item\">Item</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/register\">Sign up</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/login\">Log In</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/profile\">Profile</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/\" (click)=\"logout()\">Log out</a>\n      </li>\n    </ul>\n  </div>\n</nav>\n\n<div class=\"main p-3\">\n  <div class=\"container\">\n    <router-outlet></router-outlet>\n  </div>\n</div>\n\n\n\n\n\n\n\n\n\n\n\n\n"
 
 /***/ }),
 
@@ -191,12 +211,14 @@ var AppComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__item_item_component__ = __webpack_require__("./src/app/item/item.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__create_create_component__ = __webpack_require__("./src/app/create/create.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__api_service__ = __webpack_require__("./src/app/api.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__profile_profile_component__ = __webpack_require__("./src/app/profile/profile.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -221,6 +243,7 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_8__list_list_component__["a" /* ListComponent */],
                 __WEBPACK_IMPORTED_MODULE_9__item_item_component__["a" /* ItemComponent */],
                 __WEBPACK_IMPORTED_MODULE_10__create_create_component__["a" /* CreateComponent */],
+                __WEBPACK_IMPORTED_MODULE_12__profile_profile_component__["a" /* ProfileComponent */],
             ],
             imports: [
                 __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
@@ -249,7 +272,7 @@ module.exports = ""
 /***/ "./src/app/create/create.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form (ngSubmit)=\"showForm(list_name.value)\">\n  <label for=\"list\">Select item to create:</label>\n  <select class=\"form-control mb-2\" name=\"list\" required #list_name>\n    <option *ngFor=\"let name of list_names\" [value]=\"name\">\n      {{ name }}\n    </option>\n  </select>\n  <button class=\"btn btn-primary\" type=\"submit\">Show</button>\n</form>\n<div class=\"row my-4\">\n  <div class=\"col-lg\">\n\n    <form *ngIf=\"form_name == 'cars'\" #car_create=\"ngForm\" (ngSubmit)=\"createItem(car_create.value)\">\n      <h2>Create car</h2>\n      <div class=\"form-group row\">\n        <label for=\"car_model\" class=\"col-lg-2 col-form-label\">Model</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"car_model\" placeholder=\"model\" type=\"text\" ngModel>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"car_type\" class=\"col-lg-2 col-form-label\">Type</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"car_type\" placeholder=\"type\" type=\"text\" ngModel>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"year\" class=\"col-lg-2 col-form-label\">Year</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"year\" placeholder=\"year\" type=\"number\" ngModel>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"number_of_seats\" class=\"col-lg-2 col-form-label\">Number of seats</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"number_of_seats\" placeholder=\"number of seats\" type=\"number\" ngModel>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"colour\" class=\"col-lg-2 col-form-label\">Colour</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"colour\" placeholder=\"colour\" type=\"text\" ngModel>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"description\" class=\"col-lg-2 col-form-label\">Description</label>\n        <div class=\"col-lg-10\">\n          <textarea class=\"form-control mb-2\" name=\"description\" placeholder=\"description\" cols=\"3\" ngModel></textarea>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"stock_count\" class=\"col-lg-2 col-form-label\">Stock count</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"stock_count\" placeholder=\"stock count\" type=\"number\" ngModel>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"price\" class=\"col-lg-2 col-form-label\">Price</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"price\" placeholder=\"price\" type=\"number\" ngModel>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"brand\" class=\"col-lg-2 col-form-label\">Brand</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"brand\" placeholder=\"brand\" type=\"text\" ngModel>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"is_advertised\" class=\"col-lg-2 col-form-label\">Is advertised</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"is_advertised\" type=\"checkbox\" ngModel>\n        </div>\n      </div>\n      <button class=\"btn btn-primary\" type=\"submit\">Submit</button>\n    </form>\n\n    <form *ngIf=\"form_name == 'comments'\" #comment_create=\"ngForm\" (ngSubmit)=\"createItem(comment_create.value)\">\n      <h2>Create comment</h2>\n      <div class=\"form-group row\">\n        <label for=\"car\" class=\"col-lg-2 col-form-label\">Car</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"car\" placeholder=\"car\" type=\"text\" ngModel>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"content\" class=\"col-lg-2 col-form-label\">Content</label>\n        <div class=\"col-lg-10\">\n          <textarea class=\"form-control mb-2\" name=\"content\" placeholder=\"content\" cols=\"3\" ngModel></textarea>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"rating\" class=\"col-lg-2 col-form-label\">Rating</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"rating\" placeholder=\"rating\" type=\"number\" ngModel>\n        </div>\n      </div>\n      <button class=\"btn btn-primary\" type=\"submit\">Submit</button>\n    </form>\n  </div>\n</div>\n\n"
+module.exports = "<form (ngSubmit)=\"showForm(list_name.value)\">\n  <label for=\"list\">Select item to create:</label>\n  <select class=\"form-control mb-2\" name=\"list\" required #list_name>\n    <option *ngFor=\"let name of list_names\" [value]=\"name\">\n      {{ name }}\n    </option>\n  </select>\n  <button class=\"btn btn-primary\" type=\"submit\">Show</button>\n</form>\n<div class=\"row my-4\">\n  <div class=\"col-lg\">\n\n    <form *ngIf=\"form_name == 'cars'\" #car_create=\"ngForm\" (ngSubmit)=\"createItem(car_create.value)\">\n      <h2>Create car</h2>\n      <div class=\"form-group row\">\n        <label for=\"car_model\" class=\"col-lg-2 col-form-label\">Model</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"car_model\" placeholder=\"model\" type=\"text\" ngModel>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"car_type\" class=\"col-lg-2 col-form-label\">Type</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"car_type\" placeholder=\"type\" type=\"text\" ngModel>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"year\" class=\"col-lg-2 col-form-label\">Year</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"year\" placeholder=\"year\" type=\"number\" ngModel>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"number_of_seats\" class=\"col-lg-2 col-form-label\">Number of seats</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"number_of_seats\" placeholder=\"number of seats\" type=\"number\" ngModel>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"colour\" class=\"col-lg-2 col-form-label\">Colour</label>\n        <div class=\"col-lg-10\">\n          <select class=\"form-control mb-2\" name=\"colour\" [ngModel]>\n            <option *ngFor=\"let item of colours\" [ngValue]=\"item['colour']\">\n              {{ item['colour'] }}\n            </option>\n          </select>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"description\" class=\"col-lg-2 col-form-label\">Description</label>\n        <div class=\"col-lg-10\">\n          <textarea class=\"form-control mb-2\" name=\"description\" placeholder=\"description\" cols=\"3\" ngModel></textarea>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"stock_count\" class=\"col-lg-2 col-form-label\">Stock count</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"stock_count\" placeholder=\"stock count\" type=\"number\" ngModel>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"price\" class=\"col-lg-2 col-form-label\">Price</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"price\" placeholder=\"price\" type=\"number\" ngModel>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"brand\" class=\"col-lg-2 col-form-label\">Brand</label>\n        <div class=\"col-lg-10\">\n          <select class=\"form-control mb-2\" name=\"brand\" [ngModel]>\n            <option *ngFor=\"let item of brands\" [ngValue]=\"item['id']\">\n              {{ item['name'] }}\n            </option>\n          </select>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"is_advertised\" class=\"col-lg-2 col-form-label\">Is advertised</label>\n        <div class=\"col-lg-10\">\n          <input class=\"mb-2\" name=\"is_advertised\" type=\"checkbox\" ngModel>\n        </div>\n      </div>\n      <button class=\"btn btn-primary\" type=\"submit\">Submit</button>\n    </form>\n\n    <form *ngIf=\"form_name == 'comments'\" #comment_create=\"ngForm\" (ngSubmit)=\"createItem(comment_create.value)\">\n      <h2>Create comment</h2>\n      <div class=\"form-group row\">\n        <label for=\"car\" class=\"col-lg-2 col-form-label\">Car</label>\n        <div class=\"col-lg-10\">\n          <select class=\"form-control mb-2\" name=\"car\" [ngModel]>\n            <option *ngFor=\"let item of cars\" [ngValue]=\"item['id']\">\n              {{ item['brand'] }} - {{ item['model'] }} {{ item['year'] }} - {{ item['car_type'] }}\n            </option>\n          </select>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"content\" class=\"col-lg-2 col-form-label\">Content</label>\n        <div class=\"col-lg-10\">\n          <textarea class=\"form-control mb-2\" name=\"content\" placeholder=\"content\" cols=\"3\" ngModel></textarea>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"rating\" class=\"col-lg-2 col-form-label\">Rating</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"rating\" placeholder=\"rating\" type=\"number\" ngModel>\n        </div>\n      </div>\n      <button class=\"btn btn-primary\" type=\"submit\">Submit</button>\n    </form>\n  </div>\n</div>\n\n"
 
 /***/ }),
 
@@ -277,9 +300,21 @@ var CreateComponent = /** @class */ (function () {
         this.list_names = ['cars', 'comments'];
     }
     CreateComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.apiService.getList('colours').subscribe(function (response) {
+            _this.colours = response;
+            console.log(response);
+        });
+        this.apiService.getList('cars').subscribe(function (response) {
+            _this.cars = response;
+            console.log(response);
+        });
+        this.apiService.getList('brands').subscribe(function (response) {
+            _this.brands = response;
+            console.log(response);
+        });
     };
     CreateComponent.prototype.createItem = function (data) {
-        console.log(data);
         this.apiService.createItem(this.form_name, data).subscribe((function (response) {
             console.log(response);
         }));
@@ -312,7 +347,7 @@ module.exports = ""
 /***/ "./src/app/item/item.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form (ngSubmit)=\"getItem(list_name.value, item_id.value)\">\n  <label for=\"list\">Select table:</label>\n  <select class=\"form-control mb-2\" id=\"list\" required #list_name (change)=\"getIds($event.target.value)\">\n    <option *ngFor=\"let name of list_names\" [value]=\"name\">\n      {{ name }}\n    </option>\n  </select>\n  <label for=\"item_ids\">Select item ID:</label>\n  <select class=\"form-control mb-2\" id=\"item_ids\" required #item_id>\n    <option *ngFor=\"let id of ids\" [value]=\"id\">\n      {{ id }}\n    </option>\n  </select>\n  <button class=\"btn btn-primary\" type=\"submit\">Show</button>\n</form>\n<div class=\"row my-4\">\n  <div class=\"card h-100 w-100\" *ngIf=\"item\">\n    <div class=\"card-body\">\n      <p *ngFor=\"let key of item_keys\">\n        <b>{{ key }}</b>: {{ item[key] }}\n      </p>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<form (ngSubmit)=\"getItem(list_name.value, item_id.value)\">\n  <label for=\"list\">Select table:</label>\n  <select class=\"form-control mb-2\" id=\"list\" required #list_name (change)=\"getIds($event.target.value)\">\n    <option *ngFor=\"let name of list_names\" [value]=\"name\">\n      {{ name }}\n    </option>\n  </select>\n  <label for=\"item_ids\">Select item ID:</label>\n  <select class=\"form-control mb-2\" id=\"item_ids\" required #item_id>\n    <option *ngFor=\"let id of ids\" [value]=\"id\">\n      {{ id }}\n    </option>\n  </select>\n  <button class=\"btn btn-primary\" type=\"submit\">Show</button>\n</form>\n<div class=\"row my-4\">\n  <div class=\"col-lg\">\n    <div class=\"card h-100\" *ngIf=\"item\">\n      <div class=\"card-body\">\n        <p *ngFor=\"let key of item_keys\">\n          <b>{{ key }}</b>: {{ item[key] }}\n        </p>\n      </div>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -422,7 +457,7 @@ var ListComponent = /** @class */ (function () {
         this.apiService = apiService;
         this.list = [];
         this.list_keys = [];
-        this.list_names = ['cars', 'users', 'comments', 'adds'];
+        this.list_names = ['cars', 'users', 'comments', 'ads'];
     }
     ListComponent.prototype.ngOnInit = function () {
     };
@@ -470,6 +505,7 @@ module.exports = "<div class=\"row\">\n  <div class=\"col-lg\">\n    <form #user
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LoginComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api_service__ = __webpack_require__("./src/app/api.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -481,18 +517,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+
 var LoginComponent = /** @class */ (function () {
-    function LoginComponent(apiService) {
+    function LoginComponent(apiService, router) {
         this.apiService = apiService;
+        this.router = router;
         this.url = 'http://127.0.0.1:8000/api/v1/login/';
     }
     LoginComponent.prototype.ngOnInit = function () {
     };
-    LoginComponent.prototype.onSubmit = function () {
-    };
     LoginComponent.prototype.login = function (data) {
+        var _this = this;
         this.apiService.login(data).subscribe(function (response) {
             console.log(response);
+            _this.router.navigateByUrl('/');
         });
     };
     ;
@@ -502,9 +540,83 @@ var LoginComponent = /** @class */ (function () {
             template: __webpack_require__("./src/app/login/login.component.html"),
             styles: [__webpack_require__("./src/app/login/login.component.css")]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__api_service__["a" /* ApiService */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__api_service__["a" /* ApiService */],
+            __WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* Router */]])
     ], LoginComponent);
     return LoginComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/profile/profile.component.css":
+/***/ (function(module, exports) {
+
+module.exports = ""
+
+/***/ }),
+
+/***/ "./src/app/profile/profile.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"row\">\n  <div class=\"col-lg\" *ngIf=\"info\">\n    <div class=\"card my-4\">\n      <div class=\"card-body\">\n        <div *ngFor=\"let key of info_keys\">\n          <b>{{ key }}</b>:\n          <ul *ngIf=\"key =='car_set'; else other_info\">\n            <li *ngFor=\"let item of info[key]\">\n              {{ item['brand'] }} - {{ item['car_model'] }} {{ item['year'] }} - {{ item['car_type'] }}\n            </li>\n          </ul>\n          <ng-template #purchase_set>\n            <ul>\n              <li *ngFor=\"let item of info[key]\">\n                {{ item['car']['car_model'] }} - ${{ item['price'] }}\n              </li>\n            </ul>\n          </ng-template>\n          <ng-template #other_info>{{ info[key] }}</ng-template>\n        </div>\n      </div>\n    </div>\n    <form #useredit=\"ngForm\" (ngSubmit)=\"edit(useredit.value)\" enctype=\"multipart/form-data\">\n      <h2>Edit Profile</h2>\n      <div class=\"form-group\">\n        <label for=\"image\">Image</label>\n        <input type=\"file\" name=\"image\" ngModel>\n      </div>\n      <div class=\"form-group\">\n        <label for=\"email\">Email</label>\n        <input class=\"form-control\" name=\"email\" placeholder=\"email\" type=\"email\" [ngModel]=\"info['email']\">\n      </div>\n      <div class=\"form-group\">\n        <label for=\"first_name\">First name</label>\n        <input class=\"form-control\" name=\"first_name\" placeholder=\"first name\" type=\"text\"\n               [ngModel]=\"info['first_name']\">\n      </div>\n      <div class=\"form-group\">\n        <label for=\"last_name\">Last name</label>\n        <input class=\"form-control\" name=\"last_name\" placeholder=\"last name\" type=\"text\" [ngModel]=\"info['last_name']\">\n      </div>\n      <button class=\"btn btn-primary my-2\" type=\"submit\">Register</button>\n    </form>\n  </div>\n</div>\n\n"
+
+/***/ }),
+
+/***/ "./src/app/profile/profile.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProfileComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api_service__ = __webpack_require__("./src/app/api.service.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var ProfileComponent = /** @class */ (function () {
+    function ProfileComponent(apiService) {
+        this.apiService = apiService;
+        this.info = null;
+        this.info_keys = [];
+    }
+    ProfileComponent.prototype.ngOnInit = function () {
+        this.getMe();
+    };
+    ProfileComponent.prototype.getMe = function () {
+        var _this = this;
+        this.apiService.getMe().subscribe(function (response) {
+            _this.info = response;
+            _this.info_keys = Object.keys(_this.info);
+            console.log(response);
+            console.log(Array.isArray(response['car_set']));
+        });
+    };
+    ProfileComponent.prototype.edit = function (data) {
+        var _this = this;
+        this.apiService.editMe(data).subscribe(function (response) {
+            _this.info = response;
+            _this.info_keys = Object.keys(_this.info);
+            console.log(response);
+        });
+    };
+    ProfileComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-profile',
+            template: __webpack_require__("./src/app/profile/profile.component.html"),
+            styles: [__webpack_require__("./src/app/profile/profile.component.css")]
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__api_service__["a" /* ApiService */]])
+    ], ProfileComponent);
+    return ProfileComponent;
 }());
 
 
@@ -532,6 +644,7 @@ module.exports = "<div class=\"row\">\n  <div class=\"col-lg\">\n    <form #user
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RegisterComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api_service__ = __webpack_require__("./src/app/api.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -543,15 +656,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+
 var RegisterComponent = /** @class */ (function () {
-    function RegisterComponent(apiService) {
+    function RegisterComponent(apiService, router) {
         this.apiService = apiService;
+        this.router = router;
     }
     RegisterComponent.prototype.ngOnInit = function () {
     };
     RegisterComponent.prototype.register = function (data) {
+        var _this = this;
         this.apiService.register(data).subscribe(function (response) {
             console.log(response);
+            _this.router.navigateByUrl('/');
         });
     };
     ;
@@ -561,7 +678,8 @@ var RegisterComponent = /** @class */ (function () {
             template: __webpack_require__("./src/app/register/register.component.html"),
             styles: [__webpack_require__("./src/app/register/register.component.css")]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__api_service__["a" /* ApiService */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__api_service__["a" /* ApiService */],
+            __WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* Router */]])
     ], RegisterComponent);
     return RegisterComponent;
 }());
