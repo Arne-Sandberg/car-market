@@ -281,7 +281,7 @@ module.exports = ""
 /***/ "./src/app/cars/cars.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row my-4\">\n  <div class=\"col-lg-4 mb-4\" *ngFor=\"let item of list\">\n    <div class=\"card h-100\">\n      <slideshow [imageUrls]=\"getImageArray(item)\" [height]=\"'200px'\" [autoPlay]=\"true\"\n                 *ngIf=\"item['image_set'].length\"></slideshow>\n      <slideshow [imageUrls]=\"['static/images/no-image.jpg']\" [height]=\"'200px'\"\n                 *ngIf=\"!item['image_set'].length\"></slideshow>\n      <div class=\"card-body\">\n        <p *ngFor=\"let key of list_keys\">\n          <b>{{ key }}</b>: {{ item[key] }}\n        </p>\n      </div>\n    </div>\n  </div>\n</div>\n\n"
+module.exports = "<div class=\"row my-4\">\n  <div class=\"col-lg-4 mb-4\" *ngFor=\"let item of list\">\n    <div class=\"card h-100\">\n      <slideshow [imageUrls]=\"getImageArray(item)\" [height]=\"'200px'\" [autoPlay]=\"true\"\n                 *ngIf=\"item['image_set'].length > 1\"></slideshow>\n      <img [src]=\"item['image_set'][0]['image']\" class=\"angular_brand_img\" *ngIf=\"item['image_set'].length == 1\">\n      <img src=\"static/images/no-image.jpg\" class=\"angular_brand_img\" *ngIf=\"!item['image_set'].length\">\n      <div class=\"card-body\">\n        <p *ngFor=\"let key of list_keys\">\n          <b>{{ key }}</b>: {{ item[key] }}\n        </p>\n      </div>\n    </div>\n  </div>\n</div>\n\n"
 
 /***/ }),
 
