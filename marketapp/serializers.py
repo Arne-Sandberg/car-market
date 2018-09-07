@@ -63,6 +63,7 @@ class PurchaseSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     purchase_set = PurchaseSerializer(many=True, read_only=True)
     car_set = CarSerializer(many=True, read_only=True)
+    comment_set = CommentSerializer(many=True, read_only=True)
 
     class Meta:
         model = models.User
