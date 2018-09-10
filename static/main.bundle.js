@@ -119,7 +119,7 @@ var routes = [
     { path: 'login', component: __WEBPACK_IMPORTED_MODULE_2__login_login_component__["a" /* LoginComponent */] },
     { path: 'register', component: __WEBPACK_IMPORTED_MODULE_3__register_register_component__["a" /* RegisterComponent */] },
     { path: 'list', component: __WEBPACK_IMPORTED_MODULE_4__list_list_component__["a" /* ListComponent */] },
-    { path: 'item', component: __WEBPACK_IMPORTED_MODULE_5__item_item_component__["a" /* ItemComponent */] },
+    { path: 'cars/:id', component: __WEBPACK_IMPORTED_MODULE_5__item_item_component__["a" /* ItemComponent */] },
     { path: 'create', component: __WEBPACK_IMPORTED_MODULE_6__create_create_component__["a" /* CreateComponent */] },
     { path: 'profile', component: __WEBPACK_IMPORTED_MODULE_7__profile_profile_component__["a" /* ProfileComponent */] },
     { path: 'cars', component: __WEBPACK_IMPORTED_MODULE_8__cars_cars_component__["a" /* CarsComponent */] },
@@ -129,8 +129,8 @@ var AppRoutingModule = /** @class */ (function () {
     }
     AppRoutingModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
-            exports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* RouterModule */]],
-            imports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* RouterModule */].forRoot(routes)],
+            exports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* RouterModule */]],
+            imports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* RouterModule */].forRoot(routes)],
         })
     ], AppRoutingModule);
     return AppRoutingModule;
@@ -150,7 +150,7 @@ module.exports = ""
 /***/ "./src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-expand-lg navbar-dark bg-dark fixed-top\">\n  <a routerLink=\"/\"><b class=\"navbar-brand\">Car market</b></a>\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarSupportedContent\"\n          aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <div class=\"collapse navbar-collapse\" id=\"navbarSupportedContent\">\n    <ul class=\"navbar-nav ml-auto\">\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/create\">Create</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/list\">List</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/cars\">Cars</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/item\">Item</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/register\">Sign up</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/login\">Log In</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/profile\">Profile</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/\" (click)=\"logout()\">Log out</a>\n      </li>\n    </ul>\n  </div>\n</nav>\n\n<div class=\"main p-3\">\n  <div class=\"container\">\n    <router-outlet></router-outlet>\n  </div>\n</div>\n\n\n\n\n\n\n\n\n\n\n\n\n"
+module.exports = "<nav class=\"navbar navbar-expand-lg navbar-dark bg-dark fixed-top\">\n  <a routerLink=\"/\"><b class=\"navbar-brand\">Car market</b></a>\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarSupportedContent\"\n          aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <div class=\"collapse navbar-collapse\" id=\"navbarSupportedContent\">\n    <ul class=\"navbar-nav ml-auto\">\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/create\">Create</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/cars\">Cars</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/register\">Sign up</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/login\">Log In</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/profile\">Profile</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/\" (click)=\"logout()\">Log out</a>\n      </li>\n    </ul>\n  </div>\n</nav>\n\n<div class=\"main p-3\">\n  <div class=\"container\">\n    <router-outlet></router-outlet>\n  </div>\n</div>\n\n\n\n\n\n\n\n\n\n\n\n\n"
 
 /***/ }),
 
@@ -281,7 +281,7 @@ module.exports = ""
 /***/ "./src/app/cars/cars.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row my-4\">\n  <div class=\"col-lg-4 mb-4\" *ngFor=\"let item of list\">\n    <div class=\"card h-100\">\n      <slideshow [imageUrls]=\"getImageArray(item)\" [height]=\"'200px'\" [autoPlay]=\"true\"\n                 *ngIf=\"item['image_set'].length > 1\"></slideshow>\n      <img [src]=\"item['image_set'][0]['image']\" class=\"angular_brand_img\" *ngIf=\"item['image_set'].length == 1\">\n      <img src=\"static/images/no-image.jpg\" class=\"angular_brand_img\" *ngIf=\"!item['image_set'].length\">\n      <div class=\"card-body\">\n        <p *ngFor=\"let key of list_keys\">\n          <b>{{ key }}</b>: {{ item[key] }}\n        </p>\n      </div>\n    </div>\n  </div>\n</div>\n\n"
+module.exports = "<div class=\"row my-4\">\n  <div class=\"col-lg-4 mb-4\" *ngFor=\"let item of list\">\n    <div class=\"card h-100\">\n      <a routerLink=\"/cars/{{ item['id'] }}\">\n        <slideshow [imageUrls]=\"getImageArray(item)\" [height]=\"'200px'\" [autoPlay]=\"true\"\n                   *ngIf=\"item['image_set'].length > 1\"></slideshow>\n        <img [src]=\"item['image_set'][0]['image']\" class=\"angular_brand_img\" *ngIf=\"item['image_set'].length == 1\">\n        <img src=\"static/images/no-image.jpg\" class=\"angular_brand_img\" *ngIf=\"!item['image_set'].length\">\n      </a>\n      <div class=\"card-body\">\n        <p *ngFor=\"let key of list_keys\">\n          <b>{{ key }}</b>: {{ (item[key].length > 256)? (item[key] | slice:0:256) + '...': item[key] }}\n        </p>\n      </div>\n    </div>\n  </div>\n</div>\n\n"
 
 /***/ }),
 
@@ -306,9 +306,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var CarsComponent = /** @class */ (function () {
     function CarsComponent(apiService) {
         this.apiService = apiService;
+        this.title = 'cars';
     }
     CarsComponent.prototype.ngOnInit = function () {
-        this.getList('cars');
+        this.getList(this.title);
     };
     CarsComponent.prototype.getImageArray = function (obj) {
         var res = [];
@@ -426,7 +427,7 @@ module.exports = ""
 /***/ "./src/app/item/item.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form (ngSubmit)=\"getItem(list_name.value, item_id.value)\">\n  <label for=\"list\">Select table:</label>\n  <select class=\"form-control mb-2\" id=\"list\" required #list_name (change)=\"getIds($event.target.value)\">\n    <option *ngFor=\"let name of list_names\" [value]=\"name\">\n      {{ name }}\n    </option>\n  </select>\n  <label for=\"item_ids\">Select item ID:</label>\n  <select class=\"form-control mb-2\" id=\"item_ids\" required #item_id>\n    <option *ngFor=\"let id of ids\" [value]=\"id\">\n      {{ id }}\n    </option>\n  </select>\n  <button class=\"btn btn-primary\" type=\"submit\">Show</button>\n</form>\n<div class=\"row my-4\">\n  <div class=\"col-lg\">\n    <div class=\"card h-100\" *ngIf=\"item\">\n      <div class=\"card-body\">\n        <p *ngFor=\"let key of item_keys\">\n          <b>{{ key }}</b>: {{ item[key] }}\n        </p>\n      </div>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<div class=\"row\">\n  <div class=\"col-lg\">\n    <div class=\"card\" *ngIf=\"item\">\n      <slideshow [imageUrls]=\"images\" [height]=\"'530px'\" [autoPlay]=\"true\"\n                 *ngIf=\"images.length > 1\"></slideshow>\n      <img [src]=\"images[0]\" class=\"angular_car_img\" *ngIf=\"images.length == 1\">\n      <img src=\"static/images/no-image.jpg\" class=\"angular_car_img\" *ngIf=\"!images.length\">\n      <div class=\"card-body\">\n        <p *ngFor=\"let key of item_keys\">\n          <b>{{ key }}</b>: {{ item[key] }}\n        </p>\n      </div>\n    </div>\n    <div class=\"container my-4\">\n      <h3>Comments:</h3>\n      <div class=\"media my-3\" *ngFor=\"let comment of comments\">\n        <img class=\"comment_img img-thumbnail\" [src]=\"comment['user']['image']\">\n        <div class=\"media-body p-0 pl-2\" data-id=\"{{ comment.id }}\">\n          <b>{{ comment['user']['username'] }}:</b>\n          <b id=\"comment_rating\">{{ comment['rating'] }}</b>★\n          <small>{{ comment['date'] }}</small>\n          <!--{% if comment.user == request.user %}\n                    {% if comment.id == editing_comment_id %}\n                        editing...\n                    {% else %}\n                        <a href=\"#user_comment\" class=\"edit_comment\">edit</a> |\n                        <a href=\"#comments\" class=\"delete_comment\">delete</a>\n                    {% endif %}\n                {% endif %}-->\n          <p id=\"comment_content\">{{ comment['content'] }}</p>\n        </div>\n        <hr>\n      </div>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -437,6 +438,7 @@ module.exports = "<form (ngSubmit)=\"getItem(list_name.value, item_id.value)\">\
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ItemComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api_service__ = __webpack_require__("./src/app/api.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -448,38 +450,30 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+
 var ItemComponent = /** @class */ (function () {
-    function ItemComponent(apiService) {
+    function ItemComponent(apiService, route) {
         this.apiService = apiService;
-        this.list_names = ['cars', 'users', 'comments'];
+        this.route = route;
     }
     ItemComponent.prototype.ngOnInit = function () {
-        this.getIds(this.list_names[0]);
+        this.getItem();
     };
-    ItemComponent.prototype.getIds = function (list_name) {
+    ItemComponent.prototype.getItem = function () {
         var _this = this;
-        this.apiService.getList(list_name).subscribe(function (data) {
-            _this.ids = [];
-            for (var _i = 0, data_1 = data; _i < data_1.length; _i++) {
-                var i = data_1[_i];
-                _this.ids.push(i['id']);
+        this.apiService.getItem('cars', this.route.snapshot.paramMap.get('id')).subscribe(function (response) {
+            _this.item = response;
+            if (_this.item) {
+                _this.item_keys = Object.keys(_this.item).filter(function (key) { return !['id', 'image_set', 'comment_set'].includes(key); });
+                _this.images = [];
+                for (var _i = 0, _a = _this.item['image_set']; _i < _a.length; _i++) {
+                    var img = _a[_i];
+                    _this.images.push(img['image']);
+                }
+                _this.comments = _this.item['comment_set'];
             }
-            console.log(data);
+            console.log(response);
         });
-    };
-    ItemComponent.prototype.getItem = function (list_name, item_id) {
-        var _this = this;
-        if (this.ids.length) {
-            this.apiService.getItem(list_name, item_id).subscribe(function (response) {
-                _this.item = response;
-                _this.item_keys = Object.keys(_this.item);
-                console.log(response);
-            });
-        }
-        else {
-            this.item = null;
-            this.item_keys = [];
-        }
     };
     ItemComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
@@ -487,7 +481,8 @@ var ItemComponent = /** @class */ (function () {
             template: __webpack_require__("./src/app/item/item.component.html"),
             styles: [__webpack_require__("./src/app/item/item.component.css")]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__api_service__["a" /* ApiService */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__api_service__["a" /* ApiService */],
+            __WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* ActivatedRoute */]])
     ], ItemComponent);
     return ItemComponent;
 }());
@@ -615,7 +610,7 @@ var LoginComponent = /** @class */ (function () {
             styles: [__webpack_require__("./src/app/login/login.component.css")]
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__api_service__["a" /* ApiService */],
-            __WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* Router */]])
+            __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */]])
     ], LoginComponent);
     return LoginComponent;
 }());
@@ -634,7 +629,7 @@ module.exports = ""
 /***/ "./src/app/profile/profile.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"info\">\n  <div class=\"row\">\n    <div class=\"col-lg-3\">\n      <div class=\"card p-2\">\n        <img *ngIf=\"info['image']\" class=\"profile_img mx-auto thumbnail rounded\" [src]=\"info['image']\">\n          <img *ngIf=\"!info['image']\" class=\"profile_img mx-auto thumbnail rounded\"\n               src=\"static/images/default_user.png\">\n      </div>\n    </div>\n    <div class=\"col-lg-3\">\n      <div class=\"my-2\">\n        <h4>Personal information:</h4>\n        <div *ngFor=\"let key of info_keys\" class=\"my-2\">\n          <b>{{ key }}:</b> {{ info[key] }}\n        </div>\n      </div>\n    </div>\n    <div class=\"col-lg-6\">\n      <div class=\"my-2\">\n        <h4>Cars:</h4>\n        <div *ngFor=\"let car of car_set\">\n          {{ car['brand'] }} - {{ car['car_model'] }} {{ car['year'] }} - {{ car['car_type'] }}\n        </div>\n      </div>\n      <div class=\"my-2\">\n        <h4>Purchases:</h4>\n        <div *ngFor=\"let purchase of purchase_set\">\n          {{ purchase['car']['car_model'] }} - ${{ purchase['price'] }}\n        </div>\n      </div>\n    </div>\n  </div>\n  <div class=\"row mt-3\">\n    <form #useredit=\"ngForm\" (ngSubmit)=\"edit(useredit.value)\" enctype=\"multipart/form-data\">\n      <h2>Edit Profile</h2>\n      <div class=\"form-group\">\n        <label for=\"image\">Image</label>\n        <input type=\"file\" name=\"image\" (change)=\"handleFileInput($event.target.files)\">\n      </div>\n      <div class=\"form-group\">\n        <label for=\"email\">Email</label>\n        <input class=\"form-control\" name=\"email\" placeholder=\"email\" type=\"email\" [ngModel]=\"info['email']\">\n      </div>\n      <div class=\"form-group\">\n        <label for=\"first_name\">First name</label>\n        <input class=\"form-control\" name=\"first_name\" placeholder=\"first name\" type=\"text\"\n               [ngModel]=\"info['first_name']\">\n      </div>\n      <div class=\"form-group\">\n        <label for=\"last_name\">Last name</label>\n        <input class=\"form-control\" name=\"last_name\" placeholder=\"last name\" type=\"text\"\n               [ngModel]=\"info['last_name']\">\n      </div>\n      <button class=\"btn btn-primary my-2\" type=\"submit\">Save</button>\n    </form>\n  </div>\n</div>\n\n\n"
+module.exports = "<div *ngIf=\"info\">\n  <div class=\"row\">\n    <div class=\"col-lg-3\">\n      <div class=\"card p-2\">\n        <img *ngIf=\"info['image']\" class=\"profile_img mx-auto thumbnail rounded\" [src]=\"info['image']\">\n          <img *ngIf=\"!info['image']\" class=\"profile_img mx-auto thumbnail rounded\"\n               src=\"static/images/default_user.png\">\n      </div>\n    </div>\n    <div class=\"col-lg-3\">\n      <div class=\"my-2\">\n        <h4>Personal information:</h4>\n        <div *ngFor=\"let key of info_keys\" class=\"my-2\">\n          <b>{{ key }}:</b> {{ info[key] }}\n        </div>\n      </div>\n    </div>\n    <div class=\"col-lg-6\">\n      <div class=\"my-2\">\n        <h4>Cars:</h4>\n        <div *ngFor=\"let car of cars\">\n          {{ car['brand'] }} - {{ car['car_model'] }} {{ car['year'] }} - {{ car['car_type'] }}\n        </div>\n      </div>\n      <div class=\"my-2\">\n        <h4>Purchases:</h4>\n        <div *ngFor=\"let purchase of purchases\">\n          {{ purchase['car']['car_model'] }} - ${{ purchase['price'] }}\n        </div>\n      </div>\n    </div>\n  </div>\n  <div class=\"row mt-3\">\n    <form #useredit=\"ngForm\" (ngSubmit)=\"edit(useredit.value)\" enctype=\"multipart/form-data\">\n      <h2>Edit Profile</h2>\n      <div class=\"form-group\">\n        <label for=\"image\">Image</label>\n        <input type=\"file\" name=\"image\" (change)=\"handleFileInput($event.target.files)\">\n      </div>\n      <div class=\"form-group\">\n        <label for=\"email\">Email</label>\n        <input class=\"form-control\" name=\"email\" placeholder=\"email\" type=\"email\" [ngModel]=\"info['email']\">\n      </div>\n      <div class=\"form-group\">\n        <label for=\"first_name\">First name</label>\n        <input class=\"form-control\" name=\"first_name\" placeholder=\"first name\" type=\"text\"\n               [ngModel]=\"info['first_name']\">\n      </div>\n      <div class=\"form-group\">\n        <label for=\"last_name\">Last name</label>\n        <input class=\"form-control\" name=\"last_name\" placeholder=\"last name\" type=\"text\"\n               [ngModel]=\"info['last_name']\">\n      </div>\n      <button class=\"btn btn-primary my-2\" type=\"submit\">Save</button>\n    </form>\n  </div>\n</div>\n\n\n"
 
 /***/ }),
 
@@ -668,10 +663,28 @@ var ProfileComponent = /** @class */ (function () {
         this.apiService.getMe().subscribe(function (response) {
             _this.info = response;
             _this.image = _this.info['image'];
-            _this.car_set = _this.info['car_set'];
-            _this.purchase_set = _this.info['purchase_set'];
-            _this.info_keys = Object.keys(_this.info).filter(function (key) { return !['image', 'id', 'car_set', 'purchase_set', 'comment_set'].includes(key); });
+            _this.purchases = [];
+            var _loop_1 = function (i) {
+                _this.apiService.getItem('cars', i['car']).subscribe(function (response) {
+                    i['car'] = response;
+                    _this.purchases.push(i);
+                });
+            };
+            for (var _i = 0, _a = _this.info['purchase_set']; _i < _a.length; _i++) {
+                var i = _a[_i];
+                _loop_1(i);
+            }
+            _this.cars = [];
+            for (var _b = 0, _c = _this.info['car_set']; _b < _c.length; _b++) {
+                var i = _c[_b];
+                _this.apiService.getItem('cars', i).subscribe(function (response) {
+                    _this.cars.push(response);
+                });
+            }
+            _this.info_keys = Object.keys(_this.info).filter(function (key) { return !['image', 'id', 'car_set', 'purchase_set',].includes(key); });
             console.log(response);
+            console.log(_this.cars);
+            console.log(_this.purchases);
         });
     };
     ProfileComponent.prototype.edit = function (data) {
@@ -683,7 +696,7 @@ var ProfileComponent = /** @class */ (function () {
             form_data.append('image', this.file_to_upload);
         this.apiService.editMe(form_data).subscribe(function (response) {
             _this.info = response;
-            _this.info_keys = Object.keys(_this.info).filter(function (key) { return !['image', 'id', 'car_set', 'purchase_set', 'comment_set'].includes(key); });
+            _this.info_keys = Object.keys(_this.info).filter(function (key) { return !['image', 'id', 'car_set', 'purchase_set',].includes(key); });
             console.log(response);
         });
     };
@@ -761,7 +774,7 @@ var RegisterComponent = /** @class */ (function () {
             styles: [__webpack_require__("./src/app/register/register.component.css")]
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__api_service__["a" /* ApiService */],
-            __WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* Router */]])
+            __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */]])
     ], RegisterComponent);
     return RegisterComponent;
 }());

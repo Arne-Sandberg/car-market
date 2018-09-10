@@ -8,13 +8,8 @@ class RegSerializer(RegisterSerializer):
     email = serializers.EmailField(required=True)
 
 
-class CommentSerializer(serializers.ModelSerializer):
-    user = serializers.PrimaryKeyRelatedField(read_only=True, source='user.username')
-
-    class Meta:
-        model = models.Comment
-        fields = ['id', 'car', 'user', 'content', 'rating', 'date']
-        read_only_fields = ['user', 'date']
+class ColourSerializer(serializers.Serializer):
+    colour = serializers.CharField(read_only=True)
 
 
 class ImageSerializer(serializers.ModelSerializer):
@@ -27,19 +22,6 @@ class BrandSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Brand
         fields = ['id', 'name', 'owner']
-
-
-class CarSerializer(serializers.ModelSerializer):
-    user = serializers.PrimaryKeyRelatedField(read_only=True, source='user.username')
-    comment_set = CommentSerializer(many=True, read_only=True)
-    image_set = ImageSerializer(many=True, read_only=True)
-    brand = serializers.PrimaryKeyRelatedField(queryset=models.Brand.objects.all(), source='brand.name')
-
-    class Meta:
-        model = models.Car
-        fields = ['id', 'car_model', 'car_type', 'year', 'number_of_seats', 'colour', 'description', 'stock_count',
-                  'price', 'brand', 'is_advertised', 'user', 'comment_set', 'image_set']
-        read_only_fields = ['user', 'comment_set', 'image_set']
 
 
 class PurchaseSerializer(serializers.ModelSerializer):
@@ -62,15 +44,30 @@ class PurchaseSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     purchase_set = PurchaseSerializer(many=True, read_only=True)
-    car_set = CarSerializer(many=True, read_only=True)
-    comment_set = CommentSerializer(many=True, read_only=True)
 
     class Meta:
         model = models.User
-        fields = ['id', 'image', 'username', 'email', 'first_name', 'last_name', 'car_set', 'purchase_set',
-                  'comment_set']
-        read_only_fields = ['username', 'car_set', 'purchase_set', 'comment_set']
+        fields = ['id', 'image', 'username', 'email', 'first_name', 'last_name', 'car_set', 'purchase_set', ]
+        read_only_fields = ['username', 'car_set', 'purchase_set']
 
 
-class ColourSerializer(serializers.Serializer):
-    colour = serializers.CharField(read_only=True)
+class CommentSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+
+    class Meta:
+        model = models.Comment
+        fields = ['id', 'car', 'user', 'content', 'rating', 'date']
+        read_only_fields = ['user', 'date']
+
+
+class CarSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(read_only=True, source='user.username')
+    image_set = ImageSerializer(many=True, read_only=True)
+    brand = serializers.PrimaryKeyRelatedField(queryset=models.Brand.objects.all(), source='brand.name')
+    comment_set = CommentSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = models.Car
+        fields = ['id', 'car_model', 'car_type', 'year', 'number_of_seats', 'colour', 'description', 'stock_count',
+                  'price', 'brand', 'is_advertised', 'user', 'comment_set', 'image_set']
+        read_only_fields = ['user', 'comment_set', 'image_set']

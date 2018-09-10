@@ -3,7 +3,7 @@ webpackJsonp(["styles"],{
 /***/ "./node_modules/raw-loader/index.js!./node_modules/postcss-loader/lib/index.js??embedded!./src/styles.css":
 /***/ (function(module, exports) {
 
-module.exports = "/* You can add global styles to this file, and also import other style files */\n.main {\n    margin-top: 65px;\n    min-height: calc(95vh - 65px);\n}\nfooter {\n    min-height: 5vh;\n}\n.brand_img {\n    height: 180px;\n}\n.car_img {\n    height: 500px;\n}\n.comment_img {\n    width: 70px;\n    height: 70px;\n}\n.profile_img {\n    width: 200px;\n    height: 200px;\n}\n#slider-range-price{\n    margin-top: 15px;\n}\n.angular_brand_img{\n  height: 200px;\n}\n"
+module.exports = "/* You can add global styles to this file, and also import other style files */\n.main {\n    margin-top: 65px;\n    min-height: calc(95vh - 65px);\n}\nfooter {\n    min-height: 5vh;\n}\n.brand_img {\n    height: 180px;\n}\n.car_img {\n    height: 500px;\n}\n.comment_img {\n    width: 70px;\n    height: 70px;\n}\n.profile_img {\n    width: 200px;\n    height: 200px;\n}\n#slider-range-price{\n    margin-top: 15px;\n}\n.angular_brand_img{\n  height: 200px;\n}\n.angular_car_img{\n  height: 530px;\n}\n"
 
 /***/ }),
 
