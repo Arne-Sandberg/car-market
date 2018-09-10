@@ -24,6 +24,8 @@ webpackEmptyAsyncContext.id = "./src/$$_lazy_route_resource lazy recursive";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ApiService; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common_http__ = __webpack_require__("./node_modules/@angular/common/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators__ = __webpack_require__("./node_modules/rxjs/_esm5/operators.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__ = __webpack_require__("./node_modules/rxjs/_esm5/observable/of.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -35,45 +37,63 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+
+
 var ApiService = /** @class */ (function () {
     function ApiService(httpClient) {
         this.httpClient = httpClient;
         this.api_url = 'http://127.0.0.1:8000/api/v1/';
     }
-    ApiService.prototype.getList = function (list_name) {
-        return this.httpClient.get("" + this.api_url + list_name + "/");
+    ApiService.prototype.handleError = function (operation, result) {
+        if (operation === void 0) { operation = 'operation'; }
+        return function (error) {
+            console.log(operation + " failed: " + error.message);
+            console.log(error);
+            return Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__["a" /* of */])(result);
+        };
     };
-    ApiService.prototype.getItem = function (list_name, item_id) {
-        return this.httpClient.get("" + this.api_url + list_name + "/" + item_id + "/");
-    };
-    ApiService.prototype.getMe = function () {
-        return this.httpClient.get(this.api_url + "me/");
-    };
-    ApiService.prototype.editMe = function (data) {
-        return this.httpClient.put(this.api_url + "me/", data, { headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpHeaders */]({ 'X-CSRFTOKEN': this.getCsrfToken() }) });
-    };
-    ApiService.prototype.getCsrfToken = function () {
+    ApiService.prototype.getHttpOptions = function () {
         var cookies = document.cookie.split(';');
         for (var _i = 0, cookies_1 = cookies; _i < cookies_1.length; _i++) {
             var cookie = cookies_1[_i];
             cookie = cookie.trim();
             var re = new RegExp('^csrftoken=');
             if (re.test(cookie)) {
-                return cookie.substr(10, cookie.length);
+                return { headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpHeaders */]({ 'X-CSRFTOKEN': cookie.substr(10, cookie.length) }) };
             }
         }
     };
+    ApiService.prototype.getList = function (list_name) {
+        return this.httpClient.get("" + this.api_url + list_name + "/")
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["a" /* catchError */])(this.handleError("get " + list_name)));
+    };
+    ApiService.prototype.getItem = function (list_name, item_id) {
+        return this.httpClient.get("" + this.api_url + list_name + "/" + item_id + "/")
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["a" /* catchError */])(this.handleError("get " + list_name + "/" + item_id)));
+    };
+    ApiService.prototype.getMe = function () {
+        return this.httpClient.get(this.api_url + "me/")
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["a" /* catchError */])(this.handleError("get me")));
+    };
+    ApiService.prototype.editMe = function (data) {
+        return this.httpClient.put(this.api_url + "me/", data, this.getHttpOptions())
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["a" /* catchError */])(this.handleError("put me")));
+    };
     ApiService.prototype.createItem = function (list_name, data) {
-        return this.httpClient.post("" + this.api_url + list_name + "/", data, { headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpHeaders */]({ 'X-CSRFTOKEN': this.getCsrfToken() }) });
+        return this.httpClient.post("" + this.api_url + list_name + "/", data, this.getHttpOptions())
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["a" /* catchError */])(this.handleError("post " + list_name)));
     };
     ApiService.prototype.register = function (data) {
-        return this.httpClient.post(this.api_url + "register/", data, { headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpHeaders */]({ 'X-CSRFTOKEN': this.getCsrfToken() }) });
+        return this.httpClient.post(this.api_url + "register/", data, this.getHttpOptions())
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["a" /* catchError */])(this.handleError("post register ")));
     };
     ApiService.prototype.login = function (data) {
-        return this.httpClient.post(this.api_url + "login/", data, { headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpHeaders */]({ 'X-CSRFTOKEN': this.getCsrfToken() }) });
+        return this.httpClient.post(this.api_url + "login/", data, this.getHttpOptions())
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["a" /* catchError */])(this.handleError("post login")));
     };
     ApiService.prototype.logout = function () {
-        return this.httpClient.post(this.api_url + "logout/", null, { headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpHeaders */]({ 'X-CSRFTOKEN': this.getCsrfToken() }) });
+        return this.httpClient.post(this.api_url + "logout/", null, this.getHttpOptions())
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["a" /* catchError */])(this.handleError("post logout")));
     };
     ApiService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])(),
@@ -281,7 +301,7 @@ module.exports = ""
 /***/ "./src/app/car/car.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\" *ngIf=\"item\">\n  <div class=\"col-lg\">\n    <div class=\"card\">\n      <slideshow [imageUrls]=\"images\" [height]=\"'530px'\" [autoPlay]=\"true\"\n                 *ngIf=\"images.length > 1\"></slideshow>\n      <img [src]=\"images[0]\" class=\"angular_car_img\" *ngIf=\"images.length == 1\">\n      <img src=\"static/images/no-image.jpg\" class=\"angular_car_img\" *ngIf=\"!images.length\">\n      <div class=\"card-body\">\n        <p *ngFor=\"let key of item_keys\">\n          <b>{{ key }}</b>: {{ item[key] }}\n        </p>\n      </div>\n    </div>\n    <div class=\"container my-4\">\n      <h3>Comments:</h3>\n      <div class=\"media my-3\" *ngFor=\"let comment of comments\">\n        <a routerLink=\"/users/{{ comment.user.id }}\">\n          <img class=\"comment_img img-thumbnail\" [src]=\"comment['user']['image']\" *ngIf=\"comment.user.image\">\n          <img class=\"comment_img img-thumbnail\" src=\"static/images/default_user.png\" *ngIf=\"!comment.user.image\">\n        </a>\n        <div class=\"media-body p-0 pl-2\" data-id=\"{{ comment.id }}\">\n          <a routerLink=\"/users/{{ comment.user.id }}\"><b>{{ comment.user.username }}</b></a>:\n          <b id=\"comment_rating\">{{ comment.rating }}</b>★\n          <small>{{ comment.date }}</small>\n          <!--{% if comment.user == request.user %}\n                    {% if comment.id == editing_comment_id %}\n                        editing...\n                    {% else %}\n                        <a href=\"#user_comment\" class=\"edit_comment\">edit</a> |\n                        <a href=\"#comments\" class=\"delete_comment\">delete</a>\n                    {% endif %}\n                {% endif %}-->\n          <p id=\"comment_content\">{{ comment.content }}</p>\n        </div>\n        <hr>\n      </div>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<div class=\"row\" *ngIf=\"car\">\n  <div class=\"col-lg\">\n    <div class=\"card\">\n      <slideshow [imageUrls]=\"images\" [height]=\"'530px'\" [autoPlay]=\"true\"\n                 *ngIf=\"images.length > 1\"></slideshow>\n      <img [src]=\"images[0]\" class=\"angular_car_img\" *ngIf=\"images.length == 1\">\n      <img src=\"static/images/no-image.jpg\" class=\"angular_car_img\" *ngIf=\"!images.length\">\n      <div class=\"card-body\">\n        <p *ngFor=\"let key of item_keys\">\n          <b>{{ key }}</b>: {{ car[key] }}\n        </p>\n      </div>\n    </div>\n    <div class=\"container my-4\">\n      <h3>Comments:</h3>\n      <div class=\"media my-3\" *ngFor=\"let comment of comments\">\n        <a routerLink=\"/users/{{ comment.user.id }}\">\n          <img class=\"comment_img img-thumbnail\" [src]=\"comment['user']['image']\" *ngIf=\"comment.user.image\">\n          <img class=\"comment_img img-thumbnail\" src=\"static/images/default_user.png\" *ngIf=\"!comment.user.image\">\n        </a>\n        <div class=\"media-body p-0 pl-2\" data-id=\"{{ comment.id }}\">\n          <a routerLink=\"/users/{{ comment.user.id }}\"><b>{{ comment.user.username }}</b></a>:\n          <b id=\"comment_rating\">{{ comment.rating }}</b>★\n          <small>{{ comment.date }}</small>\n          <!--{% if comment.user == request.user %}\n                    {% if comment.id == editing_comment_id %}\n                        editing...\n                    {% else %}\n                        <a href=\"#user_comment\" class=\"edit_comment\">edit</a> |\n                        <a href=\"#comments\" class=\"delete_comment\">delete</a>\n                    {% endif %}\n                {% endif %}-->\n          <p id=\"comment_content\">{{ comment.content }}</p>\n        </div>\n        <hr>\n      </div>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -316,17 +336,17 @@ var CarComponent = /** @class */ (function () {
     CarComponent.prototype.getItem = function () {
         var _this = this;
         this.apiService.getItem('cars', this.route.snapshot.paramMap.get('id')).subscribe(function (response) {
-            _this.item = response;
-            if (_this.item) {
-                _this.item_keys = Object.keys(_this.item).filter(function (key) { return !['id', 'image_set', 'comment_set'].includes(key); });
+            console.log(response);
+            _this.car = response;
+            if (_this.car) {
+                _this.item_keys = Object.keys(_this.car).filter(function (key) { return !['id', 'image_set', 'comment_set'].includes(key); });
                 _this.images = [];
-                for (var _i = 0, _a = _this.item['image_set']; _i < _a.length; _i++) {
+                for (var _i = 0, _a = _this.car['image_set']; _i < _a.length; _i++) {
                     var img = _a[_i];
                     _this.images.push(img['image']);
                 }
-                _this.comments = _this.item['comment_set'];
+                _this.comments = _this.car['comment_set'];
             }
-            console.log(response);
         });
     };
     CarComponent = __decorate([
@@ -396,9 +416,9 @@ var CarsComponent = /** @class */ (function () {
     CarsComponent.prototype.getList = function (list_name) {
         var _this = this;
         this.apiService.getList(list_name).subscribe(function (response) {
+            console.log(response);
             _this.list = response;
             _this.list_keys = _this.list.length ? Object.keys(_this.list[0]).filter(function (key) { return !['id', 'image_set', 'comment_set'].includes(key); }) : [];
-            console.log(response);
         });
     };
     CarsComponent = __decorate([
@@ -456,16 +476,16 @@ var CreateComponent = /** @class */ (function () {
     CreateComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.apiService.getList('colours').subscribe(function (response) {
-            _this.colours = response;
             console.log(response);
+            _this.colours = response;
         });
         this.apiService.getList('cars').subscribe(function (response) {
-            _this.cars = response;
             console.log(response);
+            _this.cars = response;
         });
         this.apiService.getList('brands').subscribe(function (response) {
-            _this.brands = response;
             console.log(response);
+            _this.brands = response;
         });
     };
     CreateComponent.prototype.createItem = function (data) {
@@ -537,7 +557,7 @@ var LoginComponent = /** @class */ (function () {
         var _this = this;
         this.apiService.login(data).subscribe(function (response) {
             console.log(response);
-            _this.router.navigateByUrl('/');
+            _this.router.navigateByUrl('/profile');
         });
     };
     ;
@@ -567,7 +587,7 @@ module.exports = ""
 /***/ "./src/app/profile/profile.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-user [id]=\"info.id\"></app-user>\n<div class=\"row mt-3\" *ngIf=\"info\">\n  <form #useredit=\"ngForm\" (ngSubmit)=\"edit(useredit.value)\" enctype=\"multipart/form-data\">\n    <h2>Edit Profile</h2>\n    <div class=\"form-group\">\n      <label for=\"image\">Image</label>\n      <input type=\"file\" name=\"image\" (change)=\"handleFileInput($event.target.files)\">\n    </div>\n    <div class=\"form-group\">\n      <label for=\"email\">Email</label>\n      <input class=\"form-control\" name=\"email\" placeholder=\"email\" type=\"email\" [ngModel]=\"info.email\">\n    </div>\n    <div class=\"form-group\">\n      <label for=\"first_name\">First name</label>\n      <input class=\"form-control\" name=\"first_name\" placeholder=\"first name\" type=\"text\"\n             [ngModel]=\"info.first_name\">\n    </div>\n    <div class=\"form-group\">\n      <label for=\"last_name\">Last name</label>\n      <input class=\"form-control\" name=\"last_name\" placeholder=\"last name\" type=\"text\"\n             [ngModel]=\"info.last_name\">\n    </div>\n    <button class=\"btn btn-primary my-2\" type=\"submit\">Save</button>\n  </form>\n</div>\n\n\n"
+module.exports = "<div *ngIf=\"info\">\n  <app-user [id]=\"info.id\"></app-user>\n  <div class=\"row mt-3\">\n    <form #useredit=\"ngForm\" (ngSubmit)=\"edit(useredit.value)\" enctype=\"multipart/form-data\">\n      <h2>Edit Profile</h2>\n      <div class=\"form-group\">\n        <label for=\"image\">Image</label>\n        <input type=\"file\" name=\"image\" (change)=\"handleFileInput($event.target.files)\">\n      </div>\n      <div class=\"form-group\">\n        <label for=\"email\">Email</label>\n        <input class=\"form-control\" name=\"email\" placeholder=\"email\" type=\"email\" [ngModel]=\"info.email\">\n      </div>\n      <div class=\"form-group\">\n        <label for=\"first_name\">First name</label>\n        <input class=\"form-control\" name=\"first_name\" placeholder=\"first name\" type=\"text\"\n               [ngModel]=\"info.first_name\">\n      </div>\n      <div class=\"form-group\">\n        <label for=\"last_name\">Last name</label>\n        <input class=\"form-control\" name=\"last_name\" placeholder=\"last name\" type=\"text\"\n               [ngModel]=\"info.last_name\">\n      </div>\n      <button class=\"btn btn-primary my-2\" type=\"submit\">Save</button>\n    </form>\n  </div>\n</div>\n\n"
 
 /***/ }),
 
@@ -611,8 +631,8 @@ var ProfileComponent = /** @class */ (function () {
         if (this.file_to_upload)
             form_data.append('image', this.file_to_upload);
         this.apiService.editMe(form_data).subscribe(function (response) {
-            _this.info = response;
             console.log(response);
+            _this.info = response;
         });
     };
     ProfileComponent.prototype.handleFileInput = function (file) {
@@ -678,7 +698,7 @@ var RegisterComponent = /** @class */ (function () {
         var _this = this;
         this.apiService.register(data).subscribe(function (response) {
             console.log(response);
-            _this.router.navigateByUrl('/');
+            _this.router.navigateByUrl('/profile');
         });
     };
     ;
@@ -746,28 +766,30 @@ var UserComponent = /** @class */ (function () {
         if (!id)
             id = this.route.snapshot.paramMap.get('id');
         this.apiService.getItem('users', id).subscribe(function (response) {
-            _this.info = response;
-            _this.image = _this.info['image'];
-            _this.purchases = [];
-            var _loop_1 = function (i) {
-                _this.apiService.getItem('cars', i['car']).subscribe(function (response) {
-                    i['car'] = response;
-                    _this.purchases.push(i);
-                });
-            };
-            for (var _i = 0, _a = _this.info['purchase_set']; _i < _a.length; _i++) {
-                var i = _a[_i];
-                _loop_1(i);
-            }
-            _this.cars = [];
-            for (var _b = 0, _c = _this.info['car_set']; _b < _c.length; _b++) {
-                var i = _c[_b];
-                _this.apiService.getItem('cars', i).subscribe(function (response) {
-                    _this.cars.push(response);
-                });
-            }
-            _this.info_keys = Object.keys(_this.info).filter(function (key) { return !['image', 'id', 'car_set', 'purchase_set',].includes(key); });
             console.log(response);
+            _this.info = response;
+            if (_this.info) {
+                _this.image = _this.info['image'];
+                _this.purchases = [];
+                var _loop_1 = function (i) {
+                    _this.apiService.getItem('cars', i['car']).subscribe(function (response) {
+                        i['car'] = response;
+                        _this.purchases.push(i);
+                    });
+                };
+                for (var _i = 0, _a = _this.info['purchase_set']; _i < _a.length; _i++) {
+                    var i = _a[_i];
+                    _loop_1(i);
+                }
+                _this.cars = [];
+                for (var _b = 0, _c = _this.info['car_set']; _b < _c.length; _b++) {
+                    var i = _c[_b];
+                    _this.apiService.getItem('cars', i).subscribe(function (response) {
+                        _this.cars.push(response);
+                    });
+                }
+                _this.info_keys = Object.keys(_this.info).filter(function (key) { return !['image', 'id', 'car_set', 'purchase_set',].includes(key); });
+            }
         });
     };
     __decorate([
