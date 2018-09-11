@@ -9,6 +9,7 @@ import {ApiService} from "../api.service";
 export class ProfileComponent implements OnInit {
   info: object;
   file_to_upload: File;
+  error: object;
 
   constructor(private apiService: ApiService) {
   }
@@ -32,7 +33,10 @@ export class ProfileComponent implements OnInit {
       form_data.append('image', this.file_to_upload);
     this.apiService.editMe(form_data).subscribe((response: object) => {
       console.log(response);
-      this.info = response;
+      if (response)
+        this.info = response;
+      else
+        this.error = this.apiService.log.pop();
     });
   }
 

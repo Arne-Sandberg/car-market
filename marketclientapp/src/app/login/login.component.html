@@ -2,7 +2,7 @@
   <div class="col-lg">
     <form #userlogin="ngForm" (ngSubmit)="login(userlogin.value)">
       <h2>Login</h2>
-      <span class="error" *ngIf="error">{{ error.non_field_errors }}</span>
+      <span class="error" *ngIf="error && error.non_field_errors">{{ error.non_field_errors }}</span>
       <div class="form-group">
         <label for="username">Username</label>
         <input class="form-control mb-2" name="username" id="username" placeholder="username" type="text" ngModel>
