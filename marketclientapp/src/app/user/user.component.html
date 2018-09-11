@@ -1,0 +1,38 @@
+<div class="row" *ngIf="info">
+  <div class="col-lg-3">
+    <div class="card p-2">
+      <img *ngIf="info.image" class="profile_img mx-auto thumbnail rounded" [src]="info.image">
+      <img *ngIf="!info.image" class="profile_img mx-auto thumbnail rounded" src="static/images/default_user.png">
+    </div>
+  </div>
+  <div class="col-lg-3">
+    <div class="my-2">
+      <h4>Personal information:</h4>
+      <div *ngFor="let key of infoKeys" class="my-2">
+        <b>{{ key }}:</b> {{ info[key] }}
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="my-2">
+      <h4>Cars:</h4>
+      <div *ngFor="let car of cars">
+        <a routerLink="/cars/{{ car.id }}">
+          {{ car.brand }} - {{ car.car_model }} {{ car.year }} - {{ car.car_type }}
+        </a>
+      </div>
+    </div>
+    <div class="my-2">
+      <h4>Purchases:</h4>
+      <div *ngFor="let purchase of purchases">
+        {{ purchase.car.car_model }} - ${{ purchase.price }}
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row" *ngIf="error">
+  <div class="col-lg">
+    <h3>Errors:</h3>
+    {{ error.detail }}
+  </div>
+</div>

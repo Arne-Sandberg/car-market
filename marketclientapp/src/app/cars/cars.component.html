@@ -1,0 +1,18 @@
+<div class="row my-4">
+  <div class="col-lg-4 mb-4" *ngFor="let item of list">
+    <div class="card h-100">
+      <a routerLink="/cars/{{ item.id }}">
+        <slideshow [imageUrls]="getImageArray(item)" [height]="'200px'" [autoPlay]="true"
+                   *ngIf="item.image_set.length > 1"></slideshow>
+        <img [src]="item.image_set[0].image" class="angular_brand_img" *ngIf="item.image_set.length == 1">
+        <img src="static/images/no-image.jpg" class="angular_brand_img" *ngIf="!item.image_set.length">
+      </a>
+      <div class="card-body">
+        <p *ngFor="let key of list_keys">
+          <b>{{ key }}</b>: {{ (item[key].length > 256)? (item[key] | slice:0:256) + '...': item[key] }}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+

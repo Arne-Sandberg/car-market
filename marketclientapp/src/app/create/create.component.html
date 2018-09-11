@@ -1,0 +1,118 @@
+<form (ngSubmit)="showForm(list_name.value)">
+  <label for="list">Select item to create:</label>
+  <select class="form-control mb-2" name="list" id="list" required #list_name>
+    <option *ngFor="let name of listArr" [value]="name">
+      {{ name }}
+    </option>
+  </select>
+  <button class="btn btn-primary" type="submit">Show</button>
+</form>
+<div class="row my-4">
+  <div class="col-lg">
+
+    <form *ngIf="formName == 'cars'" #car_create="ngForm" (ngSubmit)="createItem(car_create.value)">
+      <h2>Create car</h2>
+      <div class="form-group row">
+        <label for="car_model" class="col-lg-2 col-form-label">Model</label>
+        <div class="col-lg-10">
+          <input class="form-control mb-2" name="car_model" id="car_model" placeholder="model" type="text" ngModel>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="car_type" class="col-lg-2 col-form-label">Type</label>
+        <div class="col-lg-10">
+          <input class="form-control mb-2" name="car_type" id="car_type" placeholder="type" type="text" ngModel>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="year" class="col-lg-2 col-form-label">Year</label>
+        <div class="col-lg-10">
+          <input class="form-control mb-2" name="year" id="year" placeholder="year" type="number" ngModel>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="number_of_seats" class="col-lg-2 col-form-label">Number of seats</label>
+        <div class="col-lg-10">
+          <input class="form-control mb-2" name="number_of_seats" id="number_of_seats" placeholder="number of seats"
+                 type="number" ngModel>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="colour" class="col-lg-2 col-form-label">Colour</label>
+        <div class="col-lg-10">
+          <select class="form-control mb-2" name="colour" id="colour" [ngModel]>
+            <option *ngFor="let item of colours" [ngValue]="item.colour">
+              {{ item.colour }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="description" class="col-lg-2 col-form-label">Description</label>
+        <div class="col-lg-10">
+          <textarea class="form-control mb-2" name="description" id="description" placeholder="description" cols="3"
+                    ngModel></textarea>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="stock_count" class="col-lg-2 col-form-label">Stock count</label>
+        <div class="col-lg-10">
+          <input class="form-control mb-2" name="stock_count" id="stock_count" placeholder="stock count" type="number"
+                 ngModel>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="price" class="col-lg-2 col-form-label">Price</label>
+        <div class="col-lg-10">
+          <input class="form-control mb-2" name="price" id="price" placeholder="price" type="number" ngModel>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="brand" class="col-lg-2 col-form-label">Brand</label>
+        <div class="col-lg-10">
+          <select class="form-control mb-2" name="brand" id="brand" [ngModel]>
+            <option *ngFor="let item of brands" [ngValue]="item.id">
+              {{ item.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="is_advertised" class="col-lg-2 col-form-label">Is advertised</label>
+        <div class="col-lg-10">
+          <input class="mb-2" name="is_advertised" id="is_advertised" type="checkbox" ngModel>
+        </div>
+      </div>
+      <button class="btn btn-primary" type="submit">Submit</button>
+    </form>
+
+    <form *ngIf="formName == 'comments'" #comment_create="ngForm" (ngSubmit)="createItem(comment_create.value)">
+      <h2>Create comment</h2>
+      <div class="form-group row">
+        <label for="car" class="col-lg-2 col-form-label">Car</label>
+        <div class="col-lg-10">
+          <select class="form-control mb-2" name="car" id="car" [ngModel]>
+            <option *ngFor="let item of cars" [ngValue]="item.id">
+              {{ item.brand }} - {{ item.model }} {{ item.year }} - {{ item.car_type }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="content" class="col-lg-2 col-form-label">Content</label>
+        <div class="col-lg-10">
+          <textarea class="form-control mb-2" name="content" id="content" placeholder="content" cols="3"
+                    ngModel></textarea>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="rating" class="col-lg-2 col-form-label">Rating</label>
+        <div class="col-lg-10">
+          <input class="form-control mb-2" name="rating" id="rating" placeholder="rating" type="number" ngModel>
+        </div>
+      </div>
+      <button class="btn btn-primary" type="submit">Submit</button>
+    </form>
+  </div>
+</div>
+

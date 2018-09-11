@@ -1,0 +1,39 @@
+<div class="row" *ngIf="car">
+  <div class="col-lg">
+    <div class="card">
+      <slideshow [imageUrls]="images" [height]="'530px'" [autoPlay]="true"
+                 *ngIf="images.length > 1"></slideshow>
+      <img [src]="images[0]" class="angular_car_img" *ngIf="images.length == 1">
+      <img src="static/images/no-image.jpg" class="angular_car_img" *ngIf="!images.length">
+      <div class="card-body">
+        <p *ngFor="let key of item_keys">
+          <b>{{ key }}</b>: {{ car[key] }}
+        </p>
+      </div>
+    </div>
+    <div class="container my-4">
+      <h3>Comments:</h3>
+      <div class="media my-3" *ngFor="let comment of comments">
+        <a routerLink="/users/{{ comment.user.id }}">
+          <img class="comment_img img-thumbnail" [src]="comment['user']['image']" *ngIf="comment.user.image">
+          <img class="comment_img img-thumbnail" src="static/images/default_user.png" *ngIf="!comment.user.image">
+        </a>
+        <div class="media-body p-0 pl-2" data-id="{{ comment.id }}">
+          <a routerLink="/users/{{ comment.user.id }}"><b>{{ comment.user.username }}</b></a>:
+          <b id="comment_rating">{{ comment.rating }}</b>★
+          <small>{{ comment.date }}</small>
+          <!--{% if comment.user == request.user %}
+                    {% if comment.id == editing_comment_id %}
+                        editing...
+                    {% else %}
+                        <a href="#user_comment" class="edit_comment">edit</a> |
+                        <a href="#comments" class="delete_comment">delete</a>
+                    {% endif %}
+                {% endif %}-->
+          <p id="comment_content">{{ comment.content }}</p>
+        </div>
+        <hr>
+      </div>
+    </div>
+  </div>
+</div>
