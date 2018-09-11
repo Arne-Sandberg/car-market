@@ -1,5 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-@import "../../marketapp/static/css/style.css";
+@import "../../static/css/style.css";
 .angular_brand_img{
   height: 200px;
 }
