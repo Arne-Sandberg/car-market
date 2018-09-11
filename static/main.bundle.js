@@ -43,12 +43,15 @@ var ApiService = /** @class */ (function () {
     function ApiService(httpClient) {
         this.httpClient = httpClient;
         this.api_url = 'http://127.0.0.1:8000/api/v1/';
+        this.log = [];
     }
     ApiService.prototype.handleError = function (operation, result) {
+        var _this = this;
         if (operation === void 0) { operation = 'operation'; }
-        return function (error) {
-            console.log(operation + " failed: " + error.message);
-            console.log(error);
+        return function (response) {
+            console.log(operation + " failed: " + response.message);
+            console.log(response);
+            _this.log.push(response.error);
             return Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__["a" /* of */])(result);
         };
     };
@@ -446,7 +449,7 @@ module.exports = ""
 /***/ "./src/app/create/create.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form (ngSubmit)=\"showForm(list_name.value)\">\n  <label for=\"list\">Select item to create:</label>\n  <select class=\"form-control mb-2\" name=\"list\" required #list_name>\n    <option *ngFor=\"let name of list_names\" [value]=\"name\">\n      {{ name }}\n    </option>\n  </select>\n  <button class=\"btn btn-primary\" type=\"submit\">Show</button>\n</form>\n<div class=\"row my-4\">\n  <div class=\"col-lg\">\n\n    <form *ngIf=\"form_name == 'cars'\" #car_create=\"ngForm\" (ngSubmit)=\"createItem(car_create.value)\">\n      <h2>Create car</h2>\n      <div class=\"form-group row\">\n        <label for=\"car_model\" class=\"col-lg-2 col-form-label\">Model</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"car_model\" placeholder=\"model\" type=\"text\" ngModel>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"car_type\" class=\"col-lg-2 col-form-label\">Type</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"car_type\" placeholder=\"type\" type=\"text\" ngModel>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"year\" class=\"col-lg-2 col-form-label\">Year</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"year\" placeholder=\"year\" type=\"number\" ngModel>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"number_of_seats\" class=\"col-lg-2 col-form-label\">Number of seats</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"number_of_seats\" placeholder=\"number of seats\" type=\"number\" ngModel>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"colour\" class=\"col-lg-2 col-form-label\">Colour</label>\n        <div class=\"col-lg-10\">\n          <select class=\"form-control mb-2\" name=\"colour\" [ngModel]>\n            <option *ngFor=\"let item of colours\" [ngValue]=\"item.colour\">\n              {{ item.colour }}\n            </option>\n          </select>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"description\" class=\"col-lg-2 col-form-label\">Description</label>\n        <div class=\"col-lg-10\">\n          <textarea class=\"form-control mb-2\" name=\"description\" placeholder=\"description\" cols=\"3\" ngModel></textarea>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"stock_count\" class=\"col-lg-2 col-form-label\">Stock count</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"stock_count\" placeholder=\"stock count\" type=\"number\" ngModel>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"price\" class=\"col-lg-2 col-form-label\">Price</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"price\" placeholder=\"price\" type=\"number\" ngModel>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"brand\" class=\"col-lg-2 col-form-label\">Brand</label>\n        <div class=\"col-lg-10\">\n          <select class=\"form-control mb-2\" name=\"brand\" [ngModel]>\n            <option *ngFor=\"let item of brands\" [ngValue]=\"item.id\">\n              {{ item.name }}\n            </option>\n          </select>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"is_advertised\" class=\"col-lg-2 col-form-label\">Is advertised</label>\n        <div class=\"col-lg-10\">\n          <input class=\"mb-2\" name=\"is_advertised\" type=\"checkbox\" ngModel>\n        </div>\n      </div>\n      <button class=\"btn btn-primary\" type=\"submit\">Submit</button>\n    </form>\n\n    <form *ngIf=\"form_name == 'comments'\" #comment_create=\"ngForm\" (ngSubmit)=\"createItem(comment_create.value)\">\n      <h2>Create comment</h2>\n      <div class=\"form-group row\">\n        <label for=\"car\" class=\"col-lg-2 col-form-label\">Car</label>\n        <div class=\"col-lg-10\">\n          <select class=\"form-control mb-2\" name=\"car\" [ngModel]>\n            <option *ngFor=\"let item of cars\" [ngValue]=\"item.id\">\n              {{ item.brand }} - {{ item.model }} {{ item.year }} - {{ item.car_type }}\n            </option>\n          </select>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"content\" class=\"col-lg-2 col-form-label\">Content</label>\n        <div class=\"col-lg-10\">\n          <textarea class=\"form-control mb-2\" name=\"content\" placeholder=\"content\" cols=\"3\" ngModel></textarea>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"rating\" class=\"col-lg-2 col-form-label\">Rating</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"rating\" placeholder=\"rating\" type=\"number\" ngModel>\n        </div>\n      </div>\n      <button class=\"btn btn-primary\" type=\"submit\">Submit</button>\n    </form>\n  </div>\n</div>\n\n"
+module.exports = "<form (ngSubmit)=\"showForm(list_name.value)\">\n  <label for=\"list\">Select item to create:</label>\n  <select class=\"form-control mb-2\" name=\"list\" id=\"list\" required #list_name>\n    <option *ngFor=\"let name of listArr\" [value]=\"name\">\n      {{ name }}\n    </option>\n  </select>\n  <button class=\"btn btn-primary\" type=\"submit\">Show</button>\n</form>\n<div class=\"row my-4\">\n  <div class=\"col-lg\">\n\n    <form *ngIf=\"formName == 'cars'\" #car_create=\"ngForm\" (ngSubmit)=\"createItem(car_create.value)\">\n      <h2>Create car</h2>\n      <div class=\"form-group row\">\n        <label for=\"car_model\" class=\"col-lg-2 col-form-label\">Model</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"car_model\" id=\"car_model\" placeholder=\"model\" type=\"text\" ngModel>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"car_type\" class=\"col-lg-2 col-form-label\">Type</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"car_type\" id=\"car_type\" placeholder=\"type\" type=\"text\" ngModel>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"year\" class=\"col-lg-2 col-form-label\">Year</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"year\" id=\"year\" placeholder=\"year\" type=\"number\" ngModel>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"number_of_seats\" class=\"col-lg-2 col-form-label\">Number of seats</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"number_of_seats\" id=\"number_of_seats\" placeholder=\"number of seats\"\n                 type=\"number\" ngModel>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"colour\" class=\"col-lg-2 col-form-label\">Colour</label>\n        <div class=\"col-lg-10\">\n          <select class=\"form-control mb-2\" name=\"colour\" id=\"colour\" [ngModel]>\n            <option *ngFor=\"let item of colours\" [ngValue]=\"item.colour\">\n              {{ item.colour }}\n            </option>\n          </select>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"description\" class=\"col-lg-2 col-form-label\">Description</label>\n        <div class=\"col-lg-10\">\n          <textarea class=\"form-control mb-2\" name=\"description\" id=\"description\" placeholder=\"description\" cols=\"3\"\n                    ngModel></textarea>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"stock_count\" class=\"col-lg-2 col-form-label\">Stock count</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"stock_count\" id=\"stock_count\" placeholder=\"stock count\" type=\"number\"\n                 ngModel>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"price\" class=\"col-lg-2 col-form-label\">Price</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"price\" id=\"price\" placeholder=\"price\" type=\"number\" ngModel>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"brand\" class=\"col-lg-2 col-form-label\">Brand</label>\n        <div class=\"col-lg-10\">\n          <select class=\"form-control mb-2\" name=\"brand\" id=\"brand\" [ngModel]>\n            <option *ngFor=\"let item of brands\" [ngValue]=\"item.id\">\n              {{ item.name }}\n            </option>\n          </select>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"is_advertised\" class=\"col-lg-2 col-form-label\">Is advertised</label>\n        <div class=\"col-lg-10\">\n          <input class=\"mb-2\" name=\"is_advertised\" id=\"is_advertised\" type=\"checkbox\" ngModel>\n        </div>\n      </div>\n      <button class=\"btn btn-primary\" type=\"submit\">Submit</button>\n    </form>\n\n    <form *ngIf=\"formName == 'comments'\" #comment_create=\"ngForm\" (ngSubmit)=\"createItem(comment_create.value)\">\n      <h2>Create comment</h2>\n      <div class=\"form-group row\">\n        <label for=\"car\" class=\"col-lg-2 col-form-label\">Car</label>\n        <div class=\"col-lg-10\">\n          <select class=\"form-control mb-2\" name=\"car\" id=\"car\" [ngModel]>\n            <option *ngFor=\"let item of cars\" [ngValue]=\"item.id\">\n              {{ item.brand }} - {{ item.model }} {{ item.year }} - {{ item.car_type }}\n            </option>\n          </select>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"content\" class=\"col-lg-2 col-form-label\">Content</label>\n        <div class=\"col-lg-10\">\n          <textarea class=\"form-control mb-2\" name=\"content\" id=\"content\" placeholder=\"content\" cols=\"3\"\n                    ngModel></textarea>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"rating\" class=\"col-lg-2 col-form-label\">Rating</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"rating\" id=\"rating\" placeholder=\"rating\" type=\"number\" ngModel>\n        </div>\n      </div>\n      <button class=\"btn btn-primary\" type=\"submit\">Submit</button>\n    </form>\n  </div>\n</div>\n\n"
 
 /***/ }),
 
@@ -471,7 +474,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var CreateComponent = /** @class */ (function () {
     function CreateComponent(apiService) {
         this.apiService = apiService;
-        this.list_names = ['cars', 'comments'];
+        this.listArr = ['cars', 'comments'];
     }
     CreateComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -489,12 +492,12 @@ var CreateComponent = /** @class */ (function () {
         });
     };
     CreateComponent.prototype.createItem = function (data) {
-        this.apiService.createItem(this.form_name, data).subscribe((function (response) {
+        this.apiService.createItem(this.formName, data).subscribe((function (response) {
             console.log(response);
         }));
     };
     CreateComponent.prototype.showForm = function (list_name) {
-        this.form_name = list_name;
+        this.formName = list_name;
     };
     CreateComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
@@ -521,7 +524,7 @@ module.exports = ""
 /***/ "./src/app/login/login.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\n  <div class=\"col-lg\">\n    <form #userlogin=\"ngForm\" (ngSubmit)=\"login(userlogin.value)\">\n      <h2>Login</h2>\n      <div class=\"form-group\">\n        <label for=\"username\">Username</label>\n        <input class=\"form-control mb-2\" name=\"username\" placeholder=\"username\" type=\"text\" ngModel>\n      </div>\n      <div class=\"form-group\">\n        <label for=\"password\">Password</label>\n        <input class=\"form-control mb-2\" name=\"password\" placeholder=\"password\" type=\"password\" ngModel>\n      </div>\n      <button class=\"btn btn-primary\" type=\"submit\">Login</button>\n    </form>\n  </div>\n</div>\n\n"
+module.exports = "<div class=\"row\">\n  <div class=\"col-lg\">\n    <form #userlogin=\"ngForm\" (ngSubmit)=\"login(userlogin.value)\">\n      <h2>Login</h2>\n      <span class=\"error\" *ngIf=\"error\">{{ error.non_field_errors }}</span>\n      <div class=\"form-group\">\n        <label for=\"username\">Username</label>\n        <input class=\"form-control mb-2\" name=\"username\" id=\"username\" placeholder=\"username\" type=\"text\" ngModel>\n      </div>\n      <div class=\"form-group\">\n        <label for=\"password\">Password</label>\n        <input class=\"form-control mb-2\" name=\"password\" id=\"password\" placeholder=\"password\" type=\"password\" ngModel>\n      </div>\n      <button class=\"btn btn-primary\" type=\"submit\">Login</button>\n    </form>\n  </div>\n</div>\n\n"
 
 /***/ }),
 
@@ -557,7 +560,10 @@ var LoginComponent = /** @class */ (function () {
         var _this = this;
         this.apiService.login(data).subscribe(function (response) {
             console.log(response);
-            _this.router.navigateByUrl('/profile');
+            if (response)
+                _this.router.navigateByUrl('/profile');
+            else
+                _this.error = _this.apiService.log.pop();
         });
     };
     ;
@@ -663,7 +669,7 @@ module.exports = ""
 /***/ "./src/app/register/register.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\n  <div class=\"col-lg\">\n    <form #userregister=\"ngForm\" (ngSubmit)=\"register(userregister.value)\">\n      <h2>Register</h2>\n      <div class=\"form-group\">\n        <label for=\"username\">Username</label>\n        <input class=\"form-control\" name=\"username\" placeholder=\"username\" type=\"text\" ngModel>\n      </div>\n      <div class=\"form-group\">\n        <label for=\"email\">Email</label>\n        <input class=\"form-control\" name=\"email\" placeholder=\"email\" type=\"email\" ngModel>\n      </div>\n      <div class=\"form-group\">\n        <label for=\"password1\">Password</label>\n        <input class=\"form-control\" name=\"password1\" placeholder=\"password\" type=\"password\" ngModel>\n      </div>\n      <div class=\"form-group\">\n        <label for=\"password2\">Confirm password</label>\n        <input class=\"form-control\" name=\"password2\" placeholder=\"confirm password\" type=\"password\" ngModel>\n      </div>\n      <button class=\"btn btn-primary my-2\" type=\"submit\">Register</button>\n    </form>\n  </div>\n</div>\n\n"
+module.exports = "<div class=\"row\">\n  <div class=\"col-lg\">\n    <form #userregister=\"ngForm\" (ngSubmit)=\"register(userregister.value)\">\n      <h2>Register</h2>\n      <div class=\"form-group\">\n        <label for=\"username\">Username</label>\n        <input class=\"form-control\" name=\"username\" placeholder=\"username\" type=\"text\" ngModel>\n        <span class=\"error\" *ngIf=\"error && error.username\">{{ error.username }}</span>\n      </div>\n      <div class=\"form-group\">\n        <label for=\"email\">Email</label>\n        <input class=\"form-control\" name=\"email\" placeholder=\"email\" type=\"email\" ngModel>\n        <span class=\"error\" *ngIf=\"error && error.password1\">{{ error.password1 }}</span>\n      </div>\n      <div class=\"form-group\">\n        <label for=\"password1\">Password</label>\n        <input class=\"form-control\" name=\"password1\" placeholder=\"password\" type=\"password\" ngModel>\n        <span class=\"error\" *ngIf=\"error && error.email\">{{ error.email }}</span>\n      </div>\n      <div class=\"form-group\">\n        <label for=\"password2\">Confirm password</label>\n        <input class=\"form-control\" name=\"password2\" placeholder=\"confirm password\" type=\"password\" ngModel>\n        <span class=\"error\" *ngIf=\"error && error.non_field_errors\">{{ error.non_field_errors }}</span>\n        <span class=\"error\" *ngIf=\"error && error.password2\">{{ error.password2 }}</span>\n      </div>\n      <button class=\"btn btn-primary my-2\" type=\"submit\">Register</button>\n    </form>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -698,7 +704,11 @@ var RegisterComponent = /** @class */ (function () {
         var _this = this;
         this.apiService.register(data).subscribe(function (response) {
             console.log(response);
-            _this.router.navigateByUrl('/profile');
+            if (response)
+                _this.router.navigateByUrl('/profile');
+            else {
+                _this.error = _this.apiService.log.pop();
+            }
         });
     };
     ;
@@ -728,7 +738,7 @@ module.exports = ""
 /***/ "./src/app/user/user.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"info\">\n  <div class=\"row\">\n    <div class=\"col-lg-3\">\n      <div class=\"card p-2\">\n        <img *ngIf=\"info.image\" class=\"profile_img mx-auto thumbnail rounded\" [src]=\"info.image\">\n        <img *ngIf=\"!info.image\" class=\"profile_img mx-auto thumbnail rounded\" src=\"static/images/default_user.png\">\n      </div>\n    </div>\n    <div class=\"col-lg-3\">\n      <div class=\"my-2\">\n        <h4>Personal information:</h4>\n        <div *ngFor=\"let key of info_keys\" class=\"my-2\">\n          <b>{{ key }}:</b> {{ info[key] }}\n        </div>\n      </div>\n    </div>\n    <div class=\"col-lg-6\">\n      <div class=\"my-2\">\n        <h4>Cars:</h4>\n        <div *ngFor=\"let car of cars\">\n          <a routerLink=\"/cars/{{ car.id }}\">\n            {{ car.brand }} - {{ car.car_model }} {{ car.year }} - {{ car.car_type }}\n          </a>\n        </div>\n      </div>\n      <div class=\"my-2\">\n        <h4>Purchases:</h4>\n        <div *ngFor=\"let purchase of purchases\">\n          {{ purchase.car.car_model }} - ${{ purchase.price }}\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<div class=\"row\" *ngIf=\"info\">\n  <div class=\"col-lg-3\">\n    <div class=\"card p-2\">\n      <img *ngIf=\"info.image\" class=\"profile_img mx-auto thumbnail rounded\" [src]=\"info.image\">\n      <img *ngIf=\"!info.image\" class=\"profile_img mx-auto thumbnail rounded\" src=\"static/images/default_user.png\">\n    </div>\n  </div>\n  <div class=\"col-lg-3\">\n    <div class=\"my-2\">\n      <h4>Personal information:</h4>\n      <div *ngFor=\"let key of infoKeys\" class=\"my-2\">\n        <b>{{ key }}:</b> {{ info[key] }}\n      </div>\n    </div>\n  </div>\n  <div class=\"col-lg-6\">\n    <div class=\"my-2\">\n      <h4>Cars:</h4>\n      <div *ngFor=\"let car of cars\">\n        <a routerLink=\"/cars/{{ car.id }}\">\n          {{ car.brand }} - {{ car.car_model }} {{ car.year }} - {{ car.car_type }}\n        </a>\n      </div>\n    </div>\n    <div class=\"my-2\">\n      <h4>Purchases:</h4>\n      <div *ngFor=\"let purchase of purchases\">\n        {{ purchase.car.car_model }} - ${{ purchase.price }}\n      </div>\n    </div>\n  </div>\n</div>\n<div class=\"row\" *ngIf=\"error\">\n  <div class=\"col-lg\">\n    <h3>Errors:</h3>\n    {{ error.detail }}\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -762,34 +772,35 @@ var UserComponent = /** @class */ (function () {
     };
     UserComponent.prototype.getUser = function (id) {
         var _this = this;
-        if (id === void 0) { id = ''; }
         if (!id)
             id = this.route.snapshot.paramMap.get('id');
         this.apiService.getItem('users', id).subscribe(function (response) {
             console.log(response);
-            _this.info = response;
-            if (_this.info) {
+            if (response) {
+                _this.info = response;
                 _this.image = _this.info['image'];
                 _this.purchases = [];
-                var _loop_1 = function (i) {
-                    _this.apiService.getItem('cars', i['car']).subscribe(function (response) {
-                        i['car'] = response;
-                        _this.purchases.push(i);
+                var _loop_1 = function (purchase) {
+                    _this.apiService.getItem('cars', purchase['car']).subscribe(function (response) {
+                        purchase['car'] = response;
+                        _this.purchases.push(purchase);
                     });
                 };
                 for (var _i = 0, _a = _this.info['purchase_set']; _i < _a.length; _i++) {
-                    var i = _a[_i];
-                    _loop_1(i);
+                    var purchase = _a[_i];
+                    _loop_1(purchase);
                 }
                 _this.cars = [];
                 for (var _b = 0, _c = _this.info['car_set']; _b < _c.length; _b++) {
-                    var i = _c[_b];
-                    _this.apiService.getItem('cars', i).subscribe(function (response) {
+                    var car = _c[_b];
+                    _this.apiService.getItem('cars', car).subscribe(function (response) {
                         _this.cars.push(response);
                     });
                 }
-                _this.info_keys = Object.keys(_this.info).filter(function (key) { return !['image', 'id', 'car_set', 'purchase_set',].includes(key); });
+                _this.infoKeys = Object.keys(_this.info).filter(function (key) { return !['image', 'id', 'car_set', 'purchase_set',].includes(key); });
             }
+            else
+                _this.error = _this.apiService.log.pop();
         });
     };
     __decorate([
