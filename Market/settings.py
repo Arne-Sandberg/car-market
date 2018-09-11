@@ -149,6 +149,7 @@ ANGULAR_APP_DIR = os.path.join(BASE_DIR, 'marketclientapp/dist')
 
 STATICFILES_DIRS = [
     os.path.join(ANGULAR_APP_DIR),
+    os.path.join(BASE_DIR, 'marketapp/static')
 ]
 
 MEDIA_URL = '/media/'
