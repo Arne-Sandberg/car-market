@@ -1,8 +1,12 @@
+# IDEs and editors
 .idea
+
+# pycaches
 marketapp/__pycache__
 Market/__pycache__
+
+# media folder
 media
+
+# DB
 db.sqlite3
-static/admin
-static/debug_toolbar
-static/rest_framework
