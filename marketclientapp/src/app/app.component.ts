@@ -11,6 +11,7 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 export class AppComponent implements OnInit {
   url: string = 'http://127.0.0.1:8000/api/v1/logout';
   error: object;
+  isAuthenticated: boolean = false;
   modal;
 
   constructor(private apiService: ApiService,
@@ -19,6 +20,11 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.apiService.getMe().subscribe((response: object) => {
+      console.log(response);
+      if (response)
+        this.isAuthenticated = true;
+    });
   }
 
   public closeModal() {
@@ -37,6 +43,7 @@ export class AppComponent implements OnInit {
         this.closeModal();
         this.error = null;
         this.router.navigateByUrl('/profile');
+        this.isAuthenticated = true;
       }
       else
         this.error = this.apiService.log.pop();
@@ -50,6 +57,7 @@ export class AppComponent implements OnInit {
         this.closeModal();
         this.error = null;
         this.router.navigateByUrl('/profile');
+        this.isAuthenticated = true;
       }
       else {
         this.error = this.apiService.log.pop();
@@ -60,6 +68,7 @@ export class AppComponent implements OnInit {
   public logout(): void {
     this.apiService.logout().subscribe((response) => {
       console.log(response);
+      this.isAuthenticated = false;
     });
   }
 }
