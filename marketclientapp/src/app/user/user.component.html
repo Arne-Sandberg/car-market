@@ -1,10 +1,46 @@
+<ng-template #editProfileModal>
+  <div class="modal-header">
+    <h2 class="modal-title">Edit profile</h2>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #userEdit="ngForm" enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="image">Image</label>
+        <input type="file" name="image" id="image" (change)="handleFileInput($event.target.files)">
+      </div>
+      <span class="error" *ngIf="error && error.image"><small>{{ error.image }}</small></span>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input class="form-control" name="email" id="email" placeholder="email" type="email" [ngModel]="info.email">
+        <span class="error" *ngIf="error && error.email"><small>{{ error.email }}</small></span>
+      </div>
+      <div class="form-group">
+        <label for="first_name">First name</label>
+        <input class="form-control" name="first_name" id="first_name" placeholder="first name" type="text"
+               [ngModel]="info.first_name">
+      </div>
+      <div class="form-group">
+        <label for="last_name">Last name</label>
+        <input class="form-control" name="last_name" id="last_name" placeholder="last name" type="text"
+               [ngModel]="info.last_name">
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="edit(userEdit.value)">Save</button>
+  </div>
+</ng-template>
+
 <div class="row" *ngIf="info">
   <div class="col-lg-3">
     <div class="card p-2">
       <img *ngIf="info.image" class="profile_img mx-auto thumbnail rounded" [src]="info.image">
       <img *ngIf="!info.image" class="profile_img mx-auto thumbnail rounded" src="static/images/default_user.png">
       <div class="card-body" *ngIf="owner">
-        <a routerLink="/edit-profile">Edit profile</a>
+        <a (click)="openModal(editProfileModal)">Edit profile</a>
       </div>
     </div>
   </div>
@@ -47,7 +83,8 @@
     </div>
   </div>
 </div>
-<div class="row" *ngIf="error">
+
+<div class="row" *ngIf="error && error.detail">
   <div class="col-lg">
     <h3>Errors:</h3>
     {{ error.detail }}
