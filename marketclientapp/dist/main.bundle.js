@@ -225,10 +225,10 @@ var AppComponent = /** @class */ (function () {
         this.apiService.login(data).subscribe(function (response) {
             console.log(response);
             if (response) {
+                _this.isAuthenticated = true;
                 _this.closeModal();
                 _this.error = null;
                 _this.router.navigateByUrl('/profile');
-                _this.isAuthenticated = true;
             }
             else
                 _this.error = _this.apiService.log.pop();
@@ -240,10 +240,10 @@ var AppComponent = /** @class */ (function () {
         this.apiService.register(data).subscribe(function (response) {
             console.log(response);
             if (response) {
+                _this.isAuthenticated = true;
                 _this.closeModal();
                 _this.error = null;
                 _this.router.navigateByUrl('/profile');
-                _this.isAuthenticated = true;
             }
             else {
                 _this.error = _this.apiService.log.pop();
@@ -255,7 +255,8 @@ var AppComponent = /** @class */ (function () {
         var _this = this;
         this.apiService.logout().subscribe(function (response) {
             console.log(response);
-            _this.isAuthenticated = false;
+            if (response)
+                _this.isAuthenticated = false;
         });
     };
     AppComponent = __decorate([
@@ -356,7 +357,7 @@ module.exports = ""
 /***/ "./src/app/car/car.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\" *ngIf=\"car\">\n  <div class=\"col-lg-9 mx-auto\">\n    <div class=\"card\">\n      <ngb-carousel *ngIf=\"car.image_set.length\">\n        <ng-template ngbSlide *ngFor=\"let img of car.image_set\">\n          <img [src]=\"img.image\" alt=\"slide\" class=\"car_img w-100 rounded\" *ngIf=\"car.image_set.length\">\n        </ng-template>\n      </ngb-carousel>\n      <img src=\"static/images/no-image.jpg\" alt=\"slide\" class=\"car_img w-100 rounded\"\n           *ngIf=\"!car.image_set.length\">\n      <div class=\"card-body\">\n        <p *ngFor=\"let key of item_keys\">\n          <b>{{ key }}</b>: {{ car[key] }}\n        </p>\n      </div>\n    </div>\n    <div class=\"container my-4\">\n      <h3>Comments:</h3>\n      <div class=\"media my-3\" *ngFor=\"let comment of comments\">\n        <a routerLink=\"/users/{{ comment.user.id }}\">\n          <img class=\"comment_img img-thumbnail\" [src]=\"comment['user']['image']\" *ngIf=\"comment.user.image\">\n          <img class=\"comment_img img-thumbnail\" src=\"static/images/default_user.png\" *ngIf=\"!comment.user.image\">\n        </a>\n        <div class=\"media-body p-0 pl-2\" data-id=\"{{ comment.id }}\">\n          <a routerLink=\"/users/{{ comment.user.id }}\"><b>{{ comment.user.username }}</b></a>:\n          <b id=\"comment_rating\">{{ comment.rating }}</b>★\n          <small>{{ comment.date }}</small>\n          <p id=\"comment_content\">{{ comment.content }}</p>\n        </div>\n        <hr>\n      </div>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<div class=\"row\" *ngIf=\"car\">\n  <div class=\"col-lg-9 mx-auto\">\n    <div class=\"card\">\n      <ngb-carousel *ngIf=\"car.image_set.length\">\n        <ng-template ngbSlide *ngFor=\"let img of car.image_set\">\n          <img [src]=\"img.image\" alt=\"slide\" class=\"car_img w-100 rounded\" *ngIf=\"car.image_set.length\">\n        </ng-template>\n      </ngb-carousel>\n      <img src=\"static/images/no-image.jpg\" alt=\"slide\" class=\"car_img w-100 rounded\"\n           *ngIf=\"!car.image_set.length\">\n      <div class=\"card-body\">\n        <h3>{{ car.brand }} - {{ car.car_model }} - {{ car.car_type }} </h3>\n        <h4>${{ car.price }}</h4>\n        <p>{{ car.description }}</p>\n        <p><b>Year</b>: {{ car.year }}</p>\n        <p><b>Number of seats</b>: {{ car.number_of_seats }}</p>\n        <p><b>Colour</b>: {{ car.colour }}</p>\n        <p *ngIf=\"car.stock_count\"><b>Stock count</b>: {{ car.stock_count }}</p>\n        <p *ngIf=\"!car.stock_count\"><b>Out of stock</b></p>\n      </div>\n    </div>\n    <div class=\"container my-4\">\n      <h3>Comments:</h3>\n      <div class=\"media my-3\" *ngFor=\"let comment of comments\">\n        <a routerLink=\"/users/{{ comment.user.id }}\">\n          <img class=\"comment_img img-thumbnail\" [src]=\"comment['user']['image']\" *ngIf=\"comment.user.image\">\n          <img class=\"comment_img img-thumbnail\" src=\"static/images/default_user.png\" *ngIf=\"!comment.user.image\">\n        </a>\n        <div class=\"media-body p-0 pl-2\" data-id=\"{{ comment.id }}\">\n          <a routerLink=\"/users/{{ comment.user.id }}\"><b>{{ comment.user.username }}</b></a>:\n          <b id=\"comment_rating\">{{ comment.rating }}</b>★\n          <small>{{ comment.date }}</small>\n          <p id=\"comment_content\">{{ comment.content }}</p>\n        </div>\n        <hr>\n      </div>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -394,7 +395,6 @@ var CarComponent = /** @class */ (function () {
             console.log(response);
             _this.car = response;
             if (_this.car) {
-                _this.item_keys = Object.keys(_this.car).filter(function (key) { return !['id', 'image_set', 'comment_set'].includes(key); });
                 _this.comments = _this.car['comment_set'];
             }
         });
@@ -425,7 +425,7 @@ module.exports = ""
 /***/ "./src/app/cars/cars.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row my-4\" *ngIf=\"cars\">\n  <div class=\"col-lg-4 mb-4\" *ngFor=\"let car of cars\">\n    <div class=\"card h-100\">\n      <ngb-carousel *ngIf=\"car.image_set.length\">\n        <ng-template ngbSlide *ngFor=\"let img of car.image_set\">\n          <a routerLink=\"/cars/{{ car.id }}\">\n            <img [src]=\"img.image\" alt=\"slide\" class=\"angular_brand_img w-100 rounded\">\n          </a>\n        </ng-template>\n      </ngb-carousel>\n      <a routerLink=\"/cars/{{ car.id }}\">\n        <img src=\"static/images/no-image.jpg\" alt=\"slide\" class=\"angular_brand_img w-100 rounded\"\n             *ngIf=\"!car.image_set.length\">\n      </a>\n      <div class=\"card-body\">\n        <p *ngFor=\"let key of carKeys\">\n          <b>{{ key }}</b>: {{ (car[key].length > 256)? (car[key] | slice:0:256) + '...': car[key] }}\n        </p>\n      </div>\n    </div>\n  </div>\n</div>\n\n"
+module.exports = "<div class=\"row my-4\" *ngIf=\"cars\">\n  <div class=\"col-lg-4 mb-4\" *ngFor=\"let car of cars\">\n    <div class=\"card h-100\">\n      <ngb-carousel *ngIf=\"car.image_set.length\">\n        <ng-template ngbSlide *ngFor=\"let img of car.image_set\">\n          <a routerLink=\"/cars/{{ car.id }}\">\n            <img [src]=\"img.image\" alt=\"slide\" class=\"angular_brand_img w-100 rounded\">\n          </a>\n        </ng-template>\n      </ngb-carousel>\n      <a routerLink=\"/cars/{{ car.id }}\">\n        <img src=\"static/images/no-image.jpg\" alt=\"slide\" class=\"angular_brand_img w-100 rounded\"\n             *ngIf=\"!car.image_set.length\">\n      </a>\n      <div class=\"card-body\">\n        <p><b>{{ car.brand }} - {{ car.car_model }} - {{ car.year }}</b></p>\n        <p><b>Type</b>: {{ car.car_type }}</p>\n        <p><b>Colour</b>: {{ car.colour }}</p>\n        <p>{{ (car.description.length > 256)? (car.description | slice:0:256) + '...': car.description }}</p>\n      </div>\n      <div class=\"card-footer\">\n        <p *ngIf=\"car.stock_count\"><b>Stock count</b>: {{ car.stock_count }}</p>\n        <p *ngIf=\"!car.stock_count\"><b>Out of stock</b></p>\n      </div>\n    </div>\n  </div>\n</div>\n\n"
 
 /***/ }),
 
@@ -454,23 +454,12 @@ var CarsComponent = /** @class */ (function () {
     CarsComponent.prototype.ngOnInit = function () {
         this.getCars();
     };
-    CarsComponent.prototype.getImageArray = function (obj) {
-        var res = [];
-        for (var _i = 0, _a = obj['image_set']; _i < _a.length; _i++) {
-            var img = _a[_i];
-            res.push(img['image']);
-        }
-        return res;
-    };
     CarsComponent.prototype.getCars = function () {
         var _this = this;
         this.apiService.getList('cars').subscribe(function (response) {
             console.log(response);
-            if (response) {
+            if (response)
                 _this.cars = response;
-                _this.carKeys = Object.keys(_this.cars[0])
-                    .filter(function (key) { return !['id', 'image_set', 'comment_set'].includes(key); });
-            }
         });
     };
     CarsComponent = __decorate([
@@ -635,7 +624,7 @@ module.exports = ""
 /***/ "./src/app/profile/profile.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"info\">\n  <app-user [id]=\"info.id\" [owner]=\"true\"></app-user>\n</div>\n\n"
+module.exports = "<div *ngIf=\"info\">\n  <app-user [info]=\"info\" [owner]=\"true\"></app-user>\n</div>\n<div *ngIf=\"!info\">\n  <h3>You have to log in or sign up first.</h3>\n</div>\n\n"
 
 /***/ }),
 
@@ -696,7 +685,7 @@ module.exports = ""
 /***/ "./src/app/user/user.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<ng-template #editProfileModal>\n  <div class=\"modal-header\">\n    <h2 class=\"modal-title\">Edit profile</h2>\n    <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"closeModal()\">\n      <span aria-hidden=\"true\">&times;</span>\n    </button>\n  </div>\n  <div class=\"modal-body\">\n    <form #userEdit=\"ngForm\" enctype=\"multipart/form-data\">\n      <div class=\"form-group\">\n        <label for=\"image\">Image</label>\n        <input type=\"file\" name=\"image\" id=\"image\" (change)=\"handleFileInput($event.target.files)\">\n      </div>\n      <span class=\"error\" *ngIf=\"error && error.image\"><small>{{ error.image }}</small></span>\n      <div class=\"form-group\">\n        <label for=\"email\">Email</label>\n        <input class=\"form-control\" name=\"email\" id=\"email\" placeholder=\"email\" type=\"email\" [ngModel]=\"info.email\">\n        <span class=\"error\" *ngIf=\"error && error.email\"><small>{{ error.email }}</small></span>\n      </div>\n      <div class=\"form-group\">\n        <label for=\"first_name\">First name</label>\n        <input class=\"form-control\" name=\"first_name\" id=\"first_name\" placeholder=\"first name\" type=\"text\"\n               [ngModel]=\"info.first_name\">\n      </div>\n      <div class=\"form-group\">\n        <label for=\"last_name\">Last name</label>\n        <input class=\"form-control\" name=\"last_name\" id=\"last_name\" placeholder=\"last name\" type=\"text\"\n               [ngModel]=\"info.last_name\">\n      </div>\n    </form>\n  </div>\n  <div class=\"modal-footer\">\n    <button type=\"button\" class=\"btn btn-primary\" (click)=\"edit(userEdit.value)\">Save</button>\n  </div>\n</ng-template>\n\n<div class=\"row\" *ngIf=\"info\">\n  <div class=\"col-lg-3\">\n    <div class=\"card p-2\">\n      <img *ngIf=\"info.image\" class=\"profile_img mx-auto thumbnail rounded\" [src]=\"info.image\">\n      <img *ngIf=\"!info.image\" class=\"profile_img mx-auto thumbnail rounded\" src=\"static/images/default_user.png\">\n      <div class=\"card-body\" *ngIf=\"owner\">\n        <a (click)=\"openModal(editProfileModal)\">Edit profile</a>\n      </div>\n    </div>\n  </div>\n  <div class=\"col-lg-9\">\n    <div class=\"row\">\n      <div class=\"col-lg\">\n        <h3><b>Personal information:</b></h3>\n        <hr>\n        <div class=\"my-2\">\n          <b>Username:</b> {{ info.username }}\n        </div>\n        <div class=\"my-2\">\n          <b>Email:</b> {{ info.email }}\n        </div>\n        <div class=\"my-2\">\n          <b>First name:</b> {{ info.first_name }}\n        </div>\n        <div class=\"my-2\">\n          <b>Last name:</b> {{ info.last_name }}\n        </div>\n      </div>\n    </div>\n    <div class=\"row\">\n      <div class=\"col-lg-6 my-4\">\n        <h4>Cars:</h4>\n        <hr>\n        <div *ngFor=\"let car of cars\">\n          <a routerLink=\"/cars/{{ car.id }}\">\n            {{ car.brand }} - {{ car.car_model }} {{ car.year }} - {{ car.car_type }}\n          </a>\n        </div>\n      </div>\n      <div class=\"col-lg-6 my-4\">\n        <h4>Purchases:</h4>\n        <hr>\n        <div *ngFor=\"let purchase of purchases\">\n          {{ purchase.car.brand }} - {{ purchase.car.car_model }} - ${{ purchase.price }}\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class=\"row\" *ngIf=\"error && error.detail\">\n  <div class=\"col-lg\">\n    <h3>Errors:</h3>\n    {{ error.detail }}\n  </div>\n</div>\n"
+module.exports = "<ng-template #editProfileModal>\n  <div class=\"modal-header\">\n    <h2 class=\"modal-title\">Edit profile</h2>\n    <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"closeModal()\">\n      <span aria-hidden=\"true\">&times;</span>\n    </button>\n  </div>\n  <div class=\"modal-body\">\n    <form #userEdit=\"ngForm\" enctype=\"multipart/form-data\">\n      <div class=\"form-group\">\n        <label for=\"image\">Image</label>\n        <input type=\"file\" name=\"image\" id=\"image\" (change)=\"handleFileInput($event.target.files)\">\n      </div>\n      <span class=\"error\" *ngIf=\"error && error.image\"><small>{{ error.image }}</small></span>\n      <div class=\"form-group\">\n        <label for=\"email\">Email</label>\n        <input class=\"form-control\" name=\"email\" id=\"email\" placeholder=\"email\" type=\"email\" [ngModel]=\"info.email\">\n        <span class=\"error\" *ngIf=\"error && error.email\"><small>{{ error.email }}</small></span>\n      </div>\n      <div class=\"form-group\">\n        <label for=\"first_name\">First name</label>\n        <input class=\"form-control\" name=\"first_name\" id=\"first_name\" placeholder=\"first name\" type=\"text\"\n               [ngModel]=\"info.first_name\">\n      </div>\n      <div class=\"form-group\">\n        <label for=\"last_name\">Last name</label>\n        <input class=\"form-control\" name=\"last_name\" id=\"last_name\" placeholder=\"last name\" type=\"text\"\n               [ngModel]=\"info.last_name\">\n      </div>\n    </form>\n  </div>\n  <div class=\"modal-footer\">\n    <button type=\"button\" class=\"btn btn-primary\" (click)=\"edit(userEdit.value)\">Save</button>\n  </div>\n</ng-template>\n\n<div class=\"row\" *ngIf=\"info\">\n  <div class=\"col-lg-3\">\n    <div class=\"card p-2\">\n      <img *ngIf=\"info.image\" class=\"profile_img mx-auto thumbnail rounded\" [src]=\"info.image\">\n      <img *ngIf=\"!info.image\" class=\"profile_img mx-auto thumbnail rounded\" src=\"static/images/default_user.png\">\n      <div class=\"card-body\" *ngIf=\"owner\">\n        <a (click)=\"openModal(editProfileModal)\">Edit profile</a>\n      </div>\n    </div>\n  </div>\n  <div class=\"col-lg-9\">\n    <div class=\"row\">\n      <div class=\"col-lg\">\n        <h3><b>Personal information:</b></h3>\n        <hr>\n        <div class=\"my-2\">\n          <b>Username:</b> {{ info.username }}\n        </div>\n        <div class=\"my-2\">\n          <b>Email:</b> {{ info.email }}\n        </div>\n        <div class=\"my-2\">\n          <b>First name:</b> {{ info.first_name }}\n        </div>\n        <div class=\"my-2\">\n          <b>Last name:</b> {{ info.last_name }}\n        </div>\n      </div>\n    </div>\n    <div class=\"row\">\n      <div class=\"col-lg-6 my-4\">\n        <h4>Cars:</h4>\n        <hr>\n        <div *ngFor=\"let car of info.car_set\">\n          <a routerLink=\"/cars/{{ car.id }}\">\n            {{ car.car_model }} {{ car.year }} - {{ car.car_type }}\n          </a>\n        </div>\n      </div>\n      <div class=\"col-lg-6 my-4\">\n        <h4>Purchases:</h4>\n        <hr>\n        <div *ngFor=\"let purchase of info.purchase_set\">\n          {{ purchase.car }} - ${{ purchase.price }}\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class=\"row\" *ngIf=\"error && error.detail\">\n  <div class=\"col-lg\">\n    <h3>Errors:</h3>\n    {{ error.detail }}\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -729,7 +718,7 @@ var UserComponent = /** @class */ (function () {
         this.route = route;
     }
     UserComponent.prototype.ngOnInit = function () {
-        this.getUser(this.id);
+        this.getUser();
     };
     UserComponent.prototype.closeModal = function () {
         this.modal.close();
@@ -738,38 +727,20 @@ var UserComponent = /** @class */ (function () {
         this.error = null;
         this.modal = this.modalService.open(content);
     };
-    UserComponent.prototype.getUser = function (id) {
+    UserComponent.prototype.getUser = function () {
         var _this = this;
-        if (!id)
-            id = this.route.snapshot.paramMap.get('id');
-        this.apiService.getItem('users', id).subscribe(function (response) {
-            console.log(response);
-            if (response) {
-                _this.info = response;
-                _this.image = _this.info['image'];
-                _this.purchases = [];
-                var _loop_1 = function (purchase) {
-                    _this.apiService.getItem('cars', purchase['car']).subscribe(function (response) {
-                        purchase['car'] = response;
-                        _this.purchases.push(purchase);
-                    });
-                };
-                for (var _i = 0, _a = _this.info['purchase_set']; _i < _a.length; _i++) {
-                    var purchase = _a[_i];
-                    _loop_1(purchase);
+        if (!this.info) {
+            this.apiService.getItem('users', this.route.snapshot.paramMap.get('id')).subscribe(function (response) {
+                console.log(response);
+                if (response) {
+                    _this.info = response;
+                    _this.image = _this.info['image'];
+                    _this.infoKeys = Object.keys(_this.info).filter(function (key) { return !['image', 'id', 'car_set', 'purchase_set',].includes(key); });
                 }
-                _this.cars = [];
-                for (var _b = 0, _c = _this.info['car_set']; _b < _c.length; _b++) {
-                    var car = _c[_b];
-                    _this.apiService.getItem('cars', car).subscribe(function (response) {
-                        _this.cars.push(response);
-                    });
-                }
-                _this.infoKeys = Object.keys(_this.info).filter(function (key) { return !['image', 'id', 'car_set', 'purchase_set',].includes(key); });
-            }
-            else
-                _this.error = _this.apiService.log.pop();
-        });
+                else
+                    _this.error = _this.apiService.log.pop();
+            });
+        }
     };
     UserComponent.prototype.edit = function (data) {
         var _this = this;
@@ -794,8 +765,8 @@ var UserComponent = /** @class */ (function () {
     };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Input */])(),
-        __metadata("design:type", String)
-    ], UserComponent.prototype, "id", void 0);
+        __metadata("design:type", Object)
+    ], UserComponent.prototype, "info", void 0);
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Input */])(),
         __metadata("design:type", Boolean)

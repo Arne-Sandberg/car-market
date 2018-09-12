@@ -9,9 +9,14 @@
       <img src="static/images/no-image.jpg" alt="slide" class="car_img w-100 rounded"
            *ngIf="!car.image_set.length">
       <div class="card-body">
-        <p *ngFor="let key of item_keys">
-          <b>{{ key }}</b>: {{ car[key] }}
-        </p>
+        <h3>{{ car.brand }} - {{ car.car_model }} - {{ car.car_type }} </h3>
+        <h4>${{ car.price }}</h4>
+        <p>{{ car.description }}</p>
+        <p><b>Year</b>: {{ car.year }}</p>
+        <p><b>Number of seats</b>: {{ car.number_of_seats }}</p>
+        <p><b>Colour</b>: {{ car.colour }}</p>
+        <p *ngIf="car.stock_count"><b>Stock count</b>: {{ car.stock_count }}</p>
+        <p *ngIf="!car.stock_count"><b>Out of stock</b></p>
       </div>
     </div>
     <div class="container my-4">

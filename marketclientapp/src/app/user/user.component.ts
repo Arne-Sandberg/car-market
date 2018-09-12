@@ -9,9 +9,8 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
   styleUrls: ['./user.component.css']
 })
 export class UserComponent implements OnInit {
-  @Input() id: string;
+  @Input() info: object;
   @Input() owner: boolean;
-  info: object;
   image: string;
   cars: Array<object>;
   purchases: Array<object>;
@@ -26,7 +25,7 @@ export class UserComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getUser(this.id);
+    this.getUser();
   }
 
   public closeModal() {
@@ -38,31 +37,20 @@ export class UserComponent implements OnInit {
     this.modal = this.modalService.open(content);
   }
 
-  public getUser(id): void {
-    if (!id)
-      id = this.route.snapshot.paramMap.get('id');
-    this.apiService.getItem('users', id).subscribe((response: object) => {
-      console.log(response);
-      if (response) {
-        this.info = response;
-        this.image = this.info['image'];
-        this.purchases = [];
-        for (let purchase of this.info['purchase_set'])
-          this.apiService.getItem('cars', purchase['car']).subscribe((response: object) => {
-            purchase['car'] = response;
-            this.purchases.push(purchase);
-          });
-        this.cars = [];
-        for (let car of this.info['car_set'])
-          this.apiService.getItem('cars', car).subscribe((response: object) => {
-            this.cars.push(response);
-          });
-        this.infoKeys = Object.keys(this.info).filter(
-          key => !['image', 'id', 'car_set', 'purchase_set',].includes(key));
-      }
-      else
-        this.error = this.apiService.log.pop();
-    });
+  public getUser(): void {
+    if (!this.info) {
+      this.apiService.getItem('users', this.route.snapshot.paramMap.get('id')).subscribe((response: object) => {
+        console.log(response);
+        if (response) {
+          this.info = response;
+          this.image = this.info['image'];
+          this.infoKeys = Object.keys(this.info).filter(
+            key => !['image', 'id', 'car_set', 'purchase_set',].includes(key));
+        }
+        else
+          this.error = this.apiService.log.pop();
+      });
+    }
   }
 
   public edit(data): void {

@@ -27,6 +27,7 @@ class BrandSerializer(serializers.ModelSerializer):
 class PurchaseSerializer(serializers.ModelSerializer):
     stripe_token = serializers.CharField(required=True, write_only=True)
     stripe_email = serializers.EmailField(required=True, write_only=True)
+    car = serializers.PrimaryKeyRelatedField(queryset=models.Car.objects.all(), source='car.car_model')
 
     class Meta:
         model = models.Purchase
@@ -46,6 +47,7 @@ class UserSerializer(serializers.ModelSerializer):
     purchase_set = PurchaseSerializer(many=True, read_only=True)
 
     class Meta:
+        depth = 1
         model = models.User
         fields = ['id', 'image', 'username', 'email', 'first_name', 'last_name', 'car_set', 'purchase_set',
                   'stripe_user_id', ]

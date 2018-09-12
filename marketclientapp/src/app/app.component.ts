@@ -40,10 +40,10 @@ export class AppComponent implements OnInit {
     this.apiService.login(data).subscribe((response) => {
       console.log(response);
       if (response) {
+        this.isAuthenticated = true;
         this.closeModal();
         this.error = null;
         this.router.navigateByUrl('/profile');
-        this.isAuthenticated = true;
       }
       else
         this.error = this.apiService.log.pop();
@@ -54,10 +54,10 @@ export class AppComponent implements OnInit {
     this.apiService.register(data).subscribe((response) => {
       console.log(response);
       if (response) {
+        this.isAuthenticated = true;
         this.closeModal();
         this.error = null;
         this.router.navigateByUrl('/profile');
-        this.isAuthenticated = true;
       }
       else {
         this.error = this.apiService.log.pop();
@@ -68,7 +68,8 @@ export class AppComponent implements OnInit {
   public logout(): void {
     this.apiService.logout().subscribe((response) => {
       console.log(response);
-      this.isAuthenticated = false;
+      if (response)
+        this.isAuthenticated = false;
     });
   }
 }

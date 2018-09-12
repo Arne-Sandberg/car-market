@@ -1,4 +1,7 @@
 <div *ngIf="info">
-  <app-user [id]="info.id" [owner]="true"></app-user>
+  <app-user [info]="info" [owner]="true"></app-user>
+</div>
+<div *ngIf="!info">
+  <h3>You have to log in or sign up first.</h3>
 </div>
 

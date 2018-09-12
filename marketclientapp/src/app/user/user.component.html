@@ -67,17 +67,17 @@
       <div class="col-lg-6 my-4">
         <h4>Cars:</h4>
         <hr>
-        <div *ngFor="let car of cars">
+        <div *ngFor="let car of info.car_set">
           <a routerLink="/cars/{{ car.id }}">
-            {{ car.brand }} - {{ car.car_model }} {{ car.year }} - {{ car.car_type }}
+            {{ car.car_model }} {{ car.year }} - {{ car.car_type }}
           </a>
         </div>
       </div>
       <div class="col-lg-6 my-4">
         <h4>Purchases:</h4>
         <hr>
-        <div *ngFor="let purchase of purchases">
-          {{ purchase.car.brand }} - {{ purchase.car.car_model }} - ${{ purchase.price }}
+        <div *ngFor="let purchase of info.purchase_set">
+          {{ purchase.car }} - ${{ purchase.price }}
         </div>
       </div>
     </div>

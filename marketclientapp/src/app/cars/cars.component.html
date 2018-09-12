@@ -13,9 +13,14 @@
              *ngIf="!car.image_set.length">
       </a>
       <div class="card-body">
-        <p *ngFor="let key of carKeys">
-          <b>{{ key }}</b>: {{ (car[key].length > 256)? (car[key] | slice:0:256) + '...': car[key] }}
-        </p>
+        <p><b>{{ car.brand }} - {{ car.car_model }} - {{ car.year }}</b></p>
+        <p><b>Type</b>: {{ car.car_type }}</p>
+        <p><b>Colour</b>: {{ car.colour }}</p>
+        <p>{{ (car.description.length > 256)? (car.description | slice:0:256) + '...': car.description }}</p>
+      </div>
+      <div class="card-footer">
+        <p *ngIf="car.stock_count"><b>Stock count</b>: {{ car.stock_count }}</p>
+        <p *ngIf="!car.stock_count"><b>Out of stock</b></p>
       </div>
     </div>
   </div>

@@ -52,7 +52,6 @@
             <table class="table table-bordered">
                 <thead class="thead-light">
                 <tr>
-                    <th scope="col">ID</th>
                     <th scope="col">Date</th>
                     <th scope="col">Car</th>
                     <th scope="col">Colour</th>
@@ -62,7 +61,6 @@
                 <tbody>
                 {% for purchase in user.purchase_set.all %}
                     <tr>
-                        <td>{{ purchase.id }}</td>
                         <td>{{ purchase.date }}</td>
                         <td>{{ purchase.car }}</td>
                         <td>{{ purchase.car.colour }}</td>
