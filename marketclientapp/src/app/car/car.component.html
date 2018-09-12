@@ -1,13 +1,13 @@
 <div class="row" *ngIf="car">
-  <div class="col-lg-10">
+  <div class="col-lg-9 mx-auto">
     <div class="card">
       <ngb-carousel *ngIf="car.image_set.length">
         <ng-template ngbSlide *ngFor="let img of car.image_set">
-          <img [src]="img.image" alt="slide" class="angular_car_img w-100 rounded" *ngIf="car.image_set.length">
+          <img [src]="img.image" alt="slide" class="car_img w-100 rounded" *ngIf="car.image_set.length">
         </ng-template>
       </ngb-carousel>
-      <img src="static/images/no-image.jpg" alt="slide" class="angular_car_img w-100 rounded"
-               *ngIf="!car.image_set.length">
+      <img src="static/images/no-image.jpg" alt="slide" class="car_img w-100 rounded"
+           *ngIf="!car.image_set.length">
       <div class="card-body">
         <p *ngFor="let key of item_keys">
           <b>{{ key }}</b>: {{ car[key] }}
@@ -25,14 +25,6 @@
           <a routerLink="/users/{{ comment.user.id }}"><b>{{ comment.user.username }}</b></a>:
           <b id="comment_rating">{{ comment.rating }}</b>★
           <small>{{ comment.date }}</small>
-          <!--{% if comment.user == request.user %}
-                    {% if comment.id == editing_comment_id %}
-                        editing...
-                    {% else %}
-                        <a href="#user_comment" class="edit_comment">edit</a> |
-                        <a href="#comments" class="delete_comment">delete</a>
-                    {% endif %}
-                {% endif %}-->
           <p id="comment_content">{{ comment.content }}</p>
         </div>
         <hr>

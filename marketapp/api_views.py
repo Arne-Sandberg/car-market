@@ -47,17 +47,19 @@ class CarDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class UserList(generics.ListAPIView):
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     queryset = models.User.objects.all()
     serializer_class = serializers.UserSerializer
 
 
 class UserDetail(generics.RetrieveAPIView):
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     queryset = models.User.objects.all()
     serializer_class = serializers.UserSerializer
 
 
 class MyDetail(generics.RetrieveUpdateAPIView):
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticated,)
     serializer_class = serializers.UserSerializer
 
     def get_object(self):
@@ -65,6 +67,7 @@ class MyDetail(generics.RetrieveUpdateAPIView):
 
 
 class AdvertisementList(generics.ListAPIView):
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     queryset = models.Car.objects.filter(is_advertised=True)
     serializer_class = serializers.CarSerializer
 
