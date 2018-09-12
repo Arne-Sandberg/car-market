@@ -7,15 +7,14 @@ import {ApiService} from "../api.service";
   styleUrls: ['./cars.component.css']
 })
 export class CarsComponent implements OnInit {
-  list: Array<object>;
-  list_keys: Array<string>;
-  title: string = 'cars';
+  cars: Array<object>;
+  carKeys: Array<string>;
 
   constructor(private apiService: ApiService) {
   }
 
   ngOnInit() {
-    this.getList(this.title);
+    this.getCars();
   }
 
   public getImageArray(obj): Array<string> {
@@ -25,12 +24,14 @@ export class CarsComponent implements OnInit {
     return res;
   }
 
-  public getList(list_name): void {
-    this.apiService.getList(list_name).subscribe((response: Array<object>) => {
+  public getCars(): void {
+    this.apiService.getList('cars').subscribe((response: Array<object>) => {
       console.log(response);
-      this.list = response;
-      this.list_keys = this.list.length ? Object.keys(this.list[0]).filter(
-        key => !['id', 'image_set', 'comment_set'].includes(key)) : [];
+      if (response) {
+        this.cars = response;
+        this.carKeys = Object.keys(this.cars[0])
+          .filter(key => !['id', 'image_set', 'comment_set'].includes(key));
+      }
     });
   }
 }

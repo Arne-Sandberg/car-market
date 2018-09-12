@@ -9,6 +9,7 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class UserComponent implements OnInit {
   @Input() id: string;
+  @Input() owner: boolean;
   info: object;
   image: string;
   cars: Array<object>;

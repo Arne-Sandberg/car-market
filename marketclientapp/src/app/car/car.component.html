@@ -1,10 +1,13 @@
 <div class="row" *ngIf="car">
-  <div class="col-lg">
+  <div class="col-lg-10">
     <div class="card">
-      <slideshow [imageUrls]="images" [height]="'530px'" [autoPlay]="true"
-                 *ngIf="images.length > 1"></slideshow>
-      <img [src]="images[0]" class="angular_car_img" *ngIf="images.length == 1">
-      <img src="static/images/no-image.jpg" class="angular_car_img" *ngIf="!images.length">
+      <ngb-carousel *ngIf="car.image_set.length">
+        <ng-template ngbSlide *ngFor="let img of car.image_set">
+          <img [src]="img.image" alt="slide" class="angular_car_img w-100 rounded" *ngIf="car.image_set.length">
+        </ng-template>
+      </ngb-carousel>
+      <img src="static/images/no-image.jpg" alt="slide" class="angular_car_img w-100 rounded"
+               *ngIf="!car.image_set.length">
       <div class="card-body">
         <p *ngFor="let key of item_keys">
           <b>{{ key }}</b>: {{ car[key] }}

@@ -1,0 +1,18 @@
+<div class="row">
+  <div class="col-lg-10">
+    <ngb-carousel *ngIf="ads">
+      <ng-template ngbSlide *ngFor="let car of ads">
+        <a routerLink="/cars/{{ car.id }}">
+          <img [src]="car.image_set[0].image" alt="slide" class="angular_car_img w-100 rounded"
+               *ngIf="car.image_set.length">
+          <img src="static/images/no-image.jpg" alt="slide" class="angular_car_img w-100 rounded"
+               *ngIf="!car.image_set.length">
+        </a>
+        <div class="carousel-caption">
+          <h3>{{ car.brand }} - {{ car.car_model }} {{ car.year }} - {{ car.car_type }}</h3>
+          <p>${{ car.price }}</p>
+        </div>
+      </ng-template>
+    </ngb-carousel>
+  </div>
+</div>

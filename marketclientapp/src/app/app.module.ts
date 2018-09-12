@@ -2,6 +2,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
 import {FormsModule} from "@angular/forms";
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {AppComponent} from './app.component';
 import {RegisterComponent} from './register/register.component';
@@ -13,7 +14,8 @@ import {CreateComponent} from './create/create.component';
 import {ApiService} from "./api.service";
 import {ProfileComponent} from './profile/profile.component';
 import {CarsComponent} from './cars/cars.component';
-import {SlideshowModule} from 'ng-simple-slideshow';
+import {EditProfileComponent} from './edit-profile/edit-profile.component';
+import {HomeComponent} from './home/home.component';
 
 @NgModule({
   declarations: [
@@ -25,13 +27,15 @@ import {SlideshowModule} from 'ng-simple-slideshow';
     CreateComponent,
     ProfileComponent,
     CarsComponent,
+    EditProfileComponent,
+    HomeComponent,
   ],
   imports: [
-    SlideshowModule,
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
     FormsModule,
+    NgbModule.forRoot(),
   ],
   providers: [ApiService],
   bootstrap: [AppComponent]
