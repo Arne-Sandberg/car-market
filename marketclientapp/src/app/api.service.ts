@@ -52,9 +52,18 @@ export class ApiService {
       .pipe(catchError(this.handleError()));
   }
 
+  editItem(list_name, id, data) {
+    return this.httpClient.put(`${this.api_url}${list_name}/${id}/`, data, this.getHttpOptions())
+      .pipe(catchError(this.handleError()));
+  }
 
   createItem(list_name, data) {
     return this.httpClient.post(`${this.api_url}${list_name}/`, data, this.getHttpOptions())
+      .pipe(catchError(this.handleError()));
+  }
+
+  deleteItem(list_name, id) {
+    return this.httpClient.delete(`${this.api_url}${list_name}/${id}/`, this.getHttpOptions())
       .pipe(catchError(this.handleError()));
   }
 

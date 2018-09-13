@@ -45,7 +45,7 @@ export class UserComponent implements OnInit {
       });
   }
 
-  public edit(data): void {
+  public editMe(data): void {
     let form_data: FormData = new FormData();
     for (let key in data)
       form_data.append(key, data[key]);

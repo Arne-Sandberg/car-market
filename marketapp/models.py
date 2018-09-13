@@ -1,4 +1,5 @@
 import webcolors
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 from django.db import models
 from django.contrib.auth.models import AbstractUser
@@ -52,12 +53,12 @@ class Car(models.Model):
 
     car_model = models.CharField(max_length=70)
     car_type = models.CharField(max_length=70)
-    year = models.IntegerField()
-    number_of_seats = models.IntegerField(default=4)
+    year = models.IntegerField(default=timezone.now().year, validators=[MinValueValidator(0)])
+    number_of_seats = models.IntegerField(default=4, validators=[MaxValueValidator(100), MinValueValidator(1)])
     colour = models.CharField(choices=COLOUR_CHOICES, max_length=70)
     description = models.TextField(null=True, blank=True)
-    stock_count = models.IntegerField(default=1)
-    price = models.IntegerField()
+    stock_count = models.IntegerField(default=1, validators=[MinValueValidator(1)])
+    price = models.IntegerField(default=100, validators=[MinValueValidator(100)])
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
     is_advertised = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
@@ -74,7 +75,7 @@ class Image(models.Model):
 
 class Comment(models.Model):
     content = models.TextField()
-    rating = models.IntegerField(default=1)
+    rating = models.IntegerField(default=1,validators=[MaxValueValidator(5), MinValueValidator(1)])
     date = models.DateTimeField(default=timezone.now)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
