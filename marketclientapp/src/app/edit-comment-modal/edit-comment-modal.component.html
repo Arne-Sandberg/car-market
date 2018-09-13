@@ -1,0 +1,25 @@
+<div class="modal-header">
+  <h2 class="modal-title">Edit comment</h2>
+  <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form #commentEdit="ngForm">
+    <div class="form-group">
+      <label for="content">Content</label>
+      <textarea class="form-control mb-2" name="content" id="content" placeholder="content" cols="3"
+                [ngModel]="commentContent"></textarea>
+      <span class="error" *ngIf="error && error.content"><small>{{ error.content }}</small></span>
+    </div>
+    <div class="form-group">
+      <label for="rating">Rating</label>
+      <input class="form-control mb-2" name="rating" id="rating" placeholder="rating" type="number"
+             [ngModel]="commentRating">
+      <span class="error" *ngIf="error && error.rating"><small>{{ error.rating }}</small></span>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-primary" (click)="editComment(commentEdit.value)">Submit</button>
+</div>

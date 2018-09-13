@@ -12,6 +12,9 @@ import {CreateComponent} from './create/create.component';
 import {ApiService} from "./api.service";
 import {CarsComponent} from './cars/cars.component';
 import {HomeComponent} from './home/home.component';
+import {LoginModalComponent} from './login-modal/login-modal.component';
+import {RegisterModalComponent} from './register-modal/register-modal.component';
+import {EditCommentModalComponent} from './edit-comment-modal/edit-comment-modal.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +24,9 @@ import {HomeComponent} from './home/home.component';
     CreateComponent,
     CarsComponent,
     HomeComponent,
+    LoginModalComponent,
+    RegisterModalComponent,
+    EditCommentModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -28,6 +34,16 @@ import {HomeComponent} from './home/home.component';
     AppRoutingModule,
     FormsModule,
     NgbModule.forRoot(),
+  ],
+  exports: [
+    LoginModalComponent,
+    RegisterModalComponent,
+    EditCommentModalComponent,
+  ],
+  entryComponents: [
+    LoginModalComponent,
+    RegisterModalComponent,
+    EditCommentModalComponent,
   ],
   providers: [ApiService],
   bootstrap: [AppComponent]

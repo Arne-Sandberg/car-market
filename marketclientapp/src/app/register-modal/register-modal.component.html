@@ -1,0 +1,34 @@
+<div class="modal-header">
+  <h2>Sign up</h2>
+  <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form #userRegister="ngForm">
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input class="form-control" name="username" placeholder="username" type="text" ngModel>
+      <span class="error" *ngIf="error && error.username"><small>{{ error.username }}</small></span>
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input class="form-control" name="email" placeholder="email" type="email" ngModel>
+      <span class="error" *ngIf="error && error.email"><small>{{ error.email }}</small></span>
+    </div>
+    <div class="form-group">
+      <label for="password1">Password</label>
+      <input class="form-control" name="password1" placeholder="password" type="password" ngModel>
+      <span class="error" *ngIf="error && error.password1"><small>{{ error.password1 }}</small></span>
+    </div>
+    <div class="form-group">
+      <label for="password2">Confirm password</label>
+      <input class="form-control" name="password2" placeholder="confirm password" type="password" ngModel>
+      <span class="error" *ngIf="error && error.non_field_errors"><small>{{ error.non_field_errors }}</small></span>
+      <span class="error" *ngIf="error && error.password2"><small>{{ error.password2 }}</small></span>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-primary" (click)="register(userRegister.value)">Submit</button>
+</div>

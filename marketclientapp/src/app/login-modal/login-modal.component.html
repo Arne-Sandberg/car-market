@@ -1,0 +1,24 @@
+<div class="modal-header">
+  <h2 class="modal-title">Log in</h2>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.close()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form #userLogin="ngForm">
+    <span class="error" *ngIf="error && error.non_field_errors"><small>{{ error.non_field_errors }}</small></span>
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input class="form-control mb-2" name="username" id="username" placeholder="username" type="text" ngModel>
+      <span class="error" *ngIf="error && error.username"><small>{{ error.username }}</small></span>
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input class="form-control mb-2" name="password" id="password" placeholder="password" type="password" ngModel>
+      <span class="error" *ngIf="error && error.password"><small>{{ error.password }}</small></span>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-primary" (click)="login(userLogin.value)">Submit</button>
+</div>

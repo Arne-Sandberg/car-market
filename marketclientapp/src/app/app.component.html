@@ -9,90 +9,25 @@
       <li class="nav-item">
         <a class="nav-link" routerLink="/cars">Cars</a>
       </li>
-      <li class="nav-item" *ngIf="currentUserId">
+      <li class="nav-item" *ngIf="apiService.currentUser">
         <a class="nav-link" routerLink="/create">Create</a>
       </li>
-      <li class="nav-item" *ngIf="currentUserId">
-        <a class="nav-link" routerLink="/users/{{ currentUserId }}">Profile</a>
+      <li class="nav-item" *ngIf="apiService.currentUser">
+        <a class="nav-link" routerLink="/users/{{ apiService.currentUser.id }}">Profile</a>
       </li>
-      <li class="nav-item" *ngIf="currentUserId">
+      <li class="nav-item" *ngIf="apiService.currentUser">
         <a class="nav-link" routerLink="/" (click)="logout()">Log out</a>
       </li>
-      <li class="nav-item" *ngIf="!currentUserId">
-        <a class="nav-link" (click)="openModal(registerModal)">Sign up</a>
+      <li class="nav-item" *ngIf="!apiService.currentUser">
+        <a class="nav-link" (click)="openRegisterModal()">Sign up</a>
       </li>
-      <li class="nav-item" *ngIf="!currentUserId">
-        <a class="nav-link" (click)="openModal(loginModal)">Log in</a>
+      <li class="nav-item" *ngIf="!apiService.currentUser">
+        <a class="nav-link" (click)="openLoginModal()">Log in</a>
       </li>
 
     </ul>
   </div>
 </nav>
-
-<ng-template #loginModal>
-  <div class="modal-header">
-    <h2 class="modal-title">Log in</h2>
-    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <form #userLogin="ngForm">
-      <span class="error" *ngIf="error && error.non_field_errors"><small>{{ error.non_field_errors }}</small></span>
-      <div class="form-group">
-        <label for="username">Username</label>
-        <input class="form-control mb-2" name="username" id="username" placeholder="username" type="text" ngModel>
-        <span class="error" *ngIf="error && error.username"><small>{{ error.username }}</small></span>
-      </div>
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input class="form-control mb-2" name="password" id="password" placeholder="password" type="password" ngModel>
-        <span class="error" *ngIf="error && error.password"><small>{{ error.password }}</small></span>
-      </div>
-    </form>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-primary" (click)="login(userLogin.value)">Submit</button>
-  </div>
-</ng-template>
-
-<ng-template #registerModal>
-  <div class="modal-header">
-    <h2>Sign up</h2>
-    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <form #userRegister="ngForm">
-      <div class="form-group">
-        <label for="username">Username</label>
-        <input class="form-control" name="username" placeholder="username" type="text" ngModel>
-        <span class="error" *ngIf="error && error.username"><small>{{ error.username }}</small></span>
-      </div>
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input class="form-control" name="email" placeholder="email" type="email" ngModel>
-        <span class="error" *ngIf="error && error.email"><small>{{ error.email }}</small></span>
-      </div>
-      <div class="form-group">
-        <label for="password1">Password</label>
-        <input class="form-control" name="password1" placeholder="password" type="password" ngModel>
-        <span class="error" *ngIf="error && error.password1"><small>{{ error.password1 }}</small></span>
-      </div>
-      <div class="form-group">
-        <label for="password2">Confirm password</label>
-        <input class="form-control" name="password2" placeholder="confirm password" type="password" ngModel>
-        <span class="error" *ngIf="error && error.non_field_errors"><small>{{ error.non_field_errors }}</small></span>
-        <span class="error" *ngIf="error && error.password2"><small>{{ error.password2 }}</small></span>
-      </div>
-    </form>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-primary" (click)="register(userRegister.value)">Submit</button>
-  </div>
-</ng-template>
-
 <div class="main p-3">
   <div class="container">
     <router-outlet></router-outlet>

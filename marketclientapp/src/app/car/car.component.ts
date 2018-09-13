@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ApiService} from '../api.service';
 import {ActivatedRoute} from "@angular/router";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {EditCommentModalComponent} from "../edit-comment-modal/edit-comment-modal.component";
 
 @Component({
   selector: 'app-car',
@@ -11,11 +12,6 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 export class CarComponent implements OnInit {
   car: object;
   error: object;
-  editError: object;
-  createError: object;
-  editingCommentId: number;
-  editingCommentContent: string;
-  editingCommentRating: number;
   modal;
 
   constructor(public apiService: ApiService,
@@ -27,17 +23,15 @@ export class CarComponent implements OnInit {
     this.getCar();
   }
 
-  public closeModal(): void {
-    this.editingCommentId = null;
-    this.modal.close();
-  }
-
-  public openModal(content, comment): void {
-    this.editError = null;
-    this.editingCommentId = comment.id;
-    this.editingCommentContent = comment.content;
-    this.editingCommentRating = comment.rating;
-    this.modal = this.modalService.open(content);
+  public openModal(comment): void {
+    let modal = this.modalService.open(EditCommentModalComponent);
+    modal.componentInstance.carId = this.car['id'];
+    modal.componentInstance.commentId = comment['id'];
+    modal.componentInstance.commentContent = comment['content'];
+    modal.componentInstance.commentRating = comment['rating'];
+    modal.result.then(() => {
+      this.getCar();
+    });
   }
 
   public deleteComment(id: number): void {
@@ -47,19 +41,6 @@ export class CarComponent implements OnInit {
     });
   }
 
-  public editComment(data): void {
-    data['car'] = this.car['id'];
-    this.apiService.editItem('comments', this.editingCommentId, data).subscribe((response: object) => {
-      console.log(response);
-      if (response) {
-        this.closeModal();
-        this.getCar();
-        this.editError = null;
-      }
-      else
-        this.editError = this.apiService.errorLog.pop();
-    });
-  }
 
   public createComment(form): void {
     let data = form.value;
@@ -68,11 +49,11 @@ export class CarComponent implements OnInit {
       console.log(response);
       if (response) {
         this.getCar();
-        this.createError = null;
+        this.error = null;
         form.reset();
       }
       else
-        this.createError = this.apiService.errorLog.pop();
+        this.error = this.apiService.errorLog.pop();
     });
   }
 
