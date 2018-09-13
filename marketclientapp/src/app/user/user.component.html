@@ -14,18 +14,18 @@
       <span class="error" *ngIf="error && error.image"><small>{{ error.image }}</small></span>
       <div class="form-group">
         <label for="email">Email</label>
-        <input class="form-control" name="email" id="email" placeholder="email" type="email" [ngModel]="info.email">
+        <input class="form-control" name="email" id="email" placeholder="email" type="email" [ngModel]="user.email">
         <span class="error" *ngIf="error && error.email"><small>{{ error.email }}</small></span>
       </div>
       <div class="form-group">
         <label for="first_name">First name</label>
         <input class="form-control" name="first_name" id="first_name" placeholder="first name" type="text"
-               [ngModel]="info.first_name">
+               [ngModel]="user.first_name">
       </div>
       <div class="form-group">
         <label for="last_name">Last name</label>
         <input class="form-control" name="last_name" id="last_name" placeholder="last name" type="text"
-               [ngModel]="info.last_name">
+               [ngModel]="user.last_name">
       </div>
     </form>
   </div>
@@ -34,12 +34,12 @@
   </div>
 </ng-template>
 
-<div class="row" *ngIf="info">
+<div class="row" *ngIf="user">
   <div class="col-lg-3">
     <div class="card p-2">
-      <img *ngIf="info.image" class="profile_img mx-auto thumbnail rounded" [src]="info.image">
-      <img *ngIf="!info.image" class="profile_img mx-auto thumbnail rounded" src="static/images/default_user.png">
-      <div class="card-body" *ngIf="owner">
+      <img *ngIf="user.image" class="profile_img mx-auto thumbnail rounded" [src]="user.image">
+      <img *ngIf="!user.image" class="profile_img mx-auto thumbnail rounded" src="static/images/default_user.png">
+      <div class="card-body" *ngIf="isOwner()">
         <a (click)="openModal(editProfileModal)">Edit profile</a>
       </div>
     </div>
@@ -50,16 +50,16 @@
         <h3><b>Personal information:</b></h3>
         <hr>
         <div class="my-2">
-          <b>Username:</b> {{ info.username }}
+          <b>Username:</b> {{ user.username }}
         </div>
         <div class="my-2">
-          <b>Email:</b> {{ info.email }}
+          <b>Email:</b> {{ user.email }}
         </div>
         <div class="my-2">
-          <b>First name:</b> {{ info.first_name }}
+          <b>First name:</b> {{ user.first_name }}
         </div>
         <div class="my-2">
-          <b>Last name:</b> {{ info.last_name }}
+          <b>Last name:</b> {{ user.last_name }}
         </div>
       </div>
     </div>
@@ -67,7 +67,7 @@
       <div class="col-lg-6 my-4">
         <h4>Cars:</h4>
         <hr>
-        <div *ngFor="let car of info.car_set">
+        <div *ngFor="let car of user.car_set">
           <a routerLink="/cars/{{ car.id }}">
             {{ car.car_model }} {{ car.year }} - {{ car.car_type }}
           </a>
@@ -76,7 +76,7 @@
       <div class="col-lg-6 my-4">
         <h4>Purchases:</h4>
         <hr>
-        <div *ngFor="let purchase of info.purchase_set">
+        <div *ngFor="let purchase of user.purchase_set">
           {{ purchase.car }} - ${{ purchase.price }}
         </div>
       </div>

@@ -7,16 +7,16 @@ import {of} from 'rxjs/observable/of';
 @Injectable()
 export class ApiService {
   api_url: string = 'http://127.0.0.1:8000/api/v1/';
-  log: Array<object> = [];
+  errorLog: Array<object> = [];
+  currentUser: object;
 
   constructor(private  httpClient: HttpClient) {
   }
 
-  private handleError<T>(operation = 'operation', result?: T) {
+  private handleError<T>(result?: T) {
     return (response: any): Observable<T> => {
-      console.log(`${operation} failed: ${response.message}`);
-      console.log(response);
-      this.log.push(response.error);
+      console.log(response.error);
+      this.errorLog.push(response.error);
       return of(result as T);
     };
   }
@@ -34,42 +34,42 @@ export class ApiService {
 
   getList(list_name) {
     return this.httpClient.get(`${this.api_url}${list_name}/`)
-      .pipe(catchError(this.handleError(`get ${list_name}`)));
+      .pipe(catchError(this.handleError()));
   }
 
   getItem(list_name, item_id) {
     return this.httpClient.get(`${this.api_url}${list_name}/${item_id}/`)
-      .pipe(catchError(this.handleError(`get ${list_name}/${item_id}`)));
+      .pipe(catchError(this.handleError()));
   }
 
   getMe() {
     return this.httpClient.get(`${this.api_url}me/`)
-      .pipe(catchError(this.handleError(`get me`)));
+      .pipe(catchError(this.handleError()));
   }
 
   editMe(data) {
     return this.httpClient.put(`${this.api_url}me/`, data, this.getHttpOptions())
-      .pipe(catchError(this.handleError(`put me`)));
+      .pipe(catchError(this.handleError()));
   }
 
 
   createItem(list_name, data) {
     return this.httpClient.post(`${this.api_url}${list_name}/`, data, this.getHttpOptions())
-      .pipe(catchError(this.handleError(`post ${list_name}`)));
+      .pipe(catchError(this.handleError()));
   }
 
   register(data) {
     return this.httpClient.post(`${this.api_url}register/`, data, this.getHttpOptions())
-      .pipe(catchError(this.handleError(`post register `)));
+      .pipe(catchError(this.handleError()));
   }
 
   login(data) {
     return this.httpClient.post(`${this.api_url}login/`, data, this.getHttpOptions())
-      .pipe(catchError(this.handleError(`post login`)));
+      .pipe(catchError(this.handleError()));
   }
 
   logout() {
     return this.httpClient.post(`${this.api_url}logout/`, null, this.getHttpOptions())
-      .pipe(catchError(this.handleError(`post logout`)));
+      .pipe(catchError(this.handleError()));
   }
 }

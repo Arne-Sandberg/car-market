@@ -9,12 +9,8 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
   styleUrls: ['./user.component.css']
 })
 export class UserComponent implements OnInit {
-  @Input() info: object;
-  @Input() owner: boolean;
-  image: string;
+  user: object;
   cars: Array<object>;
-  purchases: Array<object>;
-  infoKeys: Array<string>;
   error: object;
   fileToUpload: File;
   modal;
@@ -28,29 +24,25 @@ export class UserComponent implements OnInit {
     this.getUser();
   }
 
-  public closeModal() {
+  public closeModal(): void {
     this.modal.close();
   }
 
-  public openModal(content) {
+  public openModal(content): void {
     this.error = null;
     this.modal = this.modalService.open(content);
   }
 
+  public isOwner(): boolean {
+    return this.apiService.currentUser ? this.apiService.currentUser['id'] == this.user['id'] : false;
+  }
+
   public getUser(): void {
-    if (!this.info) {
-      this.apiService.getItem('users', this.route.snapshot.paramMap.get('id')).subscribe((response: object) => {
+    this.apiService.getItem('users', this.route.snapshot.paramMap.get('id'))
+      .subscribe((response: object) => {
         console.log(response);
-        if (response) {
-          this.info = response;
-          this.image = this.info['image'];
-          this.infoKeys = Object.keys(this.info).filter(
-            key => !['image', 'id', 'car_set', 'purchase_set',].includes(key));
-        }
-        else
-          this.error = this.apiService.log.pop();
+        response ? this.user = response : this.error = this.apiService.errorLog.pop();
       });
-    }
   }
 
   public edit(data): void {
@@ -64,10 +56,10 @@ export class UserComponent implements OnInit {
       if (response) {
         this.closeModal();
         this.error = null;
-        this.info = response;
+        this.user = response;
       }
       else
-        this.error = this.apiService.log.pop();
+        this.error = this.apiService.errorLog.pop();
     });
   }
 

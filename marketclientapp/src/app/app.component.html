@@ -9,19 +9,19 @@
       <li class="nav-item">
         <a class="nav-link" routerLink="/cars">Cars</a>
       </li>
-      <li class="nav-item" *ngIf="isAuthenticated">
+      <li class="nav-item" *ngIf="currentUserId">
         <a class="nav-link" routerLink="/create">Create</a>
       </li>
-       <li class="nav-item" *ngIf="isAuthenticated">
-        <a class="nav-link" routerLink="/profile">Profile</a>
+      <li class="nav-item" *ngIf="currentUserId">
+        <a class="nav-link" routerLink="/users/{{ currentUserId }}">Profile</a>
       </li>
-      <li class="nav-item" *ngIf="isAuthenticated">
+      <li class="nav-item" *ngIf="currentUserId">
         <a class="nav-link" routerLink="/" (click)="logout()">Log out</a>
       </li>
-      <li class="nav-item" *ngIf="!isAuthenticated">
+      <li class="nav-item" *ngIf="!currentUserId">
         <a class="nav-link" (click)="openModal(registerModal)">Sign up</a>
       </li>
-      <li class="nav-item" *ngIf="!isAuthenticated">
+      <li class="nav-item" *ngIf="!currentUserId">
         <a class="nav-link" (click)="openModal(loginModal)">Log in</a>
       </li>
 

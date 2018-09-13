@@ -9,7 +9,7 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class CarComponent implements OnInit {
   car: object;
-  comments: Array<object>;
+  error: object;
 
   constructor(private apiService: ApiService,
               private route: ActivatedRoute) {
@@ -20,12 +20,10 @@ export class CarComponent implements OnInit {
   }
 
   public getItem(): void {
-    this.apiService.getItem('cars', this.route.snapshot.paramMap.get('id')).subscribe((response: object) => {
-      console.log(response);
-      this.car = response;
-      if (this.car) {
-        this.comments = this.car['comment_set'];
-      }
-    });
+    this.apiService.getItem('cars', this.route.snapshot.paramMap.get('id'))
+      .subscribe((response: object) => {
+        console.log(response);
+        response ? this.car = response : this.error = this.apiService.errorLog.pop();
+      });
   }
 }

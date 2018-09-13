@@ -43,15 +43,13 @@ var ApiService = /** @class */ (function () {
     function ApiService(httpClient) {
         this.httpClient = httpClient;
         this.api_url = 'http://127.0.0.1:8000/api/v1/';
-        this.log = [];
+        this.errorLog = [];
     }
-    ApiService.prototype.handleError = function (operation, result) {
+    ApiService.prototype.handleError = function (result) {
         var _this = this;
-        if (operation === void 0) { operation = 'operation'; }
         return function (response) {
-            console.log(operation + " failed: " + response.message);
-            console.log(response);
-            _this.log.push(response.error);
+            console.log(response.error);
+            _this.errorLog.push(response.error);
             return Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__["a" /* of */])(result);
         };
     };
@@ -68,35 +66,35 @@ var ApiService = /** @class */ (function () {
     };
     ApiService.prototype.getList = function (list_name) {
         return this.httpClient.get("" + this.api_url + list_name + "/")
-            .pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["a" /* catchError */])(this.handleError("get " + list_name)));
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["a" /* catchError */])(this.handleError()));
     };
     ApiService.prototype.getItem = function (list_name, item_id) {
         return this.httpClient.get("" + this.api_url + list_name + "/" + item_id + "/")
-            .pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["a" /* catchError */])(this.handleError("get " + list_name + "/" + item_id)));
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["a" /* catchError */])(this.handleError()));
     };
     ApiService.prototype.getMe = function () {
         return this.httpClient.get(this.api_url + "me/")
-            .pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["a" /* catchError */])(this.handleError("get me")));
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["a" /* catchError */])(this.handleError()));
     };
     ApiService.prototype.editMe = function (data) {
         return this.httpClient.put(this.api_url + "me/", data, this.getHttpOptions())
-            .pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["a" /* catchError */])(this.handleError("put me")));
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["a" /* catchError */])(this.handleError()));
     };
     ApiService.prototype.createItem = function (list_name, data) {
         return this.httpClient.post("" + this.api_url + list_name + "/", data, this.getHttpOptions())
-            .pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["a" /* catchError */])(this.handleError("post " + list_name)));
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["a" /* catchError */])(this.handleError()));
     };
     ApiService.prototype.register = function (data) {
         return this.httpClient.post(this.api_url + "register/", data, this.getHttpOptions())
-            .pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["a" /* catchError */])(this.handleError("post register ")));
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["a" /* catchError */])(this.handleError()));
     };
     ApiService.prototype.login = function (data) {
         return this.httpClient.post(this.api_url + "login/", data, this.getHttpOptions())
-            .pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["a" /* catchError */])(this.handleError("post login")));
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["a" /* catchError */])(this.handleError()));
     };
     ApiService.prototype.logout = function () {
         return this.httpClient.post(this.api_url + "logout/", null, this.getHttpOptions())
-            .pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["a" /* catchError */])(this.handleError("post logout")));
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["a" /* catchError */])(this.handleError()));
     };
     ApiService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* Injectable */])(),
@@ -119,9 +117,8 @@ var ApiService = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__user_user_component__ = __webpack_require__("./src/app/user/user.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__car_car_component__ = __webpack_require__("./src/app/car/car.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__create_create_component__ = __webpack_require__("./src/app/create/create.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__profile_profile_component__ = __webpack_require__("./src/app/profile/profile.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__cars_cars_component__ = __webpack_require__("./src/app/cars/cars.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__home_home_component__ = __webpack_require__("./src/app/home/home.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__cars_cars_component__ = __webpack_require__("./src/app/cars/cars.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__home_home_component__ = __webpack_require__("./src/app/home/home.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -135,14 +132,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-
 var routes = [
     { path: 'users/:id', component: __WEBPACK_IMPORTED_MODULE_2__user_user_component__["a" /* UserComponent */] },
-    { path: 'cars', component: __WEBPACK_IMPORTED_MODULE_6__cars_cars_component__["a" /* CarsComponent */] },
+    { path: 'cars', component: __WEBPACK_IMPORTED_MODULE_5__cars_cars_component__["a" /* CarsComponent */] },
     { path: 'cars/:id', component: __WEBPACK_IMPORTED_MODULE_3__car_car_component__["a" /* CarComponent */] },
     { path: 'create', component: __WEBPACK_IMPORTED_MODULE_4__create_create_component__["a" /* CreateComponent */] },
-    { path: 'profile', component: __WEBPACK_IMPORTED_MODULE_5__profile_profile_component__["a" /* ProfileComponent */] },
-    { path: 'home', component: __WEBPACK_IMPORTED_MODULE_7__home_home_component__["a" /* HomeComponent */] },
+    { path: 'home', component: __WEBPACK_IMPORTED_MODULE_6__home_home_component__["a" /* HomeComponent */] },
     { path: '', redirectTo: '/home', pathMatch: 'full' },
 ];
 var AppRoutingModule = /** @class */ (function () {
@@ -171,7 +166,7 @@ module.exports = ""
 /***/ "./src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-expand-lg navbar-dark bg-dark fixed-top\">\n  <a routerLink=\"/\"><b class=\"navbar-brand\">Car market</b></a>\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarSupportedContent\"\n          aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <div class=\"collapse navbar-collapse\" id=\"navbarSupportedContent\">\n    <ul class=\"navbar-nav ml-auto\">\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/cars\">Cars</a>\n      </li>\n      <li class=\"nav-item\" *ngIf=\"isAuthenticated\">\n        <a class=\"nav-link\" routerLink=\"/create\">Create</a>\n      </li>\n       <li class=\"nav-item\" *ngIf=\"isAuthenticated\">\n        <a class=\"nav-link\" routerLink=\"/profile\">Profile</a>\n      </li>\n      <li class=\"nav-item\" *ngIf=\"isAuthenticated\">\n        <a class=\"nav-link\" routerLink=\"/\" (click)=\"logout()\">Log out</a>\n      </li>\n      <li class=\"nav-item\" *ngIf=\"!isAuthenticated\">\n        <a class=\"nav-link\" (click)=\"openModal(registerModal)\">Sign up</a>\n      </li>\n      <li class=\"nav-item\" *ngIf=\"!isAuthenticated\">\n        <a class=\"nav-link\" (click)=\"openModal(loginModal)\">Log in</a>\n      </li>\n\n    </ul>\n  </div>\n</nav>\n\n<ng-template #loginModal>\n  <div class=\"modal-header\">\n    <h2 class=\"modal-title\">Log in</h2>\n    <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"closeModal()\">\n      <span aria-hidden=\"true\">&times;</span>\n    </button>\n  </div>\n  <div class=\"modal-body\">\n    <form #userLogin=\"ngForm\">\n      <span class=\"error\" *ngIf=\"error && error.non_field_errors\"><small>{{ error.non_field_errors }}</small></span>\n      <div class=\"form-group\">\n        <label for=\"username\">Username</label>\n        <input class=\"form-control mb-2\" name=\"username\" id=\"username\" placeholder=\"username\" type=\"text\" ngModel>\n        <span class=\"error\" *ngIf=\"error && error.username\"><small>{{ error.username }}</small></span>\n      </div>\n      <div class=\"form-group\">\n        <label for=\"password\">Password</label>\n        <input class=\"form-control mb-2\" name=\"password\" id=\"password\" placeholder=\"password\" type=\"password\" ngModel>\n        <span class=\"error\" *ngIf=\"error && error.password\"><small>{{ error.password }}</small></span>\n      </div>\n    </form>\n  </div>\n  <div class=\"modal-footer\">\n    <button type=\"button\" class=\"btn btn-primary\" (click)=\"login(userLogin.value)\">Submit</button>\n  </div>\n</ng-template>\n\n<ng-template #registerModal>\n  <div class=\"modal-header\">\n    <h2>Sign up</h2>\n    <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"closeModal()\">\n      <span aria-hidden=\"true\">&times;</span>\n    </button>\n  </div>\n  <div class=\"modal-body\">\n    <form #userRegister=\"ngForm\">\n      <div class=\"form-group\">\n        <label for=\"username\">Username</label>\n        <input class=\"form-control\" name=\"username\" placeholder=\"username\" type=\"text\" ngModel>\n        <span class=\"error\" *ngIf=\"error && error.username\"><small>{{ error.username }}</small></span>\n      </div>\n      <div class=\"form-group\">\n        <label for=\"email\">Email</label>\n        <input class=\"form-control\" name=\"email\" placeholder=\"email\" type=\"email\" ngModel>\n        <span class=\"error\" *ngIf=\"error && error.email\"><small>{{ error.email }}</small></span>\n      </div>\n      <div class=\"form-group\">\n        <label for=\"password1\">Password</label>\n        <input class=\"form-control\" name=\"password1\" placeholder=\"password\" type=\"password\" ngModel>\n        <span class=\"error\" *ngIf=\"error && error.password1\"><small>{{ error.password1 }}</small></span>\n      </div>\n      <div class=\"form-group\">\n        <label for=\"password2\">Confirm password</label>\n        <input class=\"form-control\" name=\"password2\" placeholder=\"confirm password\" type=\"password\" ngModel>\n        <span class=\"error\" *ngIf=\"error && error.non_field_errors\"><small>{{ error.non_field_errors }}</small></span>\n        <span class=\"error\" *ngIf=\"error && error.password2\"><small>{{ error.password2 }}</small></span>\n      </div>\n    </form>\n  </div>\n  <div class=\"modal-footer\">\n    <button type=\"button\" class=\"btn btn-primary\" (click)=\"register(userRegister.value)\">Submit</button>\n  </div>\n</ng-template>\n\n<div class=\"main p-3\">\n  <div class=\"container\">\n    <router-outlet></router-outlet>\n  </div>\n</div>\n\n\n\n\n\n\n\n\n\n\n\n\n"
+module.exports = "<nav class=\"navbar navbar-expand-lg navbar-dark bg-dark fixed-top\">\n  <a routerLink=\"/\"><b class=\"navbar-brand\">Car market</b></a>\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarSupportedContent\"\n          aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <div class=\"collapse navbar-collapse\" id=\"navbarSupportedContent\">\n    <ul class=\"navbar-nav ml-auto\">\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/cars\">Cars</a>\n      </li>\n      <li class=\"nav-item\" *ngIf=\"currentUserId\">\n        <a class=\"nav-link\" routerLink=\"/create\">Create</a>\n      </li>\n      <li class=\"nav-item\" *ngIf=\"currentUserId\">\n        <a class=\"nav-link\" routerLink=\"/users/{{ currentUserId }}\">Profile</a>\n      </li>\n      <li class=\"nav-item\" *ngIf=\"currentUserId\">\n        <a class=\"nav-link\" routerLink=\"/\" (click)=\"logout()\">Log out</a>\n      </li>\n      <li class=\"nav-item\" *ngIf=\"!currentUserId\">\n        <a class=\"nav-link\" (click)=\"openModal(registerModal)\">Sign up</a>\n      </li>\n      <li class=\"nav-item\" *ngIf=\"!currentUserId\">\n        <a class=\"nav-link\" (click)=\"openModal(loginModal)\">Log in</a>\n      </li>\n\n    </ul>\n  </div>\n</nav>\n\n<ng-template #loginModal>\n  <div class=\"modal-header\">\n    <h2 class=\"modal-title\">Log in</h2>\n    <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"closeModal()\">\n      <span aria-hidden=\"true\">&times;</span>\n    </button>\n  </div>\n  <div class=\"modal-body\">\n    <form #userLogin=\"ngForm\">\n      <span class=\"error\" *ngIf=\"error && error.non_field_errors\"><small>{{ error.non_field_errors }}</small></span>\n      <div class=\"form-group\">\n        <label for=\"username\">Username</label>\n        <input class=\"form-control mb-2\" name=\"username\" id=\"username\" placeholder=\"username\" type=\"text\" ngModel>\n        <span class=\"error\" *ngIf=\"error && error.username\"><small>{{ error.username }}</small></span>\n      </div>\n      <div class=\"form-group\">\n        <label for=\"password\">Password</label>\n        <input class=\"form-control mb-2\" name=\"password\" id=\"password\" placeholder=\"password\" type=\"password\" ngModel>\n        <span class=\"error\" *ngIf=\"error && error.password\"><small>{{ error.password }}</small></span>\n      </div>\n    </form>\n  </div>\n  <div class=\"modal-footer\">\n    <button type=\"button\" class=\"btn btn-primary\" (click)=\"login(userLogin.value)\">Submit</button>\n  </div>\n</ng-template>\n\n<ng-template #registerModal>\n  <div class=\"modal-header\">\n    <h2>Sign up</h2>\n    <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"closeModal()\">\n      <span aria-hidden=\"true\">&times;</span>\n    </button>\n  </div>\n  <div class=\"modal-body\">\n    <form #userRegister=\"ngForm\">\n      <div class=\"form-group\">\n        <label for=\"username\">Username</label>\n        <input class=\"form-control\" name=\"username\" placeholder=\"username\" type=\"text\" ngModel>\n        <span class=\"error\" *ngIf=\"error && error.username\"><small>{{ error.username }}</small></span>\n      </div>\n      <div class=\"form-group\">\n        <label for=\"email\">Email</label>\n        <input class=\"form-control\" name=\"email\" placeholder=\"email\" type=\"email\" ngModel>\n        <span class=\"error\" *ngIf=\"error && error.email\"><small>{{ error.email }}</small></span>\n      </div>\n      <div class=\"form-group\">\n        <label for=\"password1\">Password</label>\n        <input class=\"form-control\" name=\"password1\" placeholder=\"password\" type=\"password\" ngModel>\n        <span class=\"error\" *ngIf=\"error && error.password1\"><small>{{ error.password1 }}</small></span>\n      </div>\n      <div class=\"form-group\">\n        <label for=\"password2\">Confirm password</label>\n        <input class=\"form-control\" name=\"password2\" placeholder=\"confirm password\" type=\"password\" ngModel>\n        <span class=\"error\" *ngIf=\"error && error.non_field_errors\"><small>{{ error.non_field_errors }}</small></span>\n        <span class=\"error\" *ngIf=\"error && error.password2\"><small>{{ error.password2 }}</small></span>\n      </div>\n    </form>\n  </div>\n  <div class=\"modal-footer\">\n    <button type=\"button\" class=\"btn btn-primary\" (click)=\"register(userRegister.value)\">Submit</button>\n  </div>\n</ng-template>\n\n<div class=\"main p-3\">\n  <div class=\"container\">\n    <router-outlet></router-outlet>\n  </div>\n</div>\n\n\n\n\n\n\n\n\n\n\n\n\n"
 
 /***/ }),
 
@@ -203,14 +198,22 @@ var AppComponent = /** @class */ (function () {
         this.modalService = modalService;
         this.router = router;
         this.url = 'http://127.0.0.1:8000/api/v1/logout';
-        this.isAuthenticated = false;
     }
     AppComponent.prototype.ngOnInit = function () {
+        this.getCurrentUser();
+    };
+    AppComponent.prototype.getCurrentUser = function (redirect) {
         var _this = this;
+        if (redirect === void 0) { redirect = false; }
         this.apiService.getMe().subscribe(function (response) {
             console.log(response);
-            if (response)
-                _this.isAuthenticated = true;
+            if (response) {
+                _this.apiService.currentUser = response;
+                _this.currentUserId = _this.apiService.currentUser['id'];
+                if (redirect) {
+                    _this.router.navigateByUrl("/users/" + _this.currentUserId);
+                }
+            }
         });
     };
     AppComponent.prototype.closeModal = function () {
@@ -225,13 +228,12 @@ var AppComponent = /** @class */ (function () {
         this.apiService.login(data).subscribe(function (response) {
             console.log(response);
             if (response) {
-                _this.isAuthenticated = true;
                 _this.closeModal();
+                _this.getCurrentUser(true);
                 _this.error = null;
-                _this.router.navigateByUrl('/profile');
             }
             else
-                _this.error = _this.apiService.log.pop();
+                _this.error = _this.apiService.errorLog.pop();
         });
     };
     ;
@@ -240,13 +242,12 @@ var AppComponent = /** @class */ (function () {
         this.apiService.register(data).subscribe(function (response) {
             console.log(response);
             if (response) {
-                _this.isAuthenticated = true;
                 _this.closeModal();
+                _this.getCurrentUser(true);
                 _this.error = null;
-                _this.router.navigateByUrl('/profile');
             }
             else {
-                _this.error = _this.apiService.log.pop();
+                _this.error = _this.apiService.errorLog.pop();
             }
         });
     };
@@ -255,8 +256,10 @@ var AppComponent = /** @class */ (function () {
         var _this = this;
         this.apiService.logout().subscribe(function (response) {
             console.log(response);
-            if (response)
-                _this.isAuthenticated = false;
+            if (response) {
+                _this.apiService.currentUser = null;
+                _this.currentUserId = null;
+            }
         });
     };
     AppComponent = __decorate([
@@ -292,16 +295,14 @@ var AppComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__car_car_component__ = __webpack_require__("./src/app/car/car.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__create_create_component__ = __webpack_require__("./src/app/create/create.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__api_service__ = __webpack_require__("./src/app/api.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__profile_profile_component__ = __webpack_require__("./src/app/profile/profile.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__cars_cars_component__ = __webpack_require__("./src/app/cars/cars.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__home_home_component__ = __webpack_require__("./src/app/home/home.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__cars_cars_component__ = __webpack_require__("./src/app/cars/cars.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__home_home_component__ = __webpack_require__("./src/app/home/home.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-
 
 
 
@@ -325,9 +326,8 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_7__user_user_component__["a" /* UserComponent */],
                 __WEBPACK_IMPORTED_MODULE_8__car_car_component__["a" /* CarComponent */],
                 __WEBPACK_IMPORTED_MODULE_9__create_create_component__["a" /* CreateComponent */],
-                __WEBPACK_IMPORTED_MODULE_11__profile_profile_component__["a" /* ProfileComponent */],
-                __WEBPACK_IMPORTED_MODULE_12__cars_cars_component__["a" /* CarsComponent */],
-                __WEBPACK_IMPORTED_MODULE_13__home_home_component__["a" /* HomeComponent */],
+                __WEBPACK_IMPORTED_MODULE_11__cars_cars_component__["a" /* CarsComponent */],
+                __WEBPACK_IMPORTED_MODULE_12__home_home_component__["a" /* HomeComponent */],
             ],
             imports: [
                 __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
@@ -357,7 +357,7 @@ module.exports = ""
 /***/ "./src/app/car/car.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\" *ngIf=\"car\">\n  <div class=\"col-lg-9 mx-auto\">\n    <div class=\"card\">\n      <ngb-carousel *ngIf=\"car.image_set.length\">\n        <ng-template ngbSlide *ngFor=\"let img of car.image_set\">\n          <img [src]=\"img.image\" alt=\"slide\" class=\"car_img w-100 rounded\" *ngIf=\"car.image_set.length\">\n        </ng-template>\n      </ngb-carousel>\n      <img src=\"static/images/no-image.jpg\" alt=\"slide\" class=\"car_img w-100 rounded\"\n           *ngIf=\"!car.image_set.length\">\n      <div class=\"card-body\">\n        <h3>{{ car.brand }} - {{ car.car_model }} - {{ car.car_type }} </h3>\n        <h4>${{ car.price }}</h4>\n        <p>{{ car.description }}</p>\n        <p><b>Year</b>: {{ car.year }}</p>\n        <p><b>Number of seats</b>: {{ car.number_of_seats }}</p>\n        <p><b>Colour</b>: {{ car.colour }}</p>\n        <p *ngIf=\"car.stock_count\"><b>Stock count</b>: {{ car.stock_count }}</p>\n        <p *ngIf=\"!car.stock_count\"><b>Out of stock</b></p>\n      </div>\n    </div>\n    <div class=\"container my-4\">\n      <h3>Comments:</h3>\n      <div class=\"media my-3\" *ngFor=\"let comment of comments\">\n        <a routerLink=\"/users/{{ comment.user.id }}\">\n          <img class=\"comment_img img-thumbnail\" [src]=\"comment['user']['image']\" *ngIf=\"comment.user.image\">\n          <img class=\"comment_img img-thumbnail\" src=\"static/images/default_user.png\" *ngIf=\"!comment.user.image\">\n        </a>\n        <div class=\"media-body p-0 pl-2\" data-id=\"{{ comment.id }}\">\n          <a routerLink=\"/users/{{ comment.user.id }}\"><b>{{ comment.user.username }}</b></a>:\n          <b id=\"comment_rating\">{{ comment.rating }}</b>★\n          <small>{{ comment.date }}</small>\n          <p id=\"comment_content\">{{ comment.content }}</p>\n        </div>\n        <hr>\n      </div>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<div class=\"row\" *ngIf=\"car\">\n  <div class=\"col-lg-9 mx-auto\">\n    <div class=\"card\">\n      <ngb-carousel *ngIf=\"car.image_set.length\">\n        <ng-template ngbSlide *ngFor=\"let img of car.image_set\">\n          <img [src]=\"img.image\" alt=\"slide\" class=\"car_img w-100 rounded\" *ngIf=\"car.image_set.length\">\n        </ng-template>\n      </ngb-carousel>\n      <img src=\"static/images/no-image.jpg\" alt=\"slide\" class=\"car_img w-100 rounded\"\n           *ngIf=\"!car.image_set.length\">\n      <div class=\"card-body\">\n        <h3>{{ car.brand }} - {{ car.car_model }} - {{ car.car_type }} </h3>\n        <h4>${{ car.price }}</h4>\n        <p>{{ car.description }}</p>\n        <p><b>Year</b>: {{ car.year }}</p>\n        <p><b>Number of seats</b>: {{ car.number_of_seats }}</p>\n        <p><b>Colour</b>: {{ car.colour }}</p>\n        <p *ngIf=\"car.stock_count\"><b>Stock count</b>: {{ car.stock_count }}</p>\n        <p *ngIf=\"!car.stock_count\"><b>Out of stock</b></p>\n      </div>\n    </div>\n    <div class=\"container my-4\">\n      <h3>Comments:</h3>\n      <div class=\"media my-3\" *ngFor=\"let comment of car.comment_set\">\n        <a routerLink=\"/users/{{ comment.user.id }}\">\n          <img class=\"comment_img img-thumbnail\" [src]=\"comment['user']['image']\" *ngIf=\"comment.user.image\">\n          <img class=\"comment_img img-thumbnail\" src=\"static/images/default_user.png\" *ngIf=\"!comment.user.image\">\n        </a>\n        <div class=\"media-body p-0 pl-2\" data-id=\"{{ comment.id }}\">\n          <a routerLink=\"/users/{{ comment.user.id }}\"><b>{{ comment.user.username }}</b></a>:\n          <b id=\"comment_rating\">{{ comment.rating }}</b>★\n          <small>{{ comment.date }}</small>\n          <p id=\"comment_content\">{{ comment.content }}</p>\n        </div>\n        <hr>\n      </div>\n    </div>\n  </div>\n</div>\n<div class=\"row\" *ngIf=\"error && error.detail\">\n  <div class=\"col-lg\">\n    <h3>Errors:</h3>\n    {{ error.detail }}\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -391,12 +391,10 @@ var CarComponent = /** @class */ (function () {
     };
     CarComponent.prototype.getItem = function () {
         var _this = this;
-        this.apiService.getItem('cars', this.route.snapshot.paramMap.get('id')).subscribe(function (response) {
+        this.apiService.getItem('cars', this.route.snapshot.paramMap.get('id'))
+            .subscribe(function (response) {
             console.log(response);
-            _this.car = response;
-            if (_this.car) {
-                _this.comments = _this.car['comment_set'];
-            }
+            response ? _this.car = response : _this.error = _this.apiService.errorLog.pop();
         });
     };
     CarComponent = __decorate([
@@ -614,67 +612,6 @@ var HomeComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/profile/profile.component.css":
-/***/ (function(module, exports) {
-
-module.exports = ""
-
-/***/ }),
-
-/***/ "./src/app/profile/profile.component.html":
-/***/ (function(module, exports) {
-
-module.exports = "<div *ngIf=\"info\">\n  <app-user [info]=\"info\" [owner]=\"true\"></app-user>\n</div>\n<div *ngIf=\"!info\">\n  <h3>You have to log in or sign up first.</h3>\n</div>\n\n"
-
-/***/ }),
-
-/***/ "./src/app/profile/profile.component.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProfileComponent; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api_service__ = __webpack_require__("./src/app/api.service.ts");
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-var ProfileComponent = /** @class */ (function () {
-    function ProfileComponent(apiService) {
-        this.apiService = apiService;
-    }
-    ProfileComponent.prototype.ngOnInit = function () {
-        this.getMe();
-    };
-    ProfileComponent.prototype.getMe = function () {
-        var _this = this;
-        this.apiService.getMe().subscribe(function (response) {
-            console.log(response);
-            _this.info = response;
-        });
-    };
-    ProfileComponent = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-            selector: 'app-profile',
-            template: __webpack_require__("./src/app/profile/profile.component.html"),
-            styles: [__webpack_require__("./src/app/profile/profile.component.css")]
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__api_service__["a" /* ApiService */]])
-    ], ProfileComponent);
-    return ProfileComponent;
-}());
-
-
-
-/***/ }),
-
 /***/ "./src/app/user/user.component.css":
 /***/ (function(module, exports) {
 
@@ -685,7 +622,7 @@ module.exports = ""
 /***/ "./src/app/user/user.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<ng-template #editProfileModal>\n  <div class=\"modal-header\">\n    <h2 class=\"modal-title\">Edit profile</h2>\n    <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"closeModal()\">\n      <span aria-hidden=\"true\">&times;</span>\n    </button>\n  </div>\n  <div class=\"modal-body\">\n    <form #userEdit=\"ngForm\" enctype=\"multipart/form-data\">\n      <div class=\"form-group\">\n        <label for=\"image\">Image</label>\n        <input type=\"file\" name=\"image\" id=\"image\" (change)=\"handleFileInput($event.target.files)\">\n      </div>\n      <span class=\"error\" *ngIf=\"error && error.image\"><small>{{ error.image }}</small></span>\n      <div class=\"form-group\">\n        <label for=\"email\">Email</label>\n        <input class=\"form-control\" name=\"email\" id=\"email\" placeholder=\"email\" type=\"email\" [ngModel]=\"info.email\">\n        <span class=\"error\" *ngIf=\"error && error.email\"><small>{{ error.email }}</small></span>\n      </div>\n      <div class=\"form-group\">\n        <label for=\"first_name\">First name</label>\n        <input class=\"form-control\" name=\"first_name\" id=\"first_name\" placeholder=\"first name\" type=\"text\"\n               [ngModel]=\"info.first_name\">\n      </div>\n      <div class=\"form-group\">\n        <label for=\"last_name\">Last name</label>\n        <input class=\"form-control\" name=\"last_name\" id=\"last_name\" placeholder=\"last name\" type=\"text\"\n               [ngModel]=\"info.last_name\">\n      </div>\n    </form>\n  </div>\n  <div class=\"modal-footer\">\n    <button type=\"button\" class=\"btn btn-primary\" (click)=\"edit(userEdit.value)\">Save</button>\n  </div>\n</ng-template>\n\n<div class=\"row\" *ngIf=\"info\">\n  <div class=\"col-lg-3\">\n    <div class=\"card p-2\">\n      <img *ngIf=\"info.image\" class=\"profile_img mx-auto thumbnail rounded\" [src]=\"info.image\">\n      <img *ngIf=\"!info.image\" class=\"profile_img mx-auto thumbnail rounded\" src=\"static/images/default_user.png\">\n      <div class=\"card-body\" *ngIf=\"owner\">\n        <a (click)=\"openModal(editProfileModal)\">Edit profile</a>\n      </div>\n    </div>\n  </div>\n  <div class=\"col-lg-9\">\n    <div class=\"row\">\n      <div class=\"col-lg\">\n        <h3><b>Personal information:</b></h3>\n        <hr>\n        <div class=\"my-2\">\n          <b>Username:</b> {{ info.username }}\n        </div>\n        <div class=\"my-2\">\n          <b>Email:</b> {{ info.email }}\n        </div>\n        <div class=\"my-2\">\n          <b>First name:</b> {{ info.first_name }}\n        </div>\n        <div class=\"my-2\">\n          <b>Last name:</b> {{ info.last_name }}\n        </div>\n      </div>\n    </div>\n    <div class=\"row\">\n      <div class=\"col-lg-6 my-4\">\n        <h4>Cars:</h4>\n        <hr>\n        <div *ngFor=\"let car of info.car_set\">\n          <a routerLink=\"/cars/{{ car.id }}\">\n            {{ car.car_model }} {{ car.year }} - {{ car.car_type }}\n          </a>\n        </div>\n      </div>\n      <div class=\"col-lg-6 my-4\">\n        <h4>Purchases:</h4>\n        <hr>\n        <div *ngFor=\"let purchase of info.purchase_set\">\n          {{ purchase.car }} - ${{ purchase.price }}\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class=\"row\" *ngIf=\"error && error.detail\">\n  <div class=\"col-lg\">\n    <h3>Errors:</h3>\n    {{ error.detail }}\n  </div>\n</div>\n"
+module.exports = "<ng-template #editProfileModal>\n  <div class=\"modal-header\">\n    <h2 class=\"modal-title\">Edit profile</h2>\n    <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"closeModal()\">\n      <span aria-hidden=\"true\">&times;</span>\n    </button>\n  </div>\n  <div class=\"modal-body\">\n    <form #userEdit=\"ngForm\" enctype=\"multipart/form-data\">\n      <div class=\"form-group\">\n        <label for=\"image\">Image</label>\n        <input type=\"file\" name=\"image\" id=\"image\" (change)=\"handleFileInput($event.target.files)\">\n      </div>\n      <span class=\"error\" *ngIf=\"error && error.image\"><small>{{ error.image }}</small></span>\n      <div class=\"form-group\">\n        <label for=\"email\">Email</label>\n        <input class=\"form-control\" name=\"email\" id=\"email\" placeholder=\"email\" type=\"email\" [ngModel]=\"user.email\">\n        <span class=\"error\" *ngIf=\"error && error.email\"><small>{{ error.email }}</small></span>\n      </div>\n      <div class=\"form-group\">\n        <label for=\"first_name\">First name</label>\n        <input class=\"form-control\" name=\"first_name\" id=\"first_name\" placeholder=\"first name\" type=\"text\"\n               [ngModel]=\"user.first_name\">\n      </div>\n      <div class=\"form-group\">\n        <label for=\"last_name\">Last name</label>\n        <input class=\"form-control\" name=\"last_name\" id=\"last_name\" placeholder=\"last name\" type=\"text\"\n               [ngModel]=\"user.last_name\">\n      </div>\n    </form>\n  </div>\n  <div class=\"modal-footer\">\n    <button type=\"button\" class=\"btn btn-primary\" (click)=\"edit(userEdit.value)\">Save</button>\n  </div>\n</ng-template>\n\n<div class=\"row\" *ngIf=\"user\">\n  <div class=\"col-lg-3\">\n    <div class=\"card p-2\">\n      <img *ngIf=\"user.image\" class=\"profile_img mx-auto thumbnail rounded\" [src]=\"user.image\">\n      <img *ngIf=\"!user.image\" class=\"profile_img mx-auto thumbnail rounded\" src=\"static/images/default_user.png\">\n      <div class=\"card-body\" *ngIf=\"isOwner()\">\n        <a (click)=\"openModal(editProfileModal)\">Edit profile</a>\n      </div>\n    </div>\n  </div>\n  <div class=\"col-lg-9\">\n    <div class=\"row\">\n      <div class=\"col-lg\">\n        <h3><b>Personal information:</b></h3>\n        <hr>\n        <div class=\"my-2\">\n          <b>Username:</b> {{ user.username }}\n        </div>\n        <div class=\"my-2\">\n          <b>Email:</b> {{ user.email }}\n        </div>\n        <div class=\"my-2\">\n          <b>First name:</b> {{ user.first_name }}\n        </div>\n        <div class=\"my-2\">\n          <b>Last name:</b> {{ user.last_name }}\n        </div>\n      </div>\n    </div>\n    <div class=\"row\">\n      <div class=\"col-lg-6 my-4\">\n        <h4>Cars:</h4>\n        <hr>\n        <div *ngFor=\"let car of user.car_set\">\n          <a routerLink=\"/cars/{{ car.id }}\">\n            {{ car.car_model }} {{ car.year }} - {{ car.car_type }}\n          </a>\n        </div>\n      </div>\n      <div class=\"col-lg-6 my-4\">\n        <h4>Purchases:</h4>\n        <hr>\n        <div *ngFor=\"let purchase of user.purchase_set\">\n          {{ purchase.car }} - ${{ purchase.price }}\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class=\"row\" *ngIf=\"error && error.detail\">\n  <div class=\"col-lg\">\n    <h3>Errors:</h3>\n    {{ error.detail }}\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -727,20 +664,16 @@ var UserComponent = /** @class */ (function () {
         this.error = null;
         this.modal = this.modalService.open(content);
     };
+    UserComponent.prototype.isOwner = function () {
+        return this.apiService.currentUser ? this.apiService.currentUser['id'] == this.user['id'] : false;
+    };
     UserComponent.prototype.getUser = function () {
         var _this = this;
-        if (!this.info) {
-            this.apiService.getItem('users', this.route.snapshot.paramMap.get('id')).subscribe(function (response) {
-                console.log(response);
-                if (response) {
-                    _this.info = response;
-                    _this.image = _this.info['image'];
-                    _this.infoKeys = Object.keys(_this.info).filter(function (key) { return !['image', 'id', 'car_set', 'purchase_set',].includes(key); });
-                }
-                else
-                    _this.error = _this.apiService.log.pop();
-            });
-        }
+        this.apiService.getItem('users', this.route.snapshot.paramMap.get('id'))
+            .subscribe(function (response) {
+            console.log(response);
+            response ? _this.user = response : _this.error = _this.apiService.errorLog.pop();
+        });
     };
     UserComponent.prototype.edit = function (data) {
         var _this = this;
@@ -754,23 +687,15 @@ var UserComponent = /** @class */ (function () {
             if (response) {
                 _this.closeModal();
                 _this.error = null;
-                _this.info = response;
+                _this.user = response;
             }
             else
-                _this.error = _this.apiService.log.pop();
+                _this.error = _this.apiService.errorLog.pop();
         });
     };
     UserComponent.prototype.handleFileInput = function (file) {
         this.fileToUpload = file.item(0);
     };
-    __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Input */])(),
-        __metadata("design:type", Object)
-    ], UserComponent.prototype, "info", void 0);
-    __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Input */])(),
-        __metadata("design:type", Boolean)
-    ], UserComponent.prototype, "owner", void 0);
     UserComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-user',

@@ -21,7 +21,7 @@
     </div>
     <div class="container my-4">
       <h3>Comments:</h3>
-      <div class="media my-3" *ngFor="let comment of comments">
+      <div class="media my-3" *ngFor="let comment of car.comment_set">
         <a routerLink="/users/{{ comment.user.id }}">
           <img class="comment_img img-thumbnail" [src]="comment['user']['image']" *ngIf="comment.user.image">
           <img class="comment_img img-thumbnail" src="static/images/default_user.png" *ngIf="!comment.user.image">
@@ -35,5 +35,11 @@
         <hr>
       </div>
     </div>
+  </div>
+</div>
+<div class="row" *ngIf="error && error.detail">
+  <div class="col-lg">
+    <h3>Errors:</h3>
+    {{ error.detail }}
   </div>
 </div>

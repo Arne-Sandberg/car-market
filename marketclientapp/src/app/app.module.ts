@@ -10,7 +10,6 @@ import {UserComponent} from './user/user.component';
 import {CarComponent} from './car/car.component';
 import {CreateComponent} from './create/create.component';
 import {ApiService} from "./api.service";
-import {ProfileComponent} from './profile/profile.component';
 import {CarsComponent} from './cars/cars.component';
 import {HomeComponent} from './home/home.component';
 
@@ -20,7 +19,6 @@ import {HomeComponent} from './home/home.component';
     UserComponent,
     CarComponent,
     CreateComponent,
-    ProfileComponent,
     CarsComponent,
     HomeComponent,
   ],
