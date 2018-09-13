@@ -8,10 +8,7 @@ import {ApiService} from "../api.service";
   styleUrls: ['./edit-comment-modal.component.css']
 })
 export class EditCommentModalComponent implements OnInit {
-  @Input() carId: number;
-  @Input() commentId: number;
-  @Input() commentContent: string;
-  @Input() commentRating: number;
+  @Input() comment: object;
   error: object;
 
   constructor(public activeModal: NgbActiveModal,
@@ -22,8 +19,8 @@ export class EditCommentModalComponent implements OnInit {
   }
 
   public editComment(data): void {
-    data['car'] = this.carId;
-    this.apiService.editItem('comments', this.commentId, data).subscribe((response: object) => {
+    data['car'] = this.comment['car'];
+    this.apiService.editItem('comments', this.comment['id'], data).subscribe((response: object) => {
       console.log(response);
       if (response) {
         this.activeModal.close();

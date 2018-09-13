@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {ApiService} from '../api.service';
 import {ActivatedRoute} from "@angular/router";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {EditProfileModalComponent} from "../edit-profile-modal/edit-profile-modal.component";
 
 @Component({
   selector: 'app-user',
@@ -12,7 +13,6 @@ export class UserComponent implements OnInit {
   user: object;
   cars: Array<object>;
   error: object;
-  fileToUpload: File;
   modal;
 
   constructor(private apiService: ApiService,
@@ -24,13 +24,14 @@ export class UserComponent implements OnInit {
     this.getUser();
   }
 
-  public closeModal(): void {
-    this.modal.close();
-  }
-
-  public openModal(content): void {
-    this.error = null;
-    this.modal = this.modalService.open(content);
+  public openEditProfileModal(): void {
+    let modal = this.modalService.open(EditProfileModalComponent);
+    modal.componentInstance.user = this.user;
+    modal.result.then(() => {
+      this.getUser();
+    }, () => {
+      modal.close();
+    });
   }
 
   public isOwner(): boolean {
@@ -45,25 +46,11 @@ export class UserComponent implements OnInit {
       });
   }
 
-  public editMe(data): void {
-    let form_data: FormData = new FormData();
-    for (let key in data)
-      form_data.append(key, data[key]);
-    if (this.fileToUpload)
-      form_data.append('image', this.fileToUpload);
-    this.apiService.editMe(form_data).subscribe((response: object) => {
+  public deleteCar(id): void {
+    this.apiService.deleteItem('cars', id).subscribe((response: object) => {
       console.log(response);
-      if (response) {
-        this.closeModal();
-        this.error = null;
-        this.user = response;
-      }
-      else
-        this.error = this.apiService.errorLog.pop();
+      this.getUser();
     });
   }
 
-  handleFileInput(file: FileList) {
-    this.fileToUpload = file.item(0);
-  }
 }

@@ -15,6 +15,7 @@ import {HomeComponent} from './home/home.component';
 import {LoginModalComponent} from './login-modal/login-modal.component';
 import {RegisterModalComponent} from './register-modal/register-modal.component';
 import {EditCommentModalComponent} from './edit-comment-modal/edit-comment-modal.component';
+import {EditProfileModalComponent } from './edit-profile-modal/edit-profile-modal.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import {EditCommentModalComponent} from './edit-comment-modal/edit-comment-modal
     LoginModalComponent,
     RegisterModalComponent,
     EditCommentModalComponent,
+    EditProfileModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -39,11 +41,13 @@ import {EditCommentModalComponent} from './edit-comment-modal/edit-comment-modal
     LoginModalComponent,
     RegisterModalComponent,
     EditCommentModalComponent,
+    EditProfileModalComponent,
   ],
   entryComponents: [
     LoginModalComponent,
     RegisterModalComponent,
     EditCommentModalComponent,
+    EditProfileModalComponent,
   ],
   providers: [ApiService],
   bootstrap: [AppComponent]

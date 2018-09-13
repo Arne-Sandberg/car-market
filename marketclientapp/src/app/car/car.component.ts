@@ -23,14 +23,13 @@ export class CarComponent implements OnInit {
     this.getCar();
   }
 
-  public openModal(comment): void {
+  public openEditCommentModal(comment): void {
     let modal = this.modalService.open(EditCommentModalComponent);
-    modal.componentInstance.carId = this.car['id'];
-    modal.componentInstance.commentId = comment['id'];
-    modal.componentInstance.commentContent = comment['content'];
-    modal.componentInstance.commentRating = comment['rating'];
+    modal.componentInstance.comment = comment;
     modal.result.then(() => {
       this.getCar();
+    }, () => {
+      modal.close();
     });
   }
 

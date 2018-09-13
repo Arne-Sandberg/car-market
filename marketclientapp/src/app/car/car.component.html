@@ -32,7 +32,7 @@
           <b id="comment_rating">{{ comment.rating }}</b>★
           <small>{{ comment.date }}</small>
           <span *ngIf="apiService.currentUser && apiService.currentUser.id==comment.user.id">
-              <a (click)="openModal(comment)">edit</a> |
+              <a (click)="openEditCommentModal(comment)">edit</a> |
               <a (click)="deleteComment(comment.id)">delete</a>
             </span>
           <p id="comment_content">{{ comment.content }}</p>
