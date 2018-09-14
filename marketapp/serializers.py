@@ -66,7 +66,6 @@ class CommentSerializer(serializers.ModelSerializer):
 class CarSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
     image_set = ImageSerializer(many=True, read_only=True)
-    brand = serializers.PrimaryKeyRelatedField(queryset=models.Brand.objects.all(), source='brand.name')
     comment_set = CommentSerializer(many=True, read_only=True)
 
     class Meta:

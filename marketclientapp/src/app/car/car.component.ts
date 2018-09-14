@@ -14,7 +14,6 @@ export class CarComponent implements OnInit {
   car: any;
   error: object;
 
-
   constructor(public apiService: ApiService,
               private modalService: NgbModal,
               private route: ActivatedRoute,) {
@@ -68,11 +67,16 @@ export class CarComponent implements OnInit {
     });
   }
 
-  public getCar(): void {
+  private getCar(): void {
     this.apiService.getItem('cars', this.route.snapshot.paramMap.get('id'))
-      .subscribe((response: object) => {
+      .subscribe((response: any) => {
         console.log(response);
-        response ? this.car = response : this.error = this.apiService.errorLog.pop();
+        if (response) {
+          this.car = response;
+          this.car.brand = this.apiService.brands.find(brand => brand.id == this.car.brand).name;
+        }
+        else
+          this.error = this.apiService.errorLog.pop();
       });
   }
 }

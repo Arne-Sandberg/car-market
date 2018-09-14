@@ -9,6 +9,7 @@ export class ApiService {
   api_url: string = 'http://127.0.0.1:8000/api/v1/';
   errorLog: Array<object> = [];
   currentUser: any;
+  brands: Array<any>;
 
   constructor(private  httpClient: HttpClient) {
   }

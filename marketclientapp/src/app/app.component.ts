@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.getCurrentUser();
+    this.getBrands();
   }
 
   private getCurrentUser(): void {
@@ -24,6 +25,14 @@ export class AppComponent implements OnInit {
       console.log(response);
       if (response)
         this.apiService.currentUser = response;
+    });
+  }
+
+  private getBrands(): void {
+    this.apiService.getList('brands').subscribe((response: Array<object>) => {
+      console.log(response);
+      if (response)
+        this.apiService.brands = response;
     });
   }
 

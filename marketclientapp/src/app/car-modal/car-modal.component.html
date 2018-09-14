@@ -1,0 +1,140 @@
+<div class="modal-header">
+  <h2 class="modal-title">{{ title }}</h2>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.close()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form *ngIf="car" #editCarForm="ngForm" id="editCarForm" (ngSubmit)="submitCar(editCarForm.value)">
+    <div class="form-group">
+      <label for="car_model">Model</label>
+      <input class="form-control" name="car_model" id="car_model" placeholder="model" type="text"
+             [ngModel]="car.car_model">
+      <span class="error" *ngIf="error && error.car_model"><small>{{ error.car_model }}</small></span>
+    </div>
+    <div class="form-group">
+      <label for="car_type">Type</label>
+      <input class="form-control" name="car_type" id="car_type" placeholder="type" type="text"
+             [ngModel]="car.car_type">
+      <span class="error" *ngIf="error && error.car_type"><small>{{ error.car_type }}</small></span>
+    </div>
+    <div class="form-group">
+      <label for="year">Year</label>
+      <input class="form-control" name="year" id="year" placeholder="year" type="number" [ngModel]="car.year">
+      <span class="error" *ngIf="error && error.year"><small>{{ error.year }}</small></span>
+    </div>
+    <div class="form-group">
+      <label for="number_of_seats">Number of seats</label>
+      <input class="form-control" name="number_of_seats" id="number_of_seats" placeholder="number of seats"
+             type="number" [ngModel]="car.number_of_seats">
+      <span class="error" *ngIf="error && error.number_of_seats"><small>{{ error.number_of_seats }}</small></span>
+    </div>
+    <div class="form-group">
+      <label for="colour">Colour</label>
+      <select class="form-control" name="colour" id="colour" [ngModel]="car.colour">
+        <option *ngFor="let item of colours" [ngValue]="item.colour">
+          {{ item.colour }}
+        </option>
+      </select>
+      <span class="error" *ngIf="error && error.colour"><small>{{ error.colour }}</small></span>
+    </div>
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea class="form-control" name="description" id="description" placeholder="description" cols="3"
+                [ngModel]="car.description"></textarea>
+      <span class="error" *ngIf="error && error.description"><small>{{ error.description }}</small></span>
+    </div>
+    <div class="form-group">
+      <label for="stock_count">Stock count</label>
+      <input class="form-control" name="stock_count" id="stock_count" placeholder="stock count" type="number"
+             [ngModel]="car.stock_count">
+      <span class="error" *ngIf="error && error.stock_count"><small>{{ error.stock_count }}</small></span>
+    </div>
+    <div class="form-group">
+      <label for="price">Price</label>
+      <input class="form-control" name="price" id="price" placeholder="price" type="number"
+             [ngModel]="car.price">
+      <span class="error" *ngIf="error && error.price"><small>{{ error.price }}</small></span>
+    </div>
+    <div class="form-group">
+      <label for="brand">Brand</label>
+      <select class="form-control" name="brand" id="brand" [ngModel]="car.brand">
+        <option *ngFor="let item of apiService.brands" [ngValue]="item.id">
+          {{ item.name }}
+        </option>
+      </select>
+      <span class="error" *ngIf="error && error.brand"><small>{{ error.brand }}</small></span>
+    </div>
+    <div class="form-group">
+      <label for="is_advertised">Is advertised</label>
+      <input name="is_advertised" id="is_advertised" type="checkbox" [ngModel]="car.is_advertised">
+    </div>
+  </form>
+
+  <form *ngIf="!car" #createCarForm="ngForm" id="createCarForm" (ngSubmit)="submitCar(createCarForm.value)">
+    <div class="form-group">
+      <label for="car_model">Model</label>
+      <input class="form-control" name="car_model" id="car_model" placeholder="model" type="text" ngModel>
+      <span class="error" *ngIf="error && error.car_model"><small>{{ error.car_model }}</small></span>
+    </div>
+    <div class="form-group">
+      <label for="car_type">Type</label>
+      <input class="form-control" name="car_type" id="car_type" placeholder="type" type="text" ngModel>
+      <span class="error" *ngIf="error && error.car_type"><small>{{ error.car_type }}</small></span>
+    </div>
+    <div class="form-group">
+      <label for="year">Year</label>
+      <input class="form-control" name="year" id="year" placeholder="year" type="number" ngModel>
+      <span class="error" *ngIf="error && error.year"><small>{{ error.year }}</small></span>
+    </div>
+    <div class="form-group">
+      <label for="number_of_seats">Number of seats</label>
+      <input class="form-control" name="number_of_seats" id="number_of_seats" placeholder="number of seats"
+             type="number" ngModel>
+      <span class="error" *ngIf="error && error.number_of_seats"><small>{{ error.number_of_seats }}</small></span>
+    </div>
+    <div class="form-group">
+      <label for="colour">Colour</label>
+      <select class="form-control" name="colour" id="colour" [ngModel]>
+        <option *ngFor="let item of colours" [ngValue]="item.colour">
+          {{ item.colour }}
+        </option>
+      </select>
+      <span class="error" *ngIf="error && error.colour"><small>{{ error.colour }}</small></span>
+    </div>
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea class="form-control" name="description" id="description" placeholder="description" cols="3"
+                ngModel></textarea>
+      <span class="error" *ngIf="error && error.description"><small>{{ error.description }}</small></span>
+    </div>
+    <div class="form-group">
+      <label for="stock_count">Stock count</label>
+      <input class="form-control" name="stock_count" id="stock_count" placeholder="stock count" type="number" ngModel>
+      <span class="error" *ngIf="error && error.stock_count"><small>{{ error.stock_count }}</small></span>
+    </div>
+    <div class="form-group">
+      <label for="price">Price</label>
+      <input class="form-control" name="price" id="price" placeholder="price" type="number" ngModel>
+      <span class="error" *ngIf="error && error.price"><small>{{ error.price }}</small></span>
+    </div>
+    <div class="form-group">
+      <label for="brand">Brand</label>
+      <select class="form-control" name="brand" id="brand" [ngModel]>
+        <option *ngFor="let item of apiService.brands" [ngValue]="item.id">
+          {{ item.name }}
+        </option>
+      </select>
+      <span class="error" *ngIf="error && error.brand"><small>{{ error.brand }}</small></span>
+    </div>
+    <div class="form-group">
+      <label for="is_advertised">Is advertised</label>
+      <input name="is_advertised" id="is_advertised" type="checkbox" ngModel>
+    </div>
+  </form>
+
+</div>
+<div class="modal-footer">
+  <input *ngIf="car" type="submit" class="btn btn-primary" form="editCarForm" value="Save">
+  <input *ngIf="!car" type="submit" class="btn btn-primary" form="createCarForm" value="Save">
+</div>

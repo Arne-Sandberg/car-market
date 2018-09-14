@@ -7,7 +7,7 @@ import {ApiService} from "../api.service";
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  ads: Array<object>;
+  ads: Array<any>;
 
   constructor(private apiService: ApiService) {
   }
@@ -17,10 +17,13 @@ export class HomeComponent implements OnInit {
   }
 
   public getAds() {
-    this.apiService.getList('adds').subscribe((response: Array<object>) => {
+    this.apiService.getList('adds').subscribe((response: Array<any>) => {
       console.log(response);
-      if (response)
+      if (response) {
         this.ads = response;
+        for (let car of this.ads)
+          car.brand = this.apiService.brands.find(brand => brand.id == car.brand).name;
+      }
     });
   }
 }

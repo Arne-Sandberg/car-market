@@ -4,7 +4,16 @@
       <img *ngIf="user.image" class="profile_img mx-auto thumbnail rounded" [src]="user.image">
       <img *ngIf="!user.image" class="profile_img mx-auto thumbnail rounded" src="static/images/default_user.png">
       <div class="card-body" *ngIf="isOwner()">
-        <a (click)="openEditProfileModal()">Edit profile</a>
+        <div class="list-group">
+          <a class="list-group-item list-group-item-action" (click)="openEditProfileModal()">Edit profile</a>
+          <a *ngIf="user.stripe_user_id" class="list-group-item list-group-item-action" (click)="openCreateCarModal()">
+            Create car
+          </a>
+          <a *ngIf="!user.stripe_user_id" class="list-group-item list-group-item-action"
+             href="{{ connectStripeUrl }}">
+            Connect stripe account
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -35,7 +44,7 @@
           <a routerLink="/cars/{{ car.id }}">
             {{ car.car_model }} {{ car.year }} - {{ car.car_type }}
           </a>
-          <span>
+          <span *ngIf="isOwner()">
               <a (click)="openEditCarModal(car)">edit</a> |
               <a (click)="deleteCar(car.id)">delete</a>
             </span>

@@ -209,6 +209,7 @@ var AppComponent = /** @class */ (function () {
     }
     AppComponent.prototype.ngOnInit = function () {
         this.getCurrentUser();
+        this.getBrands();
     };
     AppComponent.prototype.getCurrentUser = function () {
         var _this = this;
@@ -216,6 +217,14 @@ var AppComponent = /** @class */ (function () {
             console.log(response);
             if (response)
                 _this.apiService.currentUser = response;
+        });
+    };
+    AppComponent.prototype.getBrands = function () {
+        var _this = this;
+        this.apiService.getList('brands').subscribe(function (response) {
+            console.log(response);
+            if (response)
+                _this.apiService.brands = response;
         });
     };
     AppComponent.prototype.openLoginModal = function () {
@@ -273,12 +282,14 @@ var AppComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__edit_comment_modal_edit_comment_modal_component__ = __webpack_require__("./src/app/edit-comment-modal/edit-comment-modal.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__edit_profile_modal_edit_profile_modal_component__ = __webpack_require__("./src/app/edit-profile-modal/edit-profile-modal.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__stripe_modal_stripe_modal_component__ = __webpack_require__("./src/app/stripe-modal/stripe-modal.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__car_modal_car_modal_component__ = __webpack_require__("./src/app/car-modal/car-modal.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -315,6 +326,7 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_16__edit_comment_modal_edit_comment_modal_component__["a" /* EditCommentModalComponent */],
                 __WEBPACK_IMPORTED_MODULE_17__edit_profile_modal_edit_profile_modal_component__["a" /* EditProfileModalComponent */],
                 __WEBPACK_IMPORTED_MODULE_18__stripe_modal_stripe_modal_component__["a" /* StripeModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_19__car_modal_car_modal_component__["a" /* CarModalComponent */],
             ],
             imports: [
                 __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
@@ -330,6 +342,7 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_16__edit_comment_modal_edit_comment_modal_component__["a" /* EditCommentModalComponent */],
                 __WEBPACK_IMPORTED_MODULE_17__edit_profile_modal_edit_profile_modal_component__["a" /* EditProfileModalComponent */],
                 __WEBPACK_IMPORTED_MODULE_18__stripe_modal_stripe_modal_component__["a" /* StripeModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_19__car_modal_car_modal_component__["a" /* CarModalComponent */],
             ],
             entryComponents: [
                 __WEBPACK_IMPORTED_MODULE_14__login_modal_login_modal_component__["a" /* LoginModalComponent */],
@@ -337,12 +350,108 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_16__edit_comment_modal_edit_comment_modal_component__["a" /* EditCommentModalComponent */],
                 __WEBPACK_IMPORTED_MODULE_17__edit_profile_modal_edit_profile_modal_component__["a" /* EditProfileModalComponent */],
                 __WEBPACK_IMPORTED_MODULE_18__stripe_modal_stripe_modal_component__["a" /* StripeModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_19__car_modal_car_modal_component__["a" /* CarModalComponent */],
             ],
             providers: [__WEBPACK_IMPORTED_MODULE_11__api_service__["a" /* ApiService */]],
             bootstrap: [__WEBPACK_IMPORTED_MODULE_6__app_component__["a" /* AppComponent */]]
         })
     ], AppModule);
     return AppModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/car-modal/car-modal.component.css":
+/***/ (function(module, exports) {
+
+module.exports = ""
+
+/***/ }),
+
+/***/ "./src/app/car-modal/car-modal.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"modal-header\">\n  <h2 class=\"modal-title\">{{ title }}</h2>\n  <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"activeModal.close()\">\n    <span aria-hidden=\"true\">&times;</span>\n  </button>\n</div>\n<div class=\"modal-body\">\n  <form *ngIf=\"car\" #editCarForm=\"ngForm\" id=\"editCarForm\" (ngSubmit)=\"submitCar(editCarForm.value)\">\n    <div class=\"form-group\">\n      <label for=\"car_model\">Model</label>\n      <input class=\"form-control\" name=\"car_model\" id=\"car_model\" placeholder=\"model\" type=\"text\"\n             [ngModel]=\"car.car_model\">\n      <span class=\"error\" *ngIf=\"error && error.car_model\"><small>{{ error.car_model }}</small></span>\n    </div>\n    <div class=\"form-group\">\n      <label for=\"car_type\">Type</label>\n      <input class=\"form-control\" name=\"car_type\" id=\"car_type\" placeholder=\"type\" type=\"text\"\n             [ngModel]=\"car.car_type\">\n      <span class=\"error\" *ngIf=\"error && error.car_type\"><small>{{ error.car_type }}</small></span>\n    </div>\n    <div class=\"form-group\">\n      <label for=\"year\">Year</label>\n      <input class=\"form-control\" name=\"year\" id=\"year\" placeholder=\"year\" type=\"number\" [ngModel]=\"car.year\">\n      <span class=\"error\" *ngIf=\"error && error.year\"><small>{{ error.year }}</small></span>\n    </div>\n    <div class=\"form-group\">\n      <label for=\"number_of_seats\">Number of seats</label>\n      <input class=\"form-control\" name=\"number_of_seats\" id=\"number_of_seats\" placeholder=\"number of seats\"\n             type=\"number\" [ngModel]=\"car.number_of_seats\">\n      <span class=\"error\" *ngIf=\"error && error.number_of_seats\"><small>{{ error.number_of_seats }}</small></span>\n    </div>\n    <div class=\"form-group\">\n      <label for=\"colour\">Colour</label>\n      <select class=\"form-control\" name=\"colour\" id=\"colour\" [ngModel]=\"car.colour\">\n        <option *ngFor=\"let item of colours\" [ngValue]=\"item.colour\">\n          {{ item.colour }}\n        </option>\n      </select>\n      <span class=\"error\" *ngIf=\"error && error.colour\"><small>{{ error.colour }}</small></span>\n    </div>\n    <div class=\"form-group\">\n      <label for=\"description\">Description</label>\n      <textarea class=\"form-control\" name=\"description\" id=\"description\" placeholder=\"description\" cols=\"3\"\n                [ngModel]=\"car.description\"></textarea>\n      <span class=\"error\" *ngIf=\"error && error.description\"><small>{{ error.description }}</small></span>\n    </div>\n    <div class=\"form-group\">\n      <label for=\"stock_count\">Stock count</label>\n      <input class=\"form-control\" name=\"stock_count\" id=\"stock_count\" placeholder=\"stock count\" type=\"number\"\n             [ngModel]=\"car.stock_count\">\n      <span class=\"error\" *ngIf=\"error && error.stock_count\"><small>{{ error.stock_count }}</small></span>\n    </div>\n    <div class=\"form-group\">\n      <label for=\"price\">Price</label>\n      <input class=\"form-control\" name=\"price\" id=\"price\" placeholder=\"price\" type=\"number\"\n             [ngModel]=\"car.price\">\n      <span class=\"error\" *ngIf=\"error && error.price\"><small>{{ error.price }}</small></span>\n    </div>\n    <div class=\"form-group\">\n      <label for=\"brand\">Brand</label>\n      <select class=\"form-control\" name=\"brand\" id=\"brand\" [ngModel]=\"car.brand\">\n        <option *ngFor=\"let item of apiService.brands\" [ngValue]=\"item.id\">\n          {{ item.name }}\n        </option>\n      </select>\n      <span class=\"error\" *ngIf=\"error && error.brand\"><small>{{ error.brand }}</small></span>\n    </div>\n    <div class=\"form-group\">\n      <label for=\"is_advertised\">Is advertised</label>\n      <input name=\"is_advertised\" id=\"is_advertised\" type=\"checkbox\" [ngModel]=\"car.is_advertised\">\n    </div>\n  </form>\n\n  <form *ngIf=\"!car\" #createCarForm=\"ngForm\" id=\"createCarForm\" (ngSubmit)=\"submitCar(createCarForm.value)\">\n    <div class=\"form-group\">\n      <label for=\"car_model\">Model</label>\n      <input class=\"form-control\" name=\"car_model\" id=\"car_model\" placeholder=\"model\" type=\"text\" ngModel>\n      <span class=\"error\" *ngIf=\"error && error.car_model\"><small>{{ error.car_model }}</small></span>\n    </div>\n    <div class=\"form-group\">\n      <label for=\"car_type\">Type</label>\n      <input class=\"form-control\" name=\"car_type\" id=\"car_type\" placeholder=\"type\" type=\"text\" ngModel>\n      <span class=\"error\" *ngIf=\"error && error.car_type\"><small>{{ error.car_type }}</small></span>\n    </div>\n    <div class=\"form-group\">\n      <label for=\"year\">Year</label>\n      <input class=\"form-control\" name=\"year\" id=\"year\" placeholder=\"year\" type=\"number\" ngModel>\n      <span class=\"error\" *ngIf=\"error && error.year\"><small>{{ error.year }}</small></span>\n    </div>\n    <div class=\"form-group\">\n      <label for=\"number_of_seats\">Number of seats</label>\n      <input class=\"form-control\" name=\"number_of_seats\" id=\"number_of_seats\" placeholder=\"number of seats\"\n             type=\"number\" ngModel>\n      <span class=\"error\" *ngIf=\"error && error.number_of_seats\"><small>{{ error.number_of_seats }}</small></span>\n    </div>\n    <div class=\"form-group\">\n      <label for=\"colour\">Colour</label>\n      <select class=\"form-control\" name=\"colour\" id=\"colour\" [ngModel]>\n        <option *ngFor=\"let item of colours\" [ngValue]=\"item.colour\">\n          {{ item.colour }}\n        </option>\n      </select>\n      <span class=\"error\" *ngIf=\"error && error.colour\"><small>{{ error.colour }}</small></span>\n    </div>\n    <div class=\"form-group\">\n      <label for=\"description\">Description</label>\n      <textarea class=\"form-control\" name=\"description\" id=\"description\" placeholder=\"description\" cols=\"3\"\n                ngModel></textarea>\n      <span class=\"error\" *ngIf=\"error && error.description\"><small>{{ error.description }}</small></span>\n    </div>\n    <div class=\"form-group\">\n      <label for=\"stock_count\">Stock count</label>\n      <input class=\"form-control\" name=\"stock_count\" id=\"stock_count\" placeholder=\"stock count\" type=\"number\" ngModel>\n      <span class=\"error\" *ngIf=\"error && error.stock_count\"><small>{{ error.stock_count }}</small></span>\n    </div>\n    <div class=\"form-group\">\n      <label for=\"price\">Price</label>\n      <input class=\"form-control\" name=\"price\" id=\"price\" placeholder=\"price\" type=\"number\" ngModel>\n      <span class=\"error\" *ngIf=\"error && error.price\"><small>{{ error.price }}</small></span>\n    </div>\n    <div class=\"form-group\">\n      <label for=\"brand\">Brand</label>\n      <select class=\"form-control\" name=\"brand\" id=\"brand\" [ngModel]>\n        <option *ngFor=\"let item of apiService.brands\" [ngValue]=\"item.id\">\n          {{ item.name }}\n        </option>\n      </select>\n      <span class=\"error\" *ngIf=\"error && error.brand\"><small>{{ error.brand }}</small></span>\n    </div>\n    <div class=\"form-group\">\n      <label for=\"is_advertised\">Is advertised</label>\n      <input name=\"is_advertised\" id=\"is_advertised\" type=\"checkbox\" ngModel>\n    </div>\n  </form>\n\n</div>\n<div class=\"modal-footer\">\n  <input *ngIf=\"car\" type=\"submit\" class=\"btn btn-primary\" form=\"editCarForm\" value=\"Save\">\n  <input *ngIf=\"!car\" type=\"submit\" class=\"btn btn-primary\" form=\"createCarForm\" value=\"Save\">\n</div>\n"
+
+/***/ }),
+
+/***/ "./src/app/car-modal/car-modal.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CarModalComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ng_bootstrap_ng_bootstrap__ = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__api_service__ = __webpack_require__("./src/app/api.service.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var CarModalComponent = /** @class */ (function () {
+    function CarModalComponent(activeModal, apiService) {
+        this.activeModal = activeModal;
+        this.apiService = apiService;
+    }
+    CarModalComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.apiService.getList('colours').subscribe(function (response) {
+            console.log(response);
+            _this.colours = response;
+        });
+    };
+    CarModalComponent.prototype.submitCar = function (data) {
+        var _this = this;
+        if (this.title == 'Edit car') {
+            this.apiService.editItem('cars', this.car.id, data).subscribe(function (response) {
+                console.log(response);
+                if (response) {
+                    _this.activeModal.close();
+                    _this.error = null;
+                }
+                else
+                    _this.error = _this.apiService.errorLog.pop();
+            });
+        }
+        else if (this.title == 'Create car') {
+            this.apiService.createItem('cars', data).subscribe(function (response) {
+                console.log(response);
+                if (response) {
+                    _this.activeModal.close();
+                    _this.error = null;
+                }
+                else
+                    _this.error = _this.apiService.errorLog.pop();
+            });
+        }
+    };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Input */])(),
+        __metadata("design:type", String)
+    ], CarModalComponent.prototype, "title", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Input */])(),
+        __metadata("design:type", Object)
+    ], CarModalComponent.prototype, "car", void 0);
+    CarModalComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-car-modal',
+            template: __webpack_require__("./src/app/car-modal/car-modal.component.html"),
+            styles: [__webpack_require__("./src/app/car-modal/car-modal.component.css")]
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__ng_bootstrap_ng_bootstrap__["a" /* NgbActiveModal */],
+            __WEBPACK_IMPORTED_MODULE_2__api_service__["a" /* ApiService */]])
+    ], CarModalComponent);
+    return CarModalComponent;
 }());
 
 
@@ -446,7 +555,12 @@ var CarComponent = /** @class */ (function () {
         this.apiService.getItem('cars', this.route.snapshot.paramMap.get('id'))
             .subscribe(function (response) {
             console.log(response);
-            response ? _this.car = response : _this.error = _this.apiService.errorLog.pop();
+            if (response) {
+                _this.car = response;
+                _this.car.brand = _this.apiService.brands.find(function (brand) { return brand.id == _this.car.brand; }).name;
+            }
+            else
+                _this.error = _this.apiService.errorLog.pop();
         });
     };
     CarComponent = __decorate([
@@ -509,8 +623,16 @@ var CarsComponent = /** @class */ (function () {
         var _this = this;
         this.apiService.getList('cars').subscribe(function (response) {
             console.log(response);
-            if (response)
+            if (response) {
                 _this.cars = response;
+                var _loop_1 = function (car) {
+                    car.brand = _this.apiService.brands.find(function (brand) { return brand.id == car.brand; }).name;
+                };
+                for (var _i = 0, _a = _this.cars; _i < _a.length; _i++) {
+                    var car = _a[_i];
+                    _loop_1(car);
+                }
+            }
         });
     };
     CarsComponent = __decorate([
@@ -538,7 +660,7 @@ module.exports = ""
 /***/ "./src/app/create/create.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form (ngSubmit)=\"showForm(list_name.value)\">\n  <label for=\"list\">Select item to create:</label>\n  <select class=\"form-control mb-2\" name=\"list\" id=\"list\" required #list_name>\n    <option *ngFor=\"let name of listArr\" [value]=\"name\">\n      {{ name }}\n    </option>\n  </select>\n  <button class=\"btn btn-primary\" type=\"submit\">Show</button>\n</form>\n<div class=\"row my-4\">\n  <div class=\"col-lg\">\n\n    <form *ngIf=\"formName == 'cars'\" #car_create=\"ngForm\" (ngSubmit)=\"createItem(car_create.value)\">\n      <h2>Create car</h2>\n      <div class=\"form-group row\">\n        <label for=\"car_model\" class=\"col-lg-2 col-form-label\">Model</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"car_model\" id=\"car_model\" placeholder=\"model\" type=\"text\" ngModel>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"car_type\" class=\"col-lg-2 col-form-label\">Type</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"car_type\" id=\"car_type\" placeholder=\"type\" type=\"text\" ngModel>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"year\" class=\"col-lg-2 col-form-label\">Year</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"year\" id=\"year\" placeholder=\"year\" type=\"number\" ngModel>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"number_of_seats\" class=\"col-lg-2 col-form-label\">Number of seats</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"number_of_seats\" id=\"number_of_seats\" placeholder=\"number of seats\"\n                 type=\"number\" ngModel>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"colour\" class=\"col-lg-2 col-form-label\">Colour</label>\n        <div class=\"col-lg-10\">\n          <select class=\"form-control mb-2\" name=\"colour\" id=\"colour\" [ngModel]>\n            <option *ngFor=\"let item of colours\" [ngValue]=\"item.colour\">\n              {{ item.colour }}\n            </option>\n          </select>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"description\" class=\"col-lg-2 col-form-label\">Description</label>\n        <div class=\"col-lg-10\">\n          <textarea class=\"form-control mb-2\" name=\"description\" id=\"description\" placeholder=\"description\" cols=\"3\"\n                    ngModel></textarea>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"stock_count\" class=\"col-lg-2 col-form-label\">Stock count</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"stock_count\" id=\"stock_count\" placeholder=\"stock count\" type=\"number\"\n                 ngModel>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"price\" class=\"col-lg-2 col-form-label\">Price</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"price\" id=\"price\" placeholder=\"price\" type=\"number\" ngModel>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"brand\" class=\"col-lg-2 col-form-label\">Brand</label>\n        <div class=\"col-lg-10\">\n          <select class=\"form-control mb-2\" name=\"brand\" id=\"brand\" [ngModel]>\n            <option *ngFor=\"let item of brands\" [ngValue]=\"item.id\">\n              {{ item.name }}\n            </option>\n          </select>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"is_advertised\" class=\"col-lg-2 col-form-label\">Is advertised</label>\n        <div class=\"col-lg-10\">\n          <input class=\"mb-2\" name=\"is_advertised\" id=\"is_advertised\" type=\"checkbox\" ngModel>\n        </div>\n      </div>\n      <button class=\"btn btn-primary\" type=\"submit\">Submit</button>\n    </form>\n\n    <form *ngIf=\"formName == 'comments'\" #comment_create=\"ngForm\" (ngSubmit)=\"createItem(comment_create.value)\">\n      <h2>Create comment</h2>\n      <div class=\"form-group row\">\n        <label for=\"car\" class=\"col-lg-2 col-form-label\">Car</label>\n        <div class=\"col-lg-10\">\n          <select class=\"form-control mb-2\" name=\"car\" id=\"car\" [ngModel]>\n            <option *ngFor=\"let item of cars\" [ngValue]=\"item.id\">\n              {{ item.brand }} - {{ item.model }} {{ item.year }} - {{ item.car_type }}\n            </option>\n          </select>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"content\" class=\"col-lg-2 col-form-label\">Content</label>\n        <div class=\"col-lg-10\">\n          <textarea class=\"form-control mb-2\" name=\"content\" id=\"content\" placeholder=\"content\" cols=\"3\"\n                    ngModel></textarea>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"rating\" class=\"col-lg-2 col-form-label\">Rating</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"rating\" id=\"rating\" placeholder=\"rating\" type=\"number\" ngModel>\n        </div>\n      </div>\n      <button class=\"btn btn-primary\" type=\"submit\">Submit</button>\n    </form>\n  </div>\n</div>\n\n"
+module.exports = "<form (ngSubmit)=\"showForm(list_name.value)\">\n  <label for=\"list\">Select item to create:</label>\n  <select class=\"form-control mb-2\" name=\"list\" id=\"list\" required #list_name>\n    <option *ngFor=\"let name of listArr\" [value]=\"name\">\n      {{ name }}\n    </option>\n  </select>\n  <button class=\"btn btn-primary\" type=\"submit\">Show</button>\n</form>\n<div class=\"row my-4\">\n  <div class=\"col-lg\">\n\n\n\n    <form *ngIf=\"formName == 'comments'\" #comment_create=\"ngForm\" (ngSubmit)=\"createItem(comment_create.value)\">\n      <h2>Create comment</h2>\n      <div class=\"form-group row\">\n        <label for=\"car\" class=\"col-lg-2 col-form-label\">Car</label>\n        <div class=\"col-lg-10\">\n          <select class=\"form-control mb-2\" name=\"car\" id=\"car\" [ngModel]>\n            <option *ngFor=\"let item of cars\" [ngValue]=\"item.id\">\n              {{ item.brand }} - {{ item.model }} {{ item.year }} - {{ item.car_type }}\n            </option>\n          </select>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"content\" class=\"col-lg-2 col-form-label\">Content</label>\n        <div class=\"col-lg-10\">\n          <textarea class=\"form-control mb-2\" name=\"content\" id=\"content\" placeholder=\"content\" cols=\"3\"\n                    ngModel></textarea>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"rating\" class=\"col-lg-2 col-form-label\">Rating</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"rating\" id=\"rating\" placeholder=\"rating\" type=\"number\" ngModel>\n        </div>\n      </div>\n      <button class=\"btn btn-primary\" type=\"submit\">Submit</button>\n    </form>\n  </div>\n</div>\n\n"
 
 /***/ }),
 
@@ -801,8 +923,16 @@ var HomeComponent = /** @class */ (function () {
         var _this = this;
         this.apiService.getList('adds').subscribe(function (response) {
             console.log(response);
-            if (response)
+            if (response) {
                 _this.ads = response;
+                var _loop_1 = function (car) {
+                    car.brand = _this.apiService.brands.find(function (brand) { return brand.id == car.brand; }).name;
+                };
+                for (var _i = 0, _a = _this.ads; _i < _a.length; _i++) {
+                    var car = _a[_i];
+                    _loop_1(car);
+                }
+            }
         });
     };
     HomeComponent = __decorate([
@@ -992,7 +1122,7 @@ module.exports = ""
 /***/ "./src/app/stripe-modal/stripe-modal.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"modal-header\">\n  <h2 class=\"modal-title\">Buy {{ car.brand }} - {{ car.car_model }} - {{ car.car_type }}</h2>\n  <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"activeModal.close()\">\n    <span aria-hidden=\"true\">&times;</span>\n  </button>\n</div>\n<div class=\"modal-body\">\n  <form #buyCar=\"ngForm\" (ngSubmit)=\"buy()\" id=\"buyCar\">\n    <div class=\"form-group\">\n      <label for=\"card\">Card info</label>\n      <ngx-stripe-card class=\"p-3\" id=\"card\" [options]=\"cardOptions\"\n                       [elementsOptions]=\"elementsOptions\"></ngx-stripe-card>\n      <span class=\"error\" *ngIf=\"error && error.message\"><small>{{ error.message }}</small></span>\n    </div>\n  </form>\n</div>\n<div class=\"modal-footer\">\n  <input type=\"submit\" class=\"btn btn-primary\" form=\"buyCar\" value=\"Buy for ${{ car.price }}\">\n</div>\n"
+module.exports = "<div class=\"modal-header\">\n  <h2 class=\"modal-title\">Buy:</h2>\n  <h3>{{ car.brand }} - {{ car.car_model }} - {{ car.car_type }}</h3>\n  <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"activeModal.close()\">\n    <span aria-hidden=\"true\">&times;</span>\n  </button>\n</div>\n<div class=\"modal-body\">\n  <form #buyCar=\"ngForm\" (ngSubmit)=\"buy()\" id=\"buyCar\">\n    <div class=\"form-group\">\n      <label for=\"card\">Card info</label>\n      <ngx-stripe-card class=\"p-3\" id=\"card\" [options]=\"cardOptions\"\n                       [elementsOptions]=\"elementsOptions\"></ngx-stripe-card>\n      <span class=\"error\" *ngIf=\"error && error.message\"><small>{{ error.message }}</small></span>\n    </div>\n  </form>\n</div>\n<div class=\"modal-footer\">\n  <input type=\"submit\" class=\"btn btn-primary\" form=\"buyCar\" value=\"Buy for ${{ car.price }}\">\n</div>\n"
 
 /***/ }),
 
@@ -1102,7 +1232,7 @@ module.exports = ""
 /***/ "./src/app/user/user.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\" *ngIf=\"user\">\n  <div class=\"col-lg-3\">\n    <div class=\"card p-2\">\n      <img *ngIf=\"user.image\" class=\"profile_img mx-auto thumbnail rounded\" [src]=\"user.image\">\n      <img *ngIf=\"!user.image\" class=\"profile_img mx-auto thumbnail rounded\" src=\"static/images/default_user.png\">\n      <div class=\"card-body\" *ngIf=\"isOwner()\">\n        <a (click)=\"openEditProfileModal()\">Edit profile</a>\n      </div>\n    </div>\n  </div>\n  <div class=\"col-lg-9\">\n    <div class=\"row\">\n      <div class=\"col-lg\">\n        <h3><b>Personal information:</b></h3>\n        <hr>\n        <div class=\"my-2\">\n          <b>Username:</b> {{ user.username }}\n        </div>\n        <div class=\"my-2\">\n          <b>Email:</b> {{ user.email }}\n        </div>\n        <div class=\"my-2\">\n          <b>First name:</b> {{ user.first_name }}\n        </div>\n        <div class=\"my-2\">\n          <b>Last name:</b> {{ user.last_name }}\n        </div>\n      </div>\n    </div>\n    <div class=\"row\">\n      <div class=\"col-lg-6 my-4\">\n        <h4>Cars:</h4>\n        <hr>\n        <div *ngFor=\"let car of user.car_set\">\n          <a routerLink=\"/cars/{{ car.id }}\">\n            {{ car.car_model }} {{ car.year }} - {{ car.car_type }}\n          </a>\n          <span>\n              <a (click)=\"openEditCarModal(car)\">edit</a> |\n              <a (click)=\"deleteCar(car.id)\">delete</a>\n            </span>\n        </div>\n      </div>\n      <div class=\"col-lg-6 my-4\">\n        <h4>Purchases:</h4>\n        <hr>\n        <div *ngFor=\"let purchase of user.purchase_set\">\n          <a routerLink=\"/cars/{{ purchase.car.id }}\">{{ purchase.car.car_model }} {{ purchase.car.year }}\n            - {{ purchase.car.car_type }}</a> - ${{ purchase.price }}\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class=\"row\" *ngIf=\"error && error.detail\">\n  <div class=\"col-lg\">\n    <h3>Errors:</h3>\n    {{ error.detail }}\n  </div>\n</div>\n"
+module.exports = "<div class=\"row\" *ngIf=\"user\">\n  <div class=\"col-lg-3\">\n    <div class=\"card p-2\">\n      <img *ngIf=\"user.image\" class=\"profile_img mx-auto thumbnail rounded\" [src]=\"user.image\">\n      <img *ngIf=\"!user.image\" class=\"profile_img mx-auto thumbnail rounded\" src=\"static/images/default_user.png\">\n      <div class=\"card-body\" *ngIf=\"isOwner()\">\n        <div class=\"list-group\">\n          <a class=\"list-group-item list-group-item-action\" (click)=\"openEditProfileModal()\">Edit profile</a>\n          <a *ngIf=\"user.stripe_user_id\" class=\"list-group-item list-group-item-action\" (click)=\"openCreateCarModal()\">\n            Create car\n          </a>\n          <a *ngIf=\"!user.stripe_user_id\" class=\"list-group-item list-group-item-action\"\n             href=\"{{ connectStripeUrl }}\">\n            Connect stripe account\n          </a>\n        </div>\n      </div>\n    </div>\n  </div>\n  <div class=\"col-lg-9\">\n    <div class=\"row\">\n      <div class=\"col-lg\">\n        <h3><b>Personal information:</b></h3>\n        <hr>\n        <div class=\"my-2\">\n          <b>Username:</b> {{ user.username }}\n        </div>\n        <div class=\"my-2\">\n          <b>Email:</b> {{ user.email }}\n        </div>\n        <div class=\"my-2\">\n          <b>First name:</b> {{ user.first_name }}\n        </div>\n        <div class=\"my-2\">\n          <b>Last name:</b> {{ user.last_name }}\n        </div>\n      </div>\n    </div>\n    <div class=\"row\">\n      <div class=\"col-lg-6 my-4\">\n        <h4>Cars:</h4>\n        <hr>\n        <div *ngFor=\"let car of user.car_set\">\n          <a routerLink=\"/cars/{{ car.id }}\">\n            {{ car.car_model }} {{ car.year }} - {{ car.car_type }}\n          </a>\n          <span *ngIf=\"isOwner()\">\n              <a (click)=\"openEditCarModal(car)\">edit</a> |\n              <a (click)=\"deleteCar(car.id)\">delete</a>\n            </span>\n        </div>\n      </div>\n      <div class=\"col-lg-6 my-4\">\n        <h4>Purchases:</h4>\n        <hr>\n        <div *ngFor=\"let purchase of user.purchase_set\">\n          <a routerLink=\"/cars/{{ purchase.car.id }}\">{{ purchase.car.car_model }} {{ purchase.car.year }}\n            - {{ purchase.car.car_type }}</a> - ${{ purchase.price }}\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class=\"row\" *ngIf=\"error && error.detail\">\n  <div class=\"col-lg\">\n    <h3>Errors:</h3>\n    {{ error.detail }}\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -1116,6 +1246,7 @@ module.exports = "<div class=\"row\" *ngIf=\"user\">\n  <div class=\"col-lg-3\">
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ng_bootstrap_ng_bootstrap__ = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__edit_profile_modal_edit_profile_modal_component__ = __webpack_require__("./src/app/edit-profile-modal/edit-profile-modal.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__car_modal_car_modal_component__ = __webpack_require__("./src/app/car-modal/car-modal.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1130,11 +1261,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var UserComponent = /** @class */ (function () {
     function UserComponent(apiService, modalService, route) {
         this.apiService = apiService;
         this.modalService = modalService;
         this.route = route;
+        this.connectStripeUrl = 'https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_DQaOCFCjDd2o48wUjD5fLPQlm6vkG51j&scope=read_write';
     }
     UserComponent.prototype.ngOnInit = function () {
         this.getUser();
@@ -1150,6 +1283,25 @@ var UserComponent = /** @class */ (function () {
         });
     };
     UserComponent.prototype.openEditCarModal = function (car) {
+        var _this = this;
+        var modal = this.modalService.open(__WEBPACK_IMPORTED_MODULE_5__car_modal_car_modal_component__["a" /* CarModalComponent */]);
+        modal.componentInstance.car = car;
+        modal.componentInstance.title = 'Edit car';
+        modal.result.then(function () {
+            _this.getUser();
+        }, function () {
+            modal.close();
+        });
+    };
+    UserComponent.prototype.openCreateCarModal = function () {
+        var _this = this;
+        var modal = this.modalService.open(__WEBPACK_IMPORTED_MODULE_5__car_modal_car_modal_component__["a" /* CarModalComponent */]);
+        modal.componentInstance.title = 'Create car';
+        modal.result.then(function () {
+            _this.getUser();
+        }, function () {
+            modal.close();
+        });
     };
     UserComponent.prototype.isOwner = function () {
         return this.apiService.currentUser ? this.apiService.currentUser.id == this.user.id : false;

@@ -7,7 +7,7 @@ import {ApiService} from "../api.service";
   styleUrls: ['./cars.component.css']
 })
 export class CarsComponent implements OnInit {
-  cars: Array<object>;
+  cars: Array<any>;
 
   constructor(private apiService: ApiService) {
   }
@@ -16,12 +16,14 @@ export class CarsComponent implements OnInit {
     this.getCars();
   }
 
-
-  public getCars(): void {
+  private getCars(): void {
     this.apiService.getList('cars').subscribe((response: Array<object>) => {
       console.log(response);
-      if (response)
+      if (response) {
         this.cars = response;
+        for (let car of this.cars)
+          car.brand = this.apiService.brands.find(brand => brand.id == car.brand).name;
+      }
     });
   }
 }

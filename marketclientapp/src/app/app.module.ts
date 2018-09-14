@@ -18,6 +18,7 @@ import {RegisterModalComponent} from './register-modal/register-modal.component'
 import {EditCommentModalComponent} from './edit-comment-modal/edit-comment-modal.component';
 import {EditProfileModalComponent} from './edit-profile-modal/edit-profile-modal.component';
 import {StripeModalComponent} from './stripe-modal/stripe-modal.component';
+import {CarModalComponent} from './car-modal/car-modal.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import {StripeModalComponent} from './stripe-modal/stripe-modal.component';
     EditCommentModalComponent,
     EditProfileModalComponent,
     StripeModalComponent,
+    CarModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,6 +49,7 @@ import {StripeModalComponent} from './stripe-modal/stripe-modal.component';
     EditCommentModalComponent,
     EditProfileModalComponent,
     StripeModalComponent,
+    CarModalComponent,
   ],
   entryComponents: [
     LoginModalComponent,
@@ -54,6 +57,7 @@ import {StripeModalComponent} from './stripe-modal/stripe-modal.component';
     EditCommentModalComponent,
     EditProfileModalComponent,
     StripeModalComponent,
+    CarModalComponent,
   ],
   providers: [ApiService],
   bootstrap: [AppComponent]
