@@ -91,7 +91,7 @@ class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class Checkout(generics.CreateAPIView):
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticated,)
     serializer_class = serializers.PurchaseSerializer
 
     def get_serializer_context(self):

@@ -9,7 +9,7 @@
       <img src="static/images/no-image.jpg" alt="slide" class="car_img w-100 rounded"
            *ngIf="!car.image_set.length">
       <div class="card-body">
-        <h3>{{ car.brand }} - {{ car.car_model }} - {{ car.car_type }} </h3>
+        <h3>{{ car.brand }} - {{ car.car_model }} - {{ car.car_type }}</h3>
         <h4>${{ car.price }}</h4>
         <p>{{ car.description }}</p>
         <p><b>Year</b>: {{ car.year }}</p>
@@ -18,9 +18,12 @@
         <p *ngIf="car.stock_count"><b>Stock count</b>: {{ car.stock_count }}</p>
         <p *ngIf="!car.stock_count"><b>Out of stock</b></p>
       </div>
+      <div class="card-footer"
+           *ngIf="apiService.currentUser && car.stock_count && (!car.user || car.user.stripe_user_id)">
+        <button class="btn btn-primary" (click)="openStripeModal()">Pay with card</button>
+      </div>
     </div>
     <div class="container my-4">
-
       <h3>Comments:</h3>
       <div class="media my-3" *ngFor="let comment of car.comment_set">
         <a routerLink="/users/{{ comment.user.id }}">
@@ -50,7 +53,7 @@
         </a>
         <div class="media-body p-0 pl-2">
           <a routerLink="/users/{{ apiService.currentUser.id }}"><b>{{ apiService.currentUser.username }}</b></a>:
-          <form #commentSubmit="ngForm" (submit)="createComment(commentSubmit)">
+          <form #commentSubmit="ngForm" (ngSubmit)="createComment(commentSubmit)">
             <div class="form-group">
               <label for="content">Content</label>
               <textarea class="form-control mb-2" name="content" id="content" placeholder="content" cols="3"

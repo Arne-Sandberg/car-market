@@ -3,6 +3,7 @@ import {ApiService} from '../api.service';
 import {ActivatedRoute} from "@angular/router";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {EditCommentModalComponent} from "../edit-comment-modal/edit-comment-modal.component";
+import {StripeModalComponent} from "../stripe-modal/stripe-modal.component";
 
 @Component({
   selector: 'app-car',
@@ -10,9 +11,9 @@ import {EditCommentModalComponent} from "../edit-comment-modal/edit-comment-moda
   styleUrls: ['./car.component.css']
 })
 export class CarComponent implements OnInit {
-  car: object;
+  car: any;
   error: object;
-  modal;
+
 
   constructor(public apiService: ApiService,
               private modalService: NgbModal,
@@ -23,9 +24,21 @@ export class CarComponent implements OnInit {
     this.getCar();
   }
 
-  public openEditCommentModal(comment): void {
+
+  public openEditCommentModal(comment: any): void {
     let modal = this.modalService.open(EditCommentModalComponent);
     modal.componentInstance.comment = comment;
+    modal.result.then(() => {
+      this.getCar();
+    }, () => {
+      modal.close();
+    });
+  }
+
+  public openStripeModal(): void {
+    let modal = this.modalService.open(StripeModalComponent);
+    modal.componentInstance.email = this.apiService.currentUser.email;
+    modal.componentInstance.car = this.car;
     modal.result.then(() => {
       this.getCar();
     }, () => {
@@ -40,10 +53,9 @@ export class CarComponent implements OnInit {
     });
   }
 
-
-  public createComment(form): void {
+  public createComment(form: any): void {
     let data = form.value;
-    data['car'] = this.car['id'];
+    data.car = this.car.id;
     this.apiService.createItem('comments', data).subscribe((response: object) => {
       console.log(response);
       if (response) {

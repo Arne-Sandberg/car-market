@@ -5,7 +5,7 @@
   </button>
 </div>
 <div class="modal-body">
-  <form #userLogin="ngForm">
+  <form #userLogin="ngForm" (ngSubmit)="login(userLogin.value)" id="userLogin">
     <span class="error" *ngIf="error && error.non_field_errors"><small>{{ error.non_field_errors }}</small></span>
     <div class="form-group">
       <label for="username">Username</label>
@@ -20,5 +20,5 @@
   </form>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-primary" (click)="login(userLogin.value)">Submit</button>
+  <input type="submit" class="btn btn-primary" form="userLogin" value="Log in">
 </div>

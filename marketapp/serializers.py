@@ -27,10 +27,10 @@ class BrandSerializer(serializers.ModelSerializer):
 class PurchaseSerializer(serializers.ModelSerializer):
     stripe_token = serializers.CharField(required=True, write_only=True)
     stripe_email = serializers.EmailField(required=True, write_only=True)
-    car = serializers.PrimaryKeyRelatedField(queryset=models.Car.objects.all(), source='car.car_model')
 
     class Meta:
         model = models.Purchase
+        depth = 1
         fields = ['car', 'price', 'user', 'date', 'stripe_token', 'stripe_email']
         read_only_fields = ['price', 'user', 'date']
 
@@ -64,7 +64,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class CarSerializer(serializers.ModelSerializer):
-    user = serializers.PrimaryKeyRelatedField(read_only=True, source='user.username')
+    user = UserSerializer(read_only=True)
     image_set = ImageSerializer(many=True, read_only=True)
     brand = serializers.PrimaryKeyRelatedField(queryset=models.Brand.objects.all(), source='brand.name')
     comment_set = CommentSerializer(many=True, read_only=True)

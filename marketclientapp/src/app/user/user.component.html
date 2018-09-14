@@ -45,7 +45,8 @@
         <h4>Purchases:</h4>
         <hr>
         <div *ngFor="let purchase of user.purchase_set">
-          {{ purchase.car }} - ${{ purchase.price }}
+          <a routerLink="/cars/{{ purchase.car.id }}">{{ purchase.car.car_model }} {{ purchase.car.year }}
+            - {{ purchase.car.car_type }}</a> - ${{ purchase.price }}
         </div>
       </div>
     </div>

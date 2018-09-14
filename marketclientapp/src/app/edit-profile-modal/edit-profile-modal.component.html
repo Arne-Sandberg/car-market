@@ -5,7 +5,7 @@
   </button>
 </div>
 <div class="modal-body">
-  <form #userEdit="ngForm" enctype="multipart/form-data">
+  <form #userEdit="ngForm" enctype="multipart/form-data" (ngSubmit)="editMe(userEdit.value)"id="userEdit">
     <div class="form-group">
       <label for="image">Image</label>
       <input type="file" name="image" id="image" (change)="handleFileInput($event.target.files)">
@@ -29,5 +29,5 @@
   </form>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-primary" (click)="editMe(userEdit.value)">Save</button>
+  <input type="submit" class="btn btn-primary" form="userEdit" value="Save">
 </div>

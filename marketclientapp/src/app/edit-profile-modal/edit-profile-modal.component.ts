@@ -20,12 +20,12 @@ export class EditProfileModalComponent implements OnInit {
   }
 
   public editMe(data): void {
-    let form_data: FormData = new FormData();
+    let formData: FormData = new FormData();
     for (let key in data)
-      form_data.append(key, data[key]);
+      formData.append(key, data[key]);
     if (this.fileToUpload)
-      form_data.append('image', this.fileToUpload);
-    this.apiService.editMe(form_data).subscribe((response: object) => {
+      formData.append('image', this.fileToUpload);
+    this.apiService.editMe(formData).subscribe((response: object) => {
       console.log(response);
       if (response) {
         this.activeModal.close();

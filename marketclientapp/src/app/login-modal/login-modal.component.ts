@@ -24,11 +24,11 @@ export class LoginModalComponent implements OnInit {
       console.log(response);
       if (response) {
         this.activeModal.close();
-        this.apiService.getMe().subscribe((response: object) => {
+        this.apiService.getMe().subscribe((response: any) => {
           console.log(response);
           if (response) {
             this.apiService.currentUser = response;
-            this.router.navigateByUrl(`/users/${response['id']}`);
+            this.router.navigateByUrl(`/users/${response.id}`);
           }
         });
         this.error = null;

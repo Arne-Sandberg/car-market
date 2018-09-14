@@ -5,7 +5,7 @@
   </button>
 </div>
 <div class="modal-body">
-  <form #userRegister="ngForm">
+  <form #userRegister="ngForm" (ngSubmit)="register(userRegister.value)" id="userRegister">
     <div class="form-group">
       <label for="username">Username</label>
       <input class="form-control" name="username" placeholder="username" type="text" ngModel>
@@ -30,5 +30,5 @@
   </form>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-primary" (click)="register(userRegister.value)">Submit</button>
+  <input type="submit" class="btn btn-primary" form="userRegister" value="Register">
 </div>

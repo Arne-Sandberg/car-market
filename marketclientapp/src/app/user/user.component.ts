@@ -10,10 +10,9 @@ import {EditProfileModalComponent} from "../edit-profile-modal/edit-profile-moda
   styleUrls: ['./user.component.css']
 })
 export class UserComponent implements OnInit {
-  user: object;
+  user: any;
   cars: Array<object>;
   error: object;
-  modal;
 
   constructor(private apiService: ApiService,
               private modalService: NgbModal,
@@ -34,8 +33,12 @@ export class UserComponent implements OnInit {
     });
   }
 
+  public openEditCarModal(car): void {
+
+  }
+
   public isOwner(): boolean {
-    return this.apiService.currentUser ? this.apiService.currentUser['id'] == this.user['id'] : false;
+    return this.apiService.currentUser ? this.apiService.currentUser.id == this.user.id : false;
   }
 
   public getUser(): void {

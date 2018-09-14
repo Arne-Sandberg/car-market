@@ -8,7 +8,7 @@ import {of} from 'rxjs/observable/of';
 export class ApiService {
   api_url: string = 'http://127.0.0.1:8000/api/v1/';
   errorLog: Array<object> = [];
-  currentUser: object;
+  currentUser: any;
 
   constructor(private  httpClient: HttpClient) {
   }
