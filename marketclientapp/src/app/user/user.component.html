@@ -1,4 +1,4 @@
-<div class="row" *ngIf="user">
+<div class="row" *ngIf="user; else errorBlock">
   <div class="col-lg-3">
     <div class="card p-2">
       <img *ngIf="user.image" class="profile_img mx-auto thumbnail rounded" [src]="user.image">
@@ -62,8 +62,10 @@
   </div>
 </div>
 
-<div class="row" *ngIf="error && error.detail">
-  <div class="col-lg">
-    <h3>{{ error.detail }}</h3>
+<ng-template #errorBlock>
+  <div class="row" *ngIf="error && error.detail">
+    <div class="col-lg">
+      <h3>{{ error.detail }}</h3>
+    </div>
   </div>
-</div>
+</ng-template>

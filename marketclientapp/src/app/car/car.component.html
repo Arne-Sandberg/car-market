@@ -1,4 +1,4 @@
-<div class="row" *ngIf="car">
+<div class="row" *ngIf="car; else errorBlock">
   <div class="col-lg-9 mx-auto">
     <div class="card">
       <ngb-carousel *ngIf="car.image_set.length">
@@ -18,9 +18,11 @@
         <p *ngIf="car.stock_count"><b>Stock count</b>: {{ car.stock_count }}</p>
         <p *ngIf="!car.stock_count"><b>Out of stock</b></p>
       </div>
-      <div class="card-footer"
-           *ngIf="apiService.currentUser && car.stock_count && (!car.user || car.user.stripe_user_id)">
-        <button class="btn btn-primary" (click)="openStripeModal()">Pay with card</button>
+      <div class="card-footer">
+        <button class="btn btn-primary" (click)="openStripeModal()"
+                *ngIf="apiService.currentUser && car.stock_count && (!car.user || car.user.stripe_user_id); else needToAuthorizeBlock">
+          Pay with card
+        </button>
       </div>
     </div>
     <div class="container my-4">
@@ -35,14 +37,13 @@
           <b id="comment_rating">{{ comment.rating }}</b>★
           <small>{{ comment.date }}</small>
           <span *ngIf="apiService.currentUser && apiService.currentUser.id==comment.user.id">
-              <a (click)="openEditCommentModal(comment)">edit</a> |
-              <a (click)="deleteComment(comment.id)">delete</a>
-            </span>
+              <a (click)="openEditCommentModal(comment)">edit</a> | <a (click)="deleteComment(comment.id)">delete</a>
+          </span>
           <p id="comment_content">{{ comment.content }}</p>
         </div>
         <hr>
       </div>
-
+      <hr/>
       <h3>Leave a comment:</h3>
       <div class="media my-3" *ngIf="apiService.currentUser">
         <a routerLink="/profile/{{ apiService.currentUser.id }}">
@@ -71,14 +72,21 @@
           </form>
         </div>
       </div>
-      <div *ngIf="!apiService.currentUser">
-        <h5>To leave a comment you have to: <b><a>Log in</a></b> or <b><a>Sign up</a></b></h5>
-      </div>
+      <ng-template [ngTemplateOutlet]="needToAuthorizeBlock"></ng-template>
     </div>
   </div>
 </div>
-<div class="row" *ngIf="error && error.detail">
-  <div class="col-lg">
-    <h3>{{ error.detail }}</h3>
+
+<ng-template #errorBlock>
+  <div class="row" *ngIf="error && error.detail">
+    <div class="col-lg">
+      <h3>{{ error.detail }}</h3>
+    </div>
   </div>
-</div>
+</ng-template>
+
+<ng-template #needToAuthorizeBlock>
+  To leave a comment you have to:
+  <b><a (click)="openLoginModal()">Log in</a></b> or
+  <b><a (click)="openRegisterModal()">Sign up</a></b>
+</ng-template>

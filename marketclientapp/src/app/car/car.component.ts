@@ -5,6 +5,8 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {EditCommentModalComponent} from "../edit-comment-modal/edit-comment-modal.component";
 import {CheckoutModalComponent} from "../checkout-modal/checkout-modal.component";
 import {CheckoutResultModalComponent} from "../checkout-result-modal/checkout-result-modal.component";
+import {LoginModalComponent} from "../login-modal/login-modal.component";
+import {RegisterModalComponent} from "../register-modal/register-modal.component";
 
 @Component({
   selector: 'app-car',
@@ -24,6 +26,13 @@ export class CarComponent implements OnInit {
     this.getCar();
   }
 
+  public openLoginModal() {
+    this.modalService.open(LoginModalComponent);
+  }
+
+  public openRegisterModal() {
+    this.modalService.open(RegisterModalComponent);
+  }
 
   public openEditCommentModal(comment: any): void {
     let modal = this.modalService.open(EditCommentModalComponent);
