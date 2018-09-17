@@ -410,6 +410,8 @@ var CarModalComponent = /** @class */ (function () {
     };
     CarModalComponent.prototype.submitCar = function (data) {
         var _this = this;
+        if (data.is_advertised == '')
+            data.is_advertised = false;
         if (this.title == 'Edit car') {
             this.apiService.editItem('cars', this.car.id, data).subscribe(function (response) {
                 console.log(response);

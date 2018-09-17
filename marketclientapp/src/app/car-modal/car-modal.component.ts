@@ -25,6 +25,8 @@ export class CarModalComponent implements OnInit {
   }
 
   public submitCar(data) {
+    if(data.is_advertised=='')
+      data.is_advertised = false;
     if (this.title == 'Edit car') {
       this.apiService.editItem('cars', this.car.id, data).subscribe((response) => {
         console.log(response);
