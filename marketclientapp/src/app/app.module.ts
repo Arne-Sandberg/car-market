@@ -9,7 +9,6 @@ import {AppComponent} from './app.component';
 import {AppRoutingModule} from './app-routing.module';
 import {UserComponent} from './user/user.component';
 import {CarComponent} from './car/car.component';
-import {CreateComponent} from './create/create.component';
 import {ApiService} from "./api.service";
 import {CarsComponent} from './cars/cars.component';
 import {HomeComponent} from './home/home.component';
@@ -26,7 +25,6 @@ import {CheckoutResultModalComponent} from './checkout-result-modal/checkout-res
     AppComponent,
     UserComponent,
     CarComponent,
-    CreateComponent,
     CarsComponent,
     HomeComponent,
     LoginModalComponent,

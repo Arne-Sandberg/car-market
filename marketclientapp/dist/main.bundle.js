@@ -124,9 +124,8 @@ var ApiService = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__user_user_component__ = __webpack_require__("./src/app/user/user.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__car_car_component__ = __webpack_require__("./src/app/car/car.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__create_create_component__ = __webpack_require__("./src/app/create/create.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__cars_cars_component__ = __webpack_require__("./src/app/cars/cars.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__home_home_component__ = __webpack_require__("./src/app/home/home.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__cars_cars_component__ = __webpack_require__("./src/app/cars/cars.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__home_home_component__ = __webpack_require__("./src/app/home/home.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -139,13 +138,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-
 var routes = [
     { path: 'profile/:id', component: __WEBPACK_IMPORTED_MODULE_2__user_user_component__["a" /* UserComponent */] },
-    { path: 'cars', component: __WEBPACK_IMPORTED_MODULE_5__cars_cars_component__["a" /* CarsComponent */] },
+    { path: 'cars', component: __WEBPACK_IMPORTED_MODULE_4__cars_cars_component__["a" /* CarsComponent */] },
     { path: 'cars/:id', component: __WEBPACK_IMPORTED_MODULE_3__car_car_component__["a" /* CarComponent */] },
-    { path: 'create', component: __WEBPACK_IMPORTED_MODULE_4__create_create_component__["a" /* CreateComponent */] },
-    { path: 'home', component: __WEBPACK_IMPORTED_MODULE_6__home_home_component__["a" /* HomeComponent */] },
+    { path: 'home', component: __WEBPACK_IMPORTED_MODULE_5__home_home_component__["a" /* HomeComponent */] },
     { path: '', redirectTo: '/home', pathMatch: 'full' },
 ];
 var AppRoutingModule = /** @class */ (function () {
@@ -174,7 +171,7 @@ module.exports = ""
 /***/ "./src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-expand-lg navbar-dark bg-dark fixed-top\">\n  <a routerLink=\"/\"><b class=\"navbar-brand\">Car market</b></a>\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarSupportedContent\"\n          aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <div class=\"collapse navbar-collapse\" id=\"navbarSupportedContent\">\n    <ul class=\"navbar-nav ml-auto\">\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/cars\">Cars</a>\n      </li>\n      <li class=\"nav-item\" *ngIf=\"apiService.currentUser\">\n        <a class=\"nav-link\" routerLink=\"/create\">Create</a>\n      </li>\n      <li class=\"nav-item\" *ngIf=\"apiService.currentUser\">\n        <a class=\"nav-link\" routerLink=\"/profile/{{ apiService.currentUser.id }}\">Profile</a>\n      </li>\n      <li class=\"nav-item\" *ngIf=\"apiService.currentUser\">\n        <a class=\"nav-link\" routerLink=\"/\" (click)=\"logout()\">Log out</a>\n      </li>\n      <li class=\"nav-item\" *ngIf=\"!apiService.currentUser\">\n        <a class=\"nav-link\" (click)=\"openRegisterModal()\">Sign up</a>\n      </li>\n      <li class=\"nav-item\" *ngIf=\"!apiService.currentUser\">\n        <a class=\"nav-link\" (click)=\"openLoginModal()\">Log in</a>\n      </li>\n\n    </ul>\n  </div>\n</nav>\n<div class=\"main p-3\">\n  <div class=\"container\">\n    <router-outlet></router-outlet>\n  </div>\n</div>\n\n\n\n\n\n\n\n\n\n\n\n\n"
+module.exports = "<nav class=\"navbar navbar-expand-lg navbar-dark bg-dark fixed-top\">\n  <a routerLink=\"/\"><b class=\"navbar-brand\">Car market</b></a>\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarSupportedContent\"\n          aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <div class=\"collapse navbar-collapse\" id=\"navbarSupportedContent\">\n    <ul class=\"navbar-nav ml-auto\">\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/cars\">Cars</a>\n      </li>\n      <li class=\"nav-item\" *ngIf=\"apiService.currentUser\">\n        <a class=\"nav-link\" routerLink=\"/profile/{{ apiService.currentUser.id }}\">Profile</a>\n      </li>\n      <li class=\"nav-item\" *ngIf=\"apiService.currentUser\">\n        <a class=\"nav-link\" routerLink=\"/\" (click)=\"logout()\">Log out</a>\n      </li>\n      <li class=\"nav-item\" *ngIf=\"!apiService.currentUser\">\n        <a class=\"nav-link\" (click)=\"openRegisterModal()\">Sign up</a>\n      </li>\n      <li class=\"nav-item\" *ngIf=\"!apiService.currentUser\">\n        <a class=\"nav-link\" (click)=\"openLoginModal()\">Log in</a>\n      </li>\n    </ul>\n  </div>\n</nav>\n<div class=\"main p-3\">\n  <div class=\"container\">\n    <router-outlet></router-outlet>\n  </div>\n</div>\n\n\n\n\n\n\n\n\n\n\n\n\n"
 
 /***/ }),
 
@@ -273,24 +270,22 @@ var AppComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__app_routing_module__ = __webpack_require__("./src/app/app-routing.module.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__user_user_component__ = __webpack_require__("./src/app/user/user.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__car_car_component__ = __webpack_require__("./src/app/car/car.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__create_create_component__ = __webpack_require__("./src/app/create/create.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__api_service__ = __webpack_require__("./src/app/api.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__cars_cars_component__ = __webpack_require__("./src/app/cars/cars.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__home_home_component__ = __webpack_require__("./src/app/home/home.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__login_modal_login_modal_component__ = __webpack_require__("./src/app/login-modal/login-modal.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__register_modal_register_modal_component__ = __webpack_require__("./src/app/register-modal/register-modal.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__edit_comment_modal_edit_comment_modal_component__ = __webpack_require__("./src/app/edit-comment-modal/edit-comment-modal.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__edit_profile_modal_edit_profile_modal_component__ = __webpack_require__("./src/app/edit-profile-modal/edit-profile-modal.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__checkout_modal_checkout_modal_component__ = __webpack_require__("./src/app/checkout-modal/checkout-modal.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__car_modal_car_modal_component__ = __webpack_require__("./src/app/car-modal/car-modal.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__checkout_result_modal_checkout_result_modal_component__ = __webpack_require__("./src/app/checkout-result-modal/checkout-result-modal.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__api_service__ = __webpack_require__("./src/app/api.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__cars_cars_component__ = __webpack_require__("./src/app/cars/cars.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__home_home_component__ = __webpack_require__("./src/app/home/home.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__login_modal_login_modal_component__ = __webpack_require__("./src/app/login-modal/login-modal.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__register_modal_register_modal_component__ = __webpack_require__("./src/app/register-modal/register-modal.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__edit_comment_modal_edit_comment_modal_component__ = __webpack_require__("./src/app/edit-comment-modal/edit-comment-modal.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__edit_profile_modal_edit_profile_modal_component__ = __webpack_require__("./src/app/edit-profile-modal/edit-profile-modal.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__checkout_modal_checkout_modal_component__ = __webpack_require__("./src/app/checkout-modal/checkout-modal.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__car_modal_car_modal_component__ = __webpack_require__("./src/app/car-modal/car-modal.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__checkout_result_modal_checkout_result_modal_component__ = __webpack_require__("./src/app/checkout-result-modal/checkout-result-modal.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-
 
 
 
@@ -320,16 +315,15 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_6__app_component__["a" /* AppComponent */],
                 __WEBPACK_IMPORTED_MODULE_8__user_user_component__["a" /* UserComponent */],
                 __WEBPACK_IMPORTED_MODULE_9__car_car_component__["a" /* CarComponent */],
-                __WEBPACK_IMPORTED_MODULE_10__create_create_component__["a" /* CreateComponent */],
-                __WEBPACK_IMPORTED_MODULE_12__cars_cars_component__["a" /* CarsComponent */],
-                __WEBPACK_IMPORTED_MODULE_13__home_home_component__["a" /* HomeComponent */],
-                __WEBPACK_IMPORTED_MODULE_14__login_modal_login_modal_component__["a" /* LoginModalComponent */],
-                __WEBPACK_IMPORTED_MODULE_15__register_modal_register_modal_component__["a" /* RegisterModalComponent */],
-                __WEBPACK_IMPORTED_MODULE_16__edit_comment_modal_edit_comment_modal_component__["a" /* EditCommentModalComponent */],
-                __WEBPACK_IMPORTED_MODULE_17__edit_profile_modal_edit_profile_modal_component__["a" /* EditProfileModalComponent */],
-                __WEBPACK_IMPORTED_MODULE_18__checkout_modal_checkout_modal_component__["a" /* CheckoutModalComponent */],
-                __WEBPACK_IMPORTED_MODULE_19__car_modal_car_modal_component__["a" /* CarModalComponent */],
-                __WEBPACK_IMPORTED_MODULE_20__checkout_result_modal_checkout_result_modal_component__["a" /* CheckoutResultModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_11__cars_cars_component__["a" /* CarsComponent */],
+                __WEBPACK_IMPORTED_MODULE_12__home_home_component__["a" /* HomeComponent */],
+                __WEBPACK_IMPORTED_MODULE_13__login_modal_login_modal_component__["a" /* LoginModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_14__register_modal_register_modal_component__["a" /* RegisterModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_15__edit_comment_modal_edit_comment_modal_component__["a" /* EditCommentModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_16__edit_profile_modal_edit_profile_modal_component__["a" /* EditProfileModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_17__checkout_modal_checkout_modal_component__["a" /* CheckoutModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_18__car_modal_car_modal_component__["a" /* CarModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_19__checkout_result_modal_checkout_result_modal_component__["a" /* CheckoutResultModalComponent */],
             ],
             imports: [
                 __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
@@ -340,24 +334,24 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_5_ngx_stripe__["a" /* NgxStripeModule */].forRoot('pk_test_0iZ2ciCzQWinzLyvzEzkuWiE'),
             ],
             exports: [
-                __WEBPACK_IMPORTED_MODULE_14__login_modal_login_modal_component__["a" /* LoginModalComponent */],
-                __WEBPACK_IMPORTED_MODULE_15__register_modal_register_modal_component__["a" /* RegisterModalComponent */],
-                __WEBPACK_IMPORTED_MODULE_16__edit_comment_modal_edit_comment_modal_component__["a" /* EditCommentModalComponent */],
-                __WEBPACK_IMPORTED_MODULE_17__edit_profile_modal_edit_profile_modal_component__["a" /* EditProfileModalComponent */],
-                __WEBPACK_IMPORTED_MODULE_18__checkout_modal_checkout_modal_component__["a" /* CheckoutModalComponent */],
-                __WEBPACK_IMPORTED_MODULE_19__car_modal_car_modal_component__["a" /* CarModalComponent */],
-                __WEBPACK_IMPORTED_MODULE_20__checkout_result_modal_checkout_result_modal_component__["a" /* CheckoutResultModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_13__login_modal_login_modal_component__["a" /* LoginModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_14__register_modal_register_modal_component__["a" /* RegisterModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_15__edit_comment_modal_edit_comment_modal_component__["a" /* EditCommentModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_16__edit_profile_modal_edit_profile_modal_component__["a" /* EditProfileModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_17__checkout_modal_checkout_modal_component__["a" /* CheckoutModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_18__car_modal_car_modal_component__["a" /* CarModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_19__checkout_result_modal_checkout_result_modal_component__["a" /* CheckoutResultModalComponent */],
             ],
             entryComponents: [
-                __WEBPACK_IMPORTED_MODULE_14__login_modal_login_modal_component__["a" /* LoginModalComponent */],
-                __WEBPACK_IMPORTED_MODULE_15__register_modal_register_modal_component__["a" /* RegisterModalComponent */],
-                __WEBPACK_IMPORTED_MODULE_16__edit_comment_modal_edit_comment_modal_component__["a" /* EditCommentModalComponent */],
-                __WEBPACK_IMPORTED_MODULE_17__edit_profile_modal_edit_profile_modal_component__["a" /* EditProfileModalComponent */],
-                __WEBPACK_IMPORTED_MODULE_18__checkout_modal_checkout_modal_component__["a" /* CheckoutModalComponent */],
-                __WEBPACK_IMPORTED_MODULE_19__car_modal_car_modal_component__["a" /* CarModalComponent */],
-                __WEBPACK_IMPORTED_MODULE_20__checkout_result_modal_checkout_result_modal_component__["a" /* CheckoutResultModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_13__login_modal_login_modal_component__["a" /* LoginModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_14__register_modal_register_modal_component__["a" /* RegisterModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_15__edit_comment_modal_edit_comment_modal_component__["a" /* EditCommentModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_16__edit_profile_modal_edit_profile_modal_component__["a" /* EditProfileModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_17__checkout_modal_checkout_modal_component__["a" /* CheckoutModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_18__car_modal_car_modal_component__["a" /* CarModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_19__checkout_result_modal_checkout_result_modal_component__["a" /* CheckoutResultModalComponent */],
             ],
-            providers: [__WEBPACK_IMPORTED_MODULE_11__api_service__["a" /* ApiService */]],
+            providers: [__WEBPACK_IMPORTED_MODULE_10__api_service__["a" /* ApiService */]],
             bootstrap: [__WEBPACK_IMPORTED_MODULE_6__app_component__["a" /* AppComponent */]]
         })
     ], AppModule);
@@ -827,81 +821,6 @@ var CheckoutResultModalComponent = /** @class */ (function () {
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__ng_bootstrap_ng_bootstrap__["a" /* NgbActiveModal */]])
     ], CheckoutResultModalComponent);
     return CheckoutResultModalComponent;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/create/create.component.css":
-/***/ (function(module, exports) {
-
-module.exports = ""
-
-/***/ }),
-
-/***/ "./src/app/create/create.component.html":
-/***/ (function(module, exports) {
-
-module.exports = "<form (ngSubmit)=\"showForm(list_name.value)\">\n  <label for=\"list\">Select item to create:</label>\n  <select class=\"form-control mb-2\" name=\"list\" id=\"list\" required #list_name>\n    <option *ngFor=\"let name of listArr\" [value]=\"name\">\n      {{ name }}\n    </option>\n  </select>\n  <button class=\"btn btn-primary\" type=\"submit\">Show</button>\n</form>\n<div class=\"row my-4\">\n  <div class=\"col-lg\">\n\n\n\n    <form *ngIf=\"formName == 'comments'\" #comment_create=\"ngForm\" (ngSubmit)=\"createItem(comment_create.value)\">\n      <h2>Create comment</h2>\n      <div class=\"form-group row\">\n        <label for=\"car\" class=\"col-lg-2 col-form-label\">Car</label>\n        <div class=\"col-lg-10\">\n          <select class=\"form-control mb-2\" name=\"car\" id=\"car\" [ngModel]>\n            <option *ngFor=\"let item of cars\" [ngValue]=\"item.id\">\n              {{ item.brand }} - {{ item.model }} {{ item.year }} - {{ item.car_type }}\n            </option>\n          </select>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"content\" class=\"col-lg-2 col-form-label\">Content</label>\n        <div class=\"col-lg-10\">\n          <textarea class=\"form-control mb-2\" name=\"content\" id=\"content\" placeholder=\"content\" cols=\"3\"\n                    ngModel></textarea>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"rating\" class=\"col-lg-2 col-form-label\">Rating</label>\n        <div class=\"col-lg-10\">\n          <input class=\"form-control mb-2\" name=\"rating\" id=\"rating\" placeholder=\"rating\" type=\"number\" ngModel>\n        </div>\n      </div>\n      <button class=\"btn btn-primary\" type=\"submit\">Submit</button>\n    </form>\n  </div>\n</div>\n\n"
-
-/***/ }),
-
-/***/ "./src/app/create/create.component.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CreateComponent; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api_service__ = __webpack_require__("./src/app/api.service.ts");
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-var CreateComponent = /** @class */ (function () {
-    function CreateComponent(apiService) {
-        this.apiService = apiService;
-        this.listArr = ['cars', 'comments'];
-    }
-    CreateComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this.apiService.getList('colours').subscribe(function (response) {
-            console.log(response);
-            _this.colours = response;
-        });
-        this.apiService.getList('cars').subscribe(function (response) {
-            console.log(response);
-            _this.cars = response;
-        });
-        this.apiService.getList('brands').subscribe(function (response) {
-            console.log(response);
-            _this.brands = response;
-        });
-    };
-    CreateComponent.prototype.createItem = function (data) {
-        this.apiService.createItem(this.formName, data).subscribe((function (response) {
-            console.log(response);
-        }));
-    };
-    CreateComponent.prototype.showForm = function (list_name) {
-        this.formName = list_name;
-    };
-    CreateComponent = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-            selector: 'app-create',
-            template: __webpack_require__("./src/app/create/create.component.html"),
-            styles: [__webpack_require__("./src/app/create/create.component.css")]
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__api_service__["a" /* ApiService */]])
-    ], CreateComponent);
-    return CreateComponent;
 }());
 
 
