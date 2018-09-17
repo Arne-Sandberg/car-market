@@ -3,7 +3,7 @@ import re
 from django import forms
 from django.db.models import Max, Min
 from django.utils import timezone
-from registration.forms import RegistrationForm, RegistrationFormUniqueEmail
+from registration.forms import RegistrationFormUniqueEmail
 from django.contrib.auth import get_user_model
 from marketapp import models
 from django.utils.safestring import mark_safe

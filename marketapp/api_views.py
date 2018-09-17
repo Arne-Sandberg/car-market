@@ -14,14 +14,9 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
         return obj.user == request.user
 
 
-class Colour(object):
-    def __init__(self, colour):
-        self.colour = colour
-
-
 class ColourList(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-    queryset = [Colour(i) for i in webcolors.HTML4_HEX_TO_NAMES.values()]
+    queryset = [{'name': i} for i in webcolors.HTML4_HEX_TO_NAMES.values()]
     serializer_class = serializers.ColourSerializer
 
 

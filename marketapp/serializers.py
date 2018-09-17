@@ -9,7 +9,10 @@ class RegSerializer(RegisterSerializer):
 
 
 class ColourSerializer(serializers.Serializer):
-    colour = serializers.CharField(read_only=True)
+    colour = serializers.SerializerMethodField(method_name='get_color')
+
+    def get_color(self, obj):
+        return obj['name']
 
 
 class ImageSerializer(serializers.ModelSerializer):
@@ -51,7 +54,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = models.User
         fields = ['id', 'image', 'username', 'email', 'first_name', 'last_name', 'car_set', 'purchase_set',
                   'stripe_user_id', ]
-        read_only_fields = ['username', 'car_set', 'purchase_set']
+        read_only_fields = ['username', 'car_set']
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -60,7 +63,7 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Comment
         fields = ['id', 'car', 'user', 'content', 'rating', 'date']
-        read_only_fields = ['user', 'date']
+        read_only_fields = ['date']
 
 
 class CarSerializer(serializers.ModelSerializer):
@@ -72,4 +75,3 @@ class CarSerializer(serializers.ModelSerializer):
         model = models.Car
         fields = ['id', 'car_model', 'car_type', 'year', 'number_of_seats', 'colour', 'description', 'stock_count',
                   'price', 'brand', 'is_advertised', 'user', 'comment_set', 'image_set']
-        read_only_fields = ['user', 'comment_set', 'image_set']
