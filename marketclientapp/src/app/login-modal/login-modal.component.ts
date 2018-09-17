@@ -28,7 +28,7 @@ export class LoginModalComponent implements OnInit {
           console.log(response);
           if (response) {
             this.apiService.currentUser = response;
-            this.router.navigateByUrl(`/users/${response.id}`);
+            this.router.navigateByUrl(`/profile/${response.id}`);
           }
         });
         this.error = null;

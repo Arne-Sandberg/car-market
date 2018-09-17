@@ -26,12 +26,12 @@
     <div class="container my-4">
       <h3>Comments:</h3>
       <div class="media my-3" *ngFor="let comment of car.comment_set">
-        <a routerLink="/users/{{ comment.user.id }}">
+        <a routerLink="/profile/{{ comment.user.id }}">
           <img class="comment_img img-thumbnail" [src]="comment.user.image" *ngIf="comment.user.image">
           <img class="comment_img img-thumbnail" src="static/images/default_user.png" *ngIf="!comment.user.image">
         </a>
         <div class="media-body p-0 pl-2" data-id="{{ comment.id }}">
-          <a routerLink="/users/{{ comment.user.id }}"><b>{{ comment.user.username }}</b></a>:
+          <a routerLink="/profile/{{ comment.user.id }}"><b>{{ comment.user.username }}</b></a>:
           <b id="comment_rating">{{ comment.rating }}</b>★
           <small>{{ comment.date }}</small>
           <span *ngIf="apiService.currentUser && apiService.currentUser.id==comment.user.id">
@@ -45,14 +45,14 @@
 
       <h3>Leave a comment:</h3>
       <div class="media my-3" *ngIf="apiService.currentUser">
-        <a routerLink="/users/{{ apiService.currentUser.id }}">
+        <a routerLink="/profile/{{ apiService.currentUser.id }}">
           <img class="comment_img img-thumbnail" [src]="apiService.currentUser.image"
                *ngIf="apiService.currentUser.image">
           <img class="comment_img img-thumbnail" src="static/images/default_user.png"
                *ngIf="!apiService.currentUser.image">
         </a>
         <div class="media-body p-0 pl-2">
-          <a routerLink="/users/{{ apiService.currentUser.id }}"><b>{{ apiService.currentUser.username }}</b></a>:
+          <a routerLink="/profile/{{ apiService.currentUser.id }}"><b>{{ apiService.currentUser.username }}</b></a>:
           <form #commentSubmit="ngForm" (ngSubmit)="createComment(commentSubmit)">
             <div class="form-group">
               <label for="content">Content</label>
@@ -79,7 +79,6 @@
 </div>
 <div class="row" *ngIf="error && error.detail">
   <div class="col-lg">
-    <h3>Errors:</h3>
-    {{ error.detail }}
+    <h3>{{ error.detail }}</h3>
   </div>
 </div>

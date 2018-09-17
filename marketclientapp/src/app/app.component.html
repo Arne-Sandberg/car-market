@@ -13,7 +13,7 @@
         <a class="nav-link" routerLink="/create">Create</a>
       </li>
       <li class="nav-item" *ngIf="apiService.currentUser">
-        <a class="nav-link" routerLink="/users/{{ apiService.currentUser.id }}">Profile</a>
+        <a class="nav-link" routerLink="/profile/{{ apiService.currentUser.id }}">Profile</a>
       </li>
       <li class="nav-item" *ngIf="apiService.currentUser">
         <a class="nav-link" routerLink="/" (click)="logout()">Log out</a>

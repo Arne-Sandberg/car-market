@@ -193,21 +193,19 @@ class EditPasswordView(FormView):
         return HttpResponseRedirect(reverse('profile', kwargs={'username': self.request.user}))
 
 
-class StripeConnectView(TemplateView):
-    template_name = 'profile_form.html'
+class StripeConnectView(View):
 
-    def get_context_data(self, **kwargs):
-        context = super(StripeConnectView, self).get_context_data(**kwargs)
-        code = self.request.GET.get('code')
+    def get(self, request, *args, **kwargs):
+        code = request.GET.get('code')
         data = {'client_secret': settings.STRIPE_SECRET_KEY, 'code': code, 'grant_type': 'authorization_code'}
         response = requests.post('https://connect.stripe.com/oauth/token', params=data).json()
         if response.get('stripe_user_id'):
-            self.request.user.stripe_user_id = response['stripe_user_id']
-            self.request.user.save()
-            context['flag'] = 'stripe_success'
+            request.user.stripe_user_id = response['stripe_user_id']
+            request.user.save()
+        if request.GET.get('state'):
+            return HttpResponseRedirect(request.GET.get('state'))
         else:
-            context['flag'] = 'stripe_error'
-        return context
+            return HttpResponseRedirect(reverse('profile', kwargs={'username': request.user}))
 
 
 class CommentContent(TemplateView):

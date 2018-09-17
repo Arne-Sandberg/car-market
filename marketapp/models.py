@@ -75,7 +75,7 @@ class Image(models.Model):
 
 class Comment(models.Model):
     content = models.TextField()
-    rating = models.IntegerField(default=1,validators=[MaxValueValidator(5), MinValueValidator(1)])
+    rating = models.IntegerField(default=1, validators=[MaxValueValidator(5), MinValueValidator(1)])
     date = models.DateTimeField(default=timezone.now)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     car = models.ForeignKey(Car, on_delete=models.CASCADE)

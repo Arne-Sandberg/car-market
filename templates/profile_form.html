@@ -10,22 +10,6 @@
                 <a href="{% url 'register' %}">sign up</a>.
             </p>
         </div>
-    {% elif flag == 'stripe_success' %}
-        <div align="center">
-            <h3>Your stripe account was successfully connected.</h3>
-            <p>To proceed press
-                <a href="{% url 'profile' request.user %}">here</a>.
-            </p>
-        </div>
-    {% elif flag == 'stripe_error' %}
-        <div align="center">
-            <h3>Something went wrong connecting your stripe account.</h3>
-            <p>To get back to your profile press
-                <a href="{% url 'profile' request.user %}">here</a>. To try again press
-                <a href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_DQaOCFCjDd2o48wUjD5fLPQlm6vkG51j&scope=read_write">
-                    here</a>.
-            </p>
-        </div>
     {% elif flag == 'profile' %}
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}

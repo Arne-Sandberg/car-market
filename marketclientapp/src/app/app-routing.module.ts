@@ -7,7 +7,7 @@ import {CarsComponent} from "./cars/cars.component";
 import {HomeComponent} from "./home/home.component";
 
 const routes: Routes = [
-  {path: 'users/:id', component: UserComponent},
+  {path: 'profile/:id', component: UserComponent},
   {path: 'cars', component: CarsComponent},
   {path: 'cars/:id', component: CarComponent},
   {path: 'create', component: CreateComponent},

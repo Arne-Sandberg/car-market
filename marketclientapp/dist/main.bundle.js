@@ -42,13 +42,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var ApiService = /** @class */ (function () {
     function ApiService(httpClient) {
         this.httpClient = httpClient;
-        this.api_url = 'http://127.0.0.1:8000/api/v1/';
+        this.apiUrl = 'http://127.0.0.1:8000/api/v1/';
         this.errorLog = [];
     }
     ApiService.prototype.handleError = function (result) {
         var _this = this;
         return function (response) {
-            console.log(response.error);
+            console.log(response);
             _this.errorLog.push(response.error);
             return Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__["a" /* of */])(result);
         };
@@ -65,43 +65,43 @@ var ApiService = /** @class */ (function () {
         }
     };
     ApiService.prototype.getList = function (list_name) {
-        return this.httpClient.get("" + this.api_url + list_name + "/")
+        return this.httpClient.get("" + this.apiUrl + list_name + "/")
             .pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["a" /* catchError */])(this.handleError()));
     };
     ApiService.prototype.getItem = function (list_name, item_id) {
-        return this.httpClient.get("" + this.api_url + list_name + "/" + item_id + "/")
+        return this.httpClient.get("" + this.apiUrl + list_name + "/" + item_id + "/")
             .pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["a" /* catchError */])(this.handleError()));
     };
     ApiService.prototype.getMe = function () {
-        return this.httpClient.get(this.api_url + "me/")
+        return this.httpClient.get(this.apiUrl + "me/")
             .pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["a" /* catchError */])(this.handleError()));
     };
     ApiService.prototype.editMe = function (data) {
-        return this.httpClient.put(this.api_url + "me/", data, this.getHttpOptions())
+        return this.httpClient.put(this.apiUrl + "me/", data, this.getHttpOptions())
             .pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["a" /* catchError */])(this.handleError()));
     };
     ApiService.prototype.editItem = function (list_name, id, data) {
-        return this.httpClient.put("" + this.api_url + list_name + "/" + id + "/", data, this.getHttpOptions())
+        return this.httpClient.put("" + this.apiUrl + list_name + "/" + id + "/", data, this.getHttpOptions())
             .pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["a" /* catchError */])(this.handleError()));
     };
     ApiService.prototype.createItem = function (list_name, data) {
-        return this.httpClient.post("" + this.api_url + list_name + "/", data, this.getHttpOptions())
+        return this.httpClient.post("" + this.apiUrl + list_name + "/", data, this.getHttpOptions())
             .pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["a" /* catchError */])(this.handleError()));
     };
     ApiService.prototype.deleteItem = function (list_name, id) {
-        return this.httpClient.delete("" + this.api_url + list_name + "/" + id + "/", this.getHttpOptions())
+        return this.httpClient.delete("" + this.apiUrl + list_name + "/" + id + "/", this.getHttpOptions())
             .pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["a" /* catchError */])(this.handleError()));
     };
     ApiService.prototype.register = function (data) {
-        return this.httpClient.post(this.api_url + "register/", data, this.getHttpOptions())
+        return this.httpClient.post(this.apiUrl + "register/", data, this.getHttpOptions())
             .pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["a" /* catchError */])(this.handleError()));
     };
     ApiService.prototype.login = function (data) {
-        return this.httpClient.post(this.api_url + "login/", data, this.getHttpOptions())
+        return this.httpClient.post(this.apiUrl + "login/", data, this.getHttpOptions())
             .pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["a" /* catchError */])(this.handleError()));
     };
     ApiService.prototype.logout = function () {
-        return this.httpClient.post(this.api_url + "logout/", null, this.getHttpOptions())
+        return this.httpClient.post(this.apiUrl + "logout/", null, this.getHttpOptions())
             .pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["a" /* catchError */])(this.handleError()));
     };
     ApiService = __decorate([
@@ -141,7 +141,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 var routes = [
-    { path: 'users/:id', component: __WEBPACK_IMPORTED_MODULE_2__user_user_component__["a" /* UserComponent */] },
+    { path: 'profile/:id', component: __WEBPACK_IMPORTED_MODULE_2__user_user_component__["a" /* UserComponent */] },
     { path: 'cars', component: __WEBPACK_IMPORTED_MODULE_5__cars_cars_component__["a" /* CarsComponent */] },
     { path: 'cars/:id', component: __WEBPACK_IMPORTED_MODULE_3__car_car_component__["a" /* CarComponent */] },
     { path: 'create', component: __WEBPACK_IMPORTED_MODULE_4__create_create_component__["a" /* CreateComponent */] },
@@ -174,7 +174,7 @@ module.exports = ""
 /***/ "./src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-expand-lg navbar-dark bg-dark fixed-top\">\n  <a routerLink=\"/\"><b class=\"navbar-brand\">Car market</b></a>\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarSupportedContent\"\n          aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <div class=\"collapse navbar-collapse\" id=\"navbarSupportedContent\">\n    <ul class=\"navbar-nav ml-auto\">\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/cars\">Cars</a>\n      </li>\n      <li class=\"nav-item\" *ngIf=\"apiService.currentUser\">\n        <a class=\"nav-link\" routerLink=\"/create\">Create</a>\n      </li>\n      <li class=\"nav-item\" *ngIf=\"apiService.currentUser\">\n        <a class=\"nav-link\" routerLink=\"/users/{{ apiService.currentUser.id }}\">Profile</a>\n      </li>\n      <li class=\"nav-item\" *ngIf=\"apiService.currentUser\">\n        <a class=\"nav-link\" routerLink=\"/\" (click)=\"logout()\">Log out</a>\n      </li>\n      <li class=\"nav-item\" *ngIf=\"!apiService.currentUser\">\n        <a class=\"nav-link\" (click)=\"openRegisterModal()\">Sign up</a>\n      </li>\n      <li class=\"nav-item\" *ngIf=\"!apiService.currentUser\">\n        <a class=\"nav-link\" (click)=\"openLoginModal()\">Log in</a>\n      </li>\n\n    </ul>\n  </div>\n</nav>\n<div class=\"main p-3\">\n  <div class=\"container\">\n    <router-outlet></router-outlet>\n  </div>\n</div>\n\n\n\n\n\n\n\n\n\n\n\n\n"
+module.exports = "<nav class=\"navbar navbar-expand-lg navbar-dark bg-dark fixed-top\">\n  <a routerLink=\"/\"><b class=\"navbar-brand\">Car market</b></a>\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarSupportedContent\"\n          aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <div class=\"collapse navbar-collapse\" id=\"navbarSupportedContent\">\n    <ul class=\"navbar-nav ml-auto\">\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/cars\">Cars</a>\n      </li>\n      <li class=\"nav-item\" *ngIf=\"apiService.currentUser\">\n        <a class=\"nav-link\" routerLink=\"/create\">Create</a>\n      </li>\n      <li class=\"nav-item\" *ngIf=\"apiService.currentUser\">\n        <a class=\"nav-link\" routerLink=\"/profile/{{ apiService.currentUser.id }}\">Profile</a>\n      </li>\n      <li class=\"nav-item\" *ngIf=\"apiService.currentUser\">\n        <a class=\"nav-link\" routerLink=\"/\" (click)=\"logout()\">Log out</a>\n      </li>\n      <li class=\"nav-item\" *ngIf=\"!apiService.currentUser\">\n        <a class=\"nav-link\" (click)=\"openRegisterModal()\">Sign up</a>\n      </li>\n      <li class=\"nav-item\" *ngIf=\"!apiService.currentUser\">\n        <a class=\"nav-link\" (click)=\"openLoginModal()\">Log in</a>\n      </li>\n\n    </ul>\n  </div>\n</nav>\n<div class=\"main p-3\">\n  <div class=\"container\">\n    <router-outlet></router-outlet>\n  </div>\n</div>\n\n\n\n\n\n\n\n\n\n\n\n\n"
 
 /***/ }),
 
@@ -281,14 +281,16 @@ var AppComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__register_modal_register_modal_component__ = __webpack_require__("./src/app/register-modal/register-modal.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__edit_comment_modal_edit_comment_modal_component__ = __webpack_require__("./src/app/edit-comment-modal/edit-comment-modal.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__edit_profile_modal_edit_profile_modal_component__ = __webpack_require__("./src/app/edit-profile-modal/edit-profile-modal.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__stripe_modal_stripe_modal_component__ = __webpack_require__("./src/app/stripe-modal/stripe-modal.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__checkout_modal_checkout_modal_component__ = __webpack_require__("./src/app/checkout-modal/checkout-modal.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__car_modal_car_modal_component__ = __webpack_require__("./src/app/car-modal/car-modal.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__checkout_result_modal_checkout_result_modal_component__ = __webpack_require__("./src/app/checkout-result-modal/checkout-result-modal.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -325,8 +327,9 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_15__register_modal_register_modal_component__["a" /* RegisterModalComponent */],
                 __WEBPACK_IMPORTED_MODULE_16__edit_comment_modal_edit_comment_modal_component__["a" /* EditCommentModalComponent */],
                 __WEBPACK_IMPORTED_MODULE_17__edit_profile_modal_edit_profile_modal_component__["a" /* EditProfileModalComponent */],
-                __WEBPACK_IMPORTED_MODULE_18__stripe_modal_stripe_modal_component__["a" /* StripeModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_18__checkout_modal_checkout_modal_component__["a" /* CheckoutModalComponent */],
                 __WEBPACK_IMPORTED_MODULE_19__car_modal_car_modal_component__["a" /* CarModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_20__checkout_result_modal_checkout_result_modal_component__["a" /* CheckoutResultModalComponent */],
             ],
             imports: [
                 __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
@@ -341,16 +344,18 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_15__register_modal_register_modal_component__["a" /* RegisterModalComponent */],
                 __WEBPACK_IMPORTED_MODULE_16__edit_comment_modal_edit_comment_modal_component__["a" /* EditCommentModalComponent */],
                 __WEBPACK_IMPORTED_MODULE_17__edit_profile_modal_edit_profile_modal_component__["a" /* EditProfileModalComponent */],
-                __WEBPACK_IMPORTED_MODULE_18__stripe_modal_stripe_modal_component__["a" /* StripeModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_18__checkout_modal_checkout_modal_component__["a" /* CheckoutModalComponent */],
                 __WEBPACK_IMPORTED_MODULE_19__car_modal_car_modal_component__["a" /* CarModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_20__checkout_result_modal_checkout_result_modal_component__["a" /* CheckoutResultModalComponent */],
             ],
             entryComponents: [
                 __WEBPACK_IMPORTED_MODULE_14__login_modal_login_modal_component__["a" /* LoginModalComponent */],
                 __WEBPACK_IMPORTED_MODULE_15__register_modal_register_modal_component__["a" /* RegisterModalComponent */],
                 __WEBPACK_IMPORTED_MODULE_16__edit_comment_modal_edit_comment_modal_component__["a" /* EditCommentModalComponent */],
                 __WEBPACK_IMPORTED_MODULE_17__edit_profile_modal_edit_profile_modal_component__["a" /* EditProfileModalComponent */],
-                __WEBPACK_IMPORTED_MODULE_18__stripe_modal_stripe_modal_component__["a" /* StripeModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_18__checkout_modal_checkout_modal_component__["a" /* CheckoutModalComponent */],
                 __WEBPACK_IMPORTED_MODULE_19__car_modal_car_modal_component__["a" /* CarModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_20__checkout_result_modal_checkout_result_modal_component__["a" /* CheckoutResultModalComponent */],
             ],
             providers: [__WEBPACK_IMPORTED_MODULE_11__api_service__["a" /* ApiService */]],
             bootstrap: [__WEBPACK_IMPORTED_MODULE_6__app_component__["a" /* AppComponent */]]
@@ -468,7 +473,7 @@ module.exports = ""
 /***/ "./src/app/car/car.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\" *ngIf=\"car\">\n  <div class=\"col-lg-9 mx-auto\">\n    <div class=\"card\">\n      <ngb-carousel *ngIf=\"car.image_set.length\">\n        <ng-template ngbSlide *ngFor=\"let img of car.image_set\">\n          <img [src]=\"img.image\" alt=\"slide\" class=\"car_img w-100 rounded\" *ngIf=\"car.image_set.length\">\n        </ng-template>\n      </ngb-carousel>\n      <img src=\"static/images/no-image.jpg\" alt=\"slide\" class=\"car_img w-100 rounded\"\n           *ngIf=\"!car.image_set.length\">\n      <div class=\"card-body\">\n        <h3>{{ car.brand }} - {{ car.car_model }} - {{ car.car_type }}</h3>\n        <h4>${{ car.price }}</h4>\n        <p>{{ car.description }}</p>\n        <p><b>Year</b>: {{ car.year }}</p>\n        <p><b>Number of seats</b>: {{ car.number_of_seats }}</p>\n        <p><b>Colour</b>: {{ car.colour }}</p>\n        <p *ngIf=\"car.stock_count\"><b>Stock count</b>: {{ car.stock_count }}</p>\n        <p *ngIf=\"!car.stock_count\"><b>Out of stock</b></p>\n      </div>\n      <div class=\"card-footer\"\n           *ngIf=\"apiService.currentUser && car.stock_count && (!car.user || car.user.stripe_user_id)\">\n        <button class=\"btn btn-primary\" (click)=\"openStripeModal()\">Pay with card</button>\n      </div>\n    </div>\n    <div class=\"container my-4\">\n      <h3>Comments:</h3>\n      <div class=\"media my-3\" *ngFor=\"let comment of car.comment_set\">\n        <a routerLink=\"/users/{{ comment.user.id }}\">\n          <img class=\"comment_img img-thumbnail\" [src]=\"comment.user.image\" *ngIf=\"comment.user.image\">\n          <img class=\"comment_img img-thumbnail\" src=\"static/images/default_user.png\" *ngIf=\"!comment.user.image\">\n        </a>\n        <div class=\"media-body p-0 pl-2\" data-id=\"{{ comment.id }}\">\n          <a routerLink=\"/users/{{ comment.user.id }}\"><b>{{ comment.user.username }}</b></a>:\n          <b id=\"comment_rating\">{{ comment.rating }}</b>★\n          <small>{{ comment.date }}</small>\n          <span *ngIf=\"apiService.currentUser && apiService.currentUser.id==comment.user.id\">\n              <a (click)=\"openEditCommentModal(comment)\">edit</a> |\n              <a (click)=\"deleteComment(comment.id)\">delete</a>\n            </span>\n          <p id=\"comment_content\">{{ comment.content }}</p>\n        </div>\n        <hr>\n      </div>\n\n      <h3>Leave a comment:</h3>\n      <div class=\"media my-3\" *ngIf=\"apiService.currentUser\">\n        <a routerLink=\"/users/{{ apiService.currentUser.id }}\">\n          <img class=\"comment_img img-thumbnail\" [src]=\"apiService.currentUser.image\"\n               *ngIf=\"apiService.currentUser.image\">\n          <img class=\"comment_img img-thumbnail\" src=\"static/images/default_user.png\"\n               *ngIf=\"!apiService.currentUser.image\">\n        </a>\n        <div class=\"media-body p-0 pl-2\">\n          <a routerLink=\"/users/{{ apiService.currentUser.id }}\"><b>{{ apiService.currentUser.username }}</b></a>:\n          <form #commentSubmit=\"ngForm\" (ngSubmit)=\"createComment(commentSubmit)\">\n            <div class=\"form-group\">\n              <label for=\"content\">Content</label>\n              <textarea class=\"form-control mb-2\" name=\"content\" id=\"content\" placeholder=\"content\" cols=\"3\"\n                        ngModel></textarea>\n              <span class=\"error\" *ngIf=\"error && error.content\"><small>{{ error.content }}</small>\n              </span>\n            </div>\n            <div class=\"form-group\">\n              <label for=\"rating\">Rating</label>\n              <input class=\"form-control mb-2\" name=\"rating\" id=\"rating\" placeholder=\"rating\" type=\"number\" ngModel>\n              <span class=\"error\" *ngIf=\"error && error.rating\"><small>{{ error.rating }}</small>\n              </span>\n            </div>\n            <button type=\"submit\" class=\"btn btn-primary\">Submit</button>\n          </form>\n        </div>\n      </div>\n      <div *ngIf=\"!apiService.currentUser\">\n        <h5>To leave a comment you have to: <b><a>Log in</a></b> or <b><a>Sign up</a></b></h5>\n      </div>\n    </div>\n  </div>\n</div>\n<div class=\"row\" *ngIf=\"error && error.detail\">\n  <div class=\"col-lg\">\n    <h3>Errors:</h3>\n    {{ error.detail }}\n  </div>\n</div>\n"
+module.exports = "<div class=\"row\" *ngIf=\"car\">\n  <div class=\"col-lg-9 mx-auto\">\n    <div class=\"card\">\n      <ngb-carousel *ngIf=\"car.image_set.length\">\n        <ng-template ngbSlide *ngFor=\"let img of car.image_set\">\n          <img [src]=\"img.image\" alt=\"slide\" class=\"car_img w-100 rounded\" *ngIf=\"car.image_set.length\">\n        </ng-template>\n      </ngb-carousel>\n      <img src=\"static/images/no-image.jpg\" alt=\"slide\" class=\"car_img w-100 rounded\"\n           *ngIf=\"!car.image_set.length\">\n      <div class=\"card-body\">\n        <h3>{{ car.brand }} - {{ car.car_model }} - {{ car.car_type }}</h3>\n        <h4>${{ car.price }}</h4>\n        <p>{{ car.description }}</p>\n        <p><b>Year</b>: {{ car.year }}</p>\n        <p><b>Number of seats</b>: {{ car.number_of_seats }}</p>\n        <p><b>Colour</b>: {{ car.colour }}</p>\n        <p *ngIf=\"car.stock_count\"><b>Stock count</b>: {{ car.stock_count }}</p>\n        <p *ngIf=\"!car.stock_count\"><b>Out of stock</b></p>\n      </div>\n      <div class=\"card-footer\"\n           *ngIf=\"apiService.currentUser && car.stock_count && (!car.user || car.user.stripe_user_id)\">\n        <button class=\"btn btn-primary\" (click)=\"openStripeModal()\">Pay with card</button>\n      </div>\n    </div>\n    <div class=\"container my-4\">\n      <h3>Comments:</h3>\n      <div class=\"media my-3\" *ngFor=\"let comment of car.comment_set\">\n        <a routerLink=\"/profile/{{ comment.user.id }}\">\n          <img class=\"comment_img img-thumbnail\" [src]=\"comment.user.image\" *ngIf=\"comment.user.image\">\n          <img class=\"comment_img img-thumbnail\" src=\"static/images/default_user.png\" *ngIf=\"!comment.user.image\">\n        </a>\n        <div class=\"media-body p-0 pl-2\" data-id=\"{{ comment.id }}\">\n          <a routerLink=\"/profile/{{ comment.user.id }}\"><b>{{ comment.user.username }}</b></a>:\n          <b id=\"comment_rating\">{{ comment.rating }}</b>★\n          <small>{{ comment.date }}</small>\n          <span *ngIf=\"apiService.currentUser && apiService.currentUser.id==comment.user.id\">\n              <a (click)=\"openEditCommentModal(comment)\">edit</a> |\n              <a (click)=\"deleteComment(comment.id)\">delete</a>\n            </span>\n          <p id=\"comment_content\">{{ comment.content }}</p>\n        </div>\n        <hr>\n      </div>\n\n      <h3>Leave a comment:</h3>\n      <div class=\"media my-3\" *ngIf=\"apiService.currentUser\">\n        <a routerLink=\"/profile/{{ apiService.currentUser.id }}\">\n          <img class=\"comment_img img-thumbnail\" [src]=\"apiService.currentUser.image\"\n               *ngIf=\"apiService.currentUser.image\">\n          <img class=\"comment_img img-thumbnail\" src=\"static/images/default_user.png\"\n               *ngIf=\"!apiService.currentUser.image\">\n        </a>\n        <div class=\"media-body p-0 pl-2\">\n          <a routerLink=\"/profile/{{ apiService.currentUser.id }}\"><b>{{ apiService.currentUser.username }}</b></a>:\n          <form #commentSubmit=\"ngForm\" (ngSubmit)=\"createComment(commentSubmit)\">\n            <div class=\"form-group\">\n              <label for=\"content\">Content</label>\n              <textarea class=\"form-control mb-2\" name=\"content\" id=\"content\" placeholder=\"content\" cols=\"3\"\n                        ngModel></textarea>\n              <span class=\"error\" *ngIf=\"error && error.content\"><small>{{ error.content }}</small>\n              </span>\n            </div>\n            <div class=\"form-group\">\n              <label for=\"rating\">Rating</label>\n              <input class=\"form-control mb-2\" name=\"rating\" id=\"rating\" placeholder=\"rating\" type=\"number\" ngModel>\n              <span class=\"error\" *ngIf=\"error && error.rating\"><small>{{ error.rating }}</small>\n              </span>\n            </div>\n            <button type=\"submit\" class=\"btn btn-primary\">Submit</button>\n          </form>\n        </div>\n      </div>\n      <div *ngIf=\"!apiService.currentUser\">\n        <h5>To leave a comment you have to: <b><a>Log in</a></b> or <b><a>Sign up</a></b></h5>\n      </div>\n    </div>\n  </div>\n</div>\n<div class=\"row\" *ngIf=\"error && error.detail\">\n  <div class=\"col-lg\">\n    <h3>{{ error.detail }}</h3>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -482,7 +487,8 @@ module.exports = "<div class=\"row\" *ngIf=\"car\">\n  <div class=\"col-lg-9 mx-
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ng_bootstrap_ng_bootstrap__ = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__edit_comment_modal_edit_comment_modal_component__ = __webpack_require__("./src/app/edit-comment-modal/edit-comment-modal.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__stripe_modal_stripe_modal_component__ = __webpack_require__("./src/app/stripe-modal/stripe-modal.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__checkout_modal_checkout_modal_component__ = __webpack_require__("./src/app/checkout-modal/checkout-modal.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__checkout_result_modal_checkout_result_modal_component__ = __webpack_require__("./src/app/checkout-result-modal/checkout-result-modal.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -492,6 +498,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -519,13 +526,24 @@ var CarComponent = /** @class */ (function () {
     };
     CarComponent.prototype.openStripeModal = function () {
         var _this = this;
-        var modal = this.modalService.open(__WEBPACK_IMPORTED_MODULE_5__stripe_modal_stripe_modal_component__["a" /* StripeModalComponent */]);
-        modal.componentInstance.email = this.apiService.currentUser.email;
-        modal.componentInstance.car = this.car;
-        modal.result.then(function () {
-            _this.getCar();
+        var checkoutModal = this.modalService.open(__WEBPACK_IMPORTED_MODULE_5__checkout_modal_checkout_modal_component__["a" /* CheckoutModalComponent */]);
+        checkoutModal.componentInstance.email = this.apiService.currentUser.email;
+        checkoutModal.componentInstance.car = this.car;
+        checkoutModal.result.then(function (result) {
+            if (result) {
+                var resultModal = _this.modalService.open(__WEBPACK_IMPORTED_MODULE_6__checkout_result_modal_checkout_result_modal_component__["a" /* CheckoutResultModalComponent */]);
+                if (result == 'success') {
+                    _this.getCar();
+                    resultModal.componentInstance.message =
+                        "Successfully purchased " + _this.car.brand + " - " + _this.car.car_model + " - " + _this.car.car_type + ".";
+                }
+                else if (result == 'error') {
+                    resultModal.componentInstance.message =
+                        "Error occurred while purchasing " + _this.car.brand + " - " + _this.car.car_model + " - " + _this.car.car_type + ".";
+                }
+            }
         }, function () {
-            modal.close();
+            checkoutModal.close();
         });
     };
     CarComponent.prototype.deleteComment = function (id) {
@@ -644,6 +662,171 @@ var CarsComponent = /** @class */ (function () {
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__api_service__["a" /* ApiService */]])
     ], CarsComponent);
     return CarsComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/checkout-modal/checkout-modal.component.css":
+/***/ (function(module, exports) {
+
+module.exports = ""
+
+/***/ }),
+
+/***/ "./src/app/checkout-modal/checkout-modal.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"modal-header\">\n  <h3>{{ car.brand }} - {{ car.car_model }} - {{ car.car_type }}</h3>\n  <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"activeModal.close()\">\n    <span aria-hidden=\"true\">&times;</span>\n  </button>\n</div>\n<div class=\"modal-body\">\n  <form #buyCar=\"ngForm\" (ngSubmit)=\"buy()\" id=\"buyCar\">\n    <div class=\"form-group\">\n      <label for=\"card\">Card info</label>\n      <ngx-stripe-card class=\"p-3\" id=\"card\" [options]=\"cardOptions\"\n                       [elementsOptions]=\"elementsOptions\"></ngx-stripe-card>\n      <span class=\"error\" *ngIf=\"error && error.message\"><small>{{ error.message }}</small></span>\n    </div>\n  </form>\n</div>\n<div class=\"modal-footer\">\n  <input type=\"submit\" class=\"btn btn-primary\" form=\"buyCar\" value=\"Buy for ${{ car.price }}\">\n</div>\n"
+
+/***/ }),
+
+/***/ "./src/app/checkout-modal/checkout-modal.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CheckoutModalComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ngx_stripe__ = __webpack_require__("./node_modules/ngx-stripe/esm5/ngx-stripe.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ng_bootstrap_ng_bootstrap__ = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__api_service__ = __webpack_require__("./src/app/api.service.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var CheckoutModalComponent = /** @class */ (function () {
+    function CheckoutModalComponent(stripeService, apiService, activeModal) {
+        this.stripeService = stripeService;
+        this.apiService = apiService;
+        this.activeModal = activeModal;
+        this.elementsOptions = {
+            locale: 'en'
+        };
+        this.cardOptions = {
+            style: {
+                base: {
+                    iconColor: '#4B5EFF',
+                    color: '#000000',
+                    fontWeight: 300,
+                    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+                    fontSize: '18px',
+                    '::placeholder': {
+                        color: '#A9AFFF'
+                    }
+                }
+            }
+        };
+    }
+    CheckoutModalComponent.prototype.ngOnInit = function () {
+    };
+    CheckoutModalComponent.prototype.buy = function () {
+        var _this = this;
+        this.stripeService.createToken(this.card.getCard(), { name: this.email }).subscribe(function (result) {
+            console.log(result);
+            if (result.error)
+                _this.error = result.error;
+            else {
+                var formData = new FormData();
+                formData.append('car', _this.car.id);
+                formData.append('stripe_token', result.token.id);
+                formData.append('stripe_email', result.token.card.name);
+                _this.apiService.createItem('checkout', formData).subscribe(function (result) {
+                    console.log(result);
+                    _this.activeModal.close(result ? 'success' : 'error');
+                });
+            }
+        });
+    };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_11" /* ViewChild */])(__WEBPACK_IMPORTED_MODULE_1_ngx_stripe__["b" /* StripeCardComponent */]),
+        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ngx_stripe__["b" /* StripeCardComponent */])
+    ], CheckoutModalComponent.prototype, "card", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Input */])(),
+        __metadata("design:type", String)
+    ], CheckoutModalComponent.prototype, "email", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Input */])(),
+        __metadata("design:type", Object)
+    ], CheckoutModalComponent.prototype, "car", void 0);
+    CheckoutModalComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-checkout-modal',
+            template: __webpack_require__("./src/app/checkout-modal/checkout-modal.component.html"),
+            styles: [__webpack_require__("./src/app/checkout-modal/checkout-modal.component.css")]
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ngx_stripe__["c" /* StripeService */],
+            __WEBPACK_IMPORTED_MODULE_3__api_service__["a" /* ApiService */],
+            __WEBPACK_IMPORTED_MODULE_2__ng_bootstrap_ng_bootstrap__["a" /* NgbActiveModal */]])
+    ], CheckoutModalComponent);
+    return CheckoutModalComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/checkout-result-modal/checkout-result-modal.component.css":
+/***/ (function(module, exports) {
+
+module.exports = ""
+
+/***/ }),
+
+/***/ "./src/app/checkout-result-modal/checkout-result-modal.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"modal-header\">\n  <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"activeModal.close()\">\n    <span aria-hidden=\"true\">&times;</span>\n  </button>\n</div>\n<div class=\"modal-body\">\n  <h2>{{ message }}</h2>\n</div>\n<div class=\"modal-footer\">\n  <button type=\"button\" class=\"btn btn-primary\" (click)=\"activeModal.close()\">Close</button>\n</div>\n"
+
+/***/ }),
+
+/***/ "./src/app/checkout-result-modal/checkout-result-modal.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CheckoutResultModalComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ng_bootstrap_ng_bootstrap__ = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/index.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var CheckoutResultModalComponent = /** @class */ (function () {
+    function CheckoutResultModalComponent(activeModal) {
+        this.activeModal = activeModal;
+    }
+    CheckoutResultModalComponent.prototype.ngOnInit = function () {
+    };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Input */])(),
+        __metadata("design:type", String)
+    ], CheckoutResultModalComponent.prototype, "message", void 0);
+    CheckoutResultModalComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-checkout-result-modal',
+            template: __webpack_require__("./src/app/checkout-result-modal/checkout-result-modal.component.html"),
+            styles: [__webpack_require__("./src/app/checkout-result-modal/checkout-result-modal.component.css")]
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__ng_bootstrap_ng_bootstrap__["a" /* NgbActiveModal */]])
+    ], CheckoutResultModalComponent);
+    return CheckoutResultModalComponent;
 }());
 
 
@@ -1004,7 +1187,7 @@ var LoginModalComponent = /** @class */ (function () {
                     console.log(response);
                     if (response) {
                         _this.apiService.currentUser = response;
-                        _this.router.navigateByUrl("/users/" + response.id);
+                        _this.router.navigateByUrl("/profile/" + response.id);
                     }
                 });
                 _this.error = null;
@@ -1085,7 +1268,7 @@ var RegisterModalComponent = /** @class */ (function () {
                     console.log(response);
                     if (response) {
                         _this.apiService.currentUser = response;
-                        _this.router.navigateByUrl("/users/" + response.id);
+                        _this.router.navigateByUrl("/profile/" + response.id);
                     }
                 });
                 _this.error = null;
@@ -1112,116 +1295,6 @@ var RegisterModalComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/stripe-modal/stripe-modal.component.css":
-/***/ (function(module, exports) {
-
-module.exports = ""
-
-/***/ }),
-
-/***/ "./src/app/stripe-modal/stripe-modal.component.html":
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"modal-header\">\n  <h2 class=\"modal-title\">Buy:</h2>\n  <h3>{{ car.brand }} - {{ car.car_model }} - {{ car.car_type }}</h3>\n  <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"activeModal.close()\">\n    <span aria-hidden=\"true\">&times;</span>\n  </button>\n</div>\n<div class=\"modal-body\">\n  <form #buyCar=\"ngForm\" (ngSubmit)=\"buy()\" id=\"buyCar\">\n    <div class=\"form-group\">\n      <label for=\"card\">Card info</label>\n      <ngx-stripe-card class=\"p-3\" id=\"card\" [options]=\"cardOptions\"\n                       [elementsOptions]=\"elementsOptions\"></ngx-stripe-card>\n      <span class=\"error\" *ngIf=\"error && error.message\"><small>{{ error.message }}</small></span>\n    </div>\n  </form>\n</div>\n<div class=\"modal-footer\">\n  <input type=\"submit\" class=\"btn btn-primary\" form=\"buyCar\" value=\"Buy for ${{ car.price }}\">\n</div>\n"
-
-/***/ }),
-
-/***/ "./src/app/stripe-modal/stripe-modal.component.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return StripeModalComponent; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ngx_stripe__ = __webpack_require__("./node_modules/ngx-stripe/esm5/ngx-stripe.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ng_bootstrap_ng_bootstrap__ = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__api_service__ = __webpack_require__("./src/app/api.service.ts");
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-var StripeModalComponent = /** @class */ (function () {
-    function StripeModalComponent(stripeService, apiService, activeModal) {
-        this.stripeService = stripeService;
-        this.apiService = apiService;
-        this.activeModal = activeModal;
-        this.elementsOptions = {
-            locale: 'en'
-        };
-        this.cardOptions = {
-            style: {
-                base: {
-                    iconColor: '#4B5EFF',
-                    color: '#000000',
-                    fontWeight: 300,
-                    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-                    fontSize: '18px',
-                    '::placeholder': {
-                        color: '#A9AFFF'
-                    }
-                }
-            }
-        };
-    }
-    StripeModalComponent.prototype.ngOnInit = function () {
-    };
-    StripeModalComponent.prototype.buy = function () {
-        var _this = this;
-        this.stripeService.createToken(this.card.getCard(), { name: this.email }).subscribe(function (result) {
-            console.log(result);
-            if (result.error)
-                _this.error = result.error;
-            else {
-                var formData = new FormData();
-                formData.append('car', _this.car.id);
-                formData.append('stripe_token', result.token.id);
-                formData.append('stripe_email', result.token.card.name);
-                _this.apiService.createItem('checkout', formData).subscribe(function (result) {
-                    console.log(result);
-                    _this.activeModal.close();
-                    alert(result ? "Successfully purchased " + _this.car.brand + " - " + _this.car.car_model + " - " + _this.car.car_type + "."
-                        : 'Something went wrong. Try again.');
-                });
-            }
-        });
-    };
-    __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_11" /* ViewChild */])(__WEBPACK_IMPORTED_MODULE_1_ngx_stripe__["b" /* StripeCardComponent */]),
-        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ngx_stripe__["b" /* StripeCardComponent */])
-    ], StripeModalComponent.prototype, "card", void 0);
-    __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Input */])(),
-        __metadata("design:type", String)
-    ], StripeModalComponent.prototype, "email", void 0);
-    __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Input */])(),
-        __metadata("design:type", Object)
-    ], StripeModalComponent.prototype, "car", void 0);
-    StripeModalComponent = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-            selector: 'app-stripe-modal',
-            template: __webpack_require__("./src/app/stripe-modal/stripe-modal.component.html"),
-            styles: [__webpack_require__("./src/app/stripe-modal/stripe-modal.component.css")]
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ngx_stripe__["c" /* StripeService */],
-            __WEBPACK_IMPORTED_MODULE_3__api_service__["a" /* ApiService */],
-            __WEBPACK_IMPORTED_MODULE_2__ng_bootstrap_ng_bootstrap__["a" /* NgbActiveModal */]])
-    ], StripeModalComponent);
-    return StripeModalComponent;
-}());
-
-
-
-/***/ }),
-
 /***/ "./src/app/user/user.component.css":
 /***/ (function(module, exports) {
 
@@ -1232,7 +1305,7 @@ module.exports = ""
 /***/ "./src/app/user/user.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\" *ngIf=\"user\">\n  <div class=\"col-lg-3\">\n    <div class=\"card p-2\">\n      <img *ngIf=\"user.image\" class=\"profile_img mx-auto thumbnail rounded\" [src]=\"user.image\">\n      <img *ngIf=\"!user.image\" class=\"profile_img mx-auto thumbnail rounded\" src=\"static/images/default_user.png\">\n      <div class=\"card-body\" *ngIf=\"isOwner()\">\n        <div class=\"list-group\">\n          <a class=\"list-group-item list-group-item-action\" (click)=\"openEditProfileModal()\">Edit profile</a>\n          <a *ngIf=\"user.stripe_user_id\" class=\"list-group-item list-group-item-action\" (click)=\"openCreateCarModal()\">\n            Create car\n          </a>\n          <a *ngIf=\"!user.stripe_user_id\" class=\"list-group-item list-group-item-action\"\n             href=\"{{ connectStripeUrl }}\">\n            Connect stripe account\n          </a>\n        </div>\n      </div>\n    </div>\n  </div>\n  <div class=\"col-lg-9\">\n    <div class=\"row\">\n      <div class=\"col-lg\">\n        <h3><b>Personal information:</b></h3>\n        <hr>\n        <div class=\"my-2\">\n          <b>Username:</b> {{ user.username }}\n        </div>\n        <div class=\"my-2\">\n          <b>Email:</b> {{ user.email }}\n        </div>\n        <div class=\"my-2\">\n          <b>First name:</b> {{ user.first_name }}\n        </div>\n        <div class=\"my-2\">\n          <b>Last name:</b> {{ user.last_name }}\n        </div>\n      </div>\n    </div>\n    <div class=\"row\">\n      <div class=\"col-lg-6 my-4\">\n        <h4>Cars:</h4>\n        <hr>\n        <div *ngFor=\"let car of user.car_set\">\n          <a routerLink=\"/cars/{{ car.id }}\">\n            {{ car.car_model }} {{ car.year }} - {{ car.car_type }}\n          </a>\n          <span *ngIf=\"isOwner()\">\n              <a (click)=\"openEditCarModal(car)\">edit</a> |\n              <a (click)=\"deleteCar(car.id)\">delete</a>\n            </span>\n        </div>\n      </div>\n      <div class=\"col-lg-6 my-4\">\n        <h4>Purchases:</h4>\n        <hr>\n        <div *ngFor=\"let purchase of user.purchase_set\">\n          <a routerLink=\"/cars/{{ purchase.car.id }}\">{{ purchase.car.car_model }} {{ purchase.car.year }}\n            - {{ purchase.car.car_type }}</a> - ${{ purchase.price }}\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class=\"row\" *ngIf=\"error && error.detail\">\n  <div class=\"col-lg\">\n    <h3>Errors:</h3>\n    {{ error.detail }}\n  </div>\n</div>\n"
+module.exports = "<div class=\"row\" *ngIf=\"user\">\n  <div class=\"col-lg-3\">\n    <div class=\"card p-2\">\n      <img *ngIf=\"user.image\" class=\"profile_img mx-auto thumbnail rounded\" [src]=\"user.image\">\n      <img *ngIf=\"!user.image\" class=\"profile_img mx-auto thumbnail rounded\" src=\"static/images/default_user.png\">\n      <div class=\"card-body\" *ngIf=\"isOwner()\">\n        <div class=\"list-group\">\n          <a class=\"list-group-item list-group-item-action\" (click)=\"openEditProfileModal()\">Edit profile</a>\n          <a *ngIf=\"user.stripe_user_id\" class=\"list-group-item list-group-item-action\" (click)=\"openCreateCarModal()\">\n            Create car\n          </a>\n          <a *ngIf=\"!user.stripe_user_id\" class=\"list-group-item list-group-item-action\"\n             [href]=\"connectStripeUrl\">\n            Connect stripe account\n          </a>\n        </div>\n      </div>\n    </div>\n  </div>\n  <div class=\"col-lg-9\">\n    <div class=\"row\">\n      <div class=\"col-lg\">\n        <h3><b>Personal information:</b></h3>\n        <hr>\n        <div class=\"my-2\">\n          <b>Username:</b> {{ user.username }}\n        </div>\n        <div class=\"my-2\">\n          <b>Email:</b> {{ user.email }}\n        </div>\n        <div class=\"my-2\">\n          <b>First name:</b> {{ user.first_name }}\n        </div>\n        <div class=\"my-2\">\n          <b>Last name:</b> {{ user.last_name }}\n        </div>\n      </div>\n    </div>\n    <div class=\"row\">\n      <div class=\"col-lg-6 my-4\">\n        <h4>Cars:</h4>\n        <hr>\n        <div *ngFor=\"let car of user.car_set\">\n          <a routerLink=\"/cars/{{ car.id }}\">\n            {{ car.car_model }} {{ car.year }} - {{ car.car_type }}\n          </a>\n          <span *ngIf=\"isOwner()\">\n              <a (click)=\"openEditCarModal(car)\">edit</a> |\n              <a (click)=\"deleteCar(car.id)\">delete</a>\n            </span>\n        </div>\n      </div>\n      <div class=\"col-lg-6 my-4\">\n        <h4>Purchases:</h4>\n        <hr>\n        <div *ngFor=\"let purchase of user.purchase_set\">\n          <a routerLink=\"/cars/{{ purchase.car.id }}\">{{ purchase.car.car_model }} {{ purchase.car.year }}\n            - {{ purchase.car.car_type }}</a> - ${{ purchase.price }}\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class=\"row\" *ngIf=\"error && error.detail\">\n  <div class=\"col-lg\">\n    <h3>{{ error.detail }}</h3>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -1267,7 +1340,7 @@ var UserComponent = /** @class */ (function () {
         this.apiService = apiService;
         this.modalService = modalService;
         this.route = route;
-        this.connectStripeUrl = 'https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_DQaOCFCjDd2o48wUjD5fLPQlm6vkG51j&scope=read_write';
+        this.clientId = 'ca_DQaOCFCjDd2o48wUjD5fLPQlm6vkG51j';
     }
     UserComponent.prototype.ngOnInit = function () {
         this.getUser();
@@ -1276,6 +1349,16 @@ var UserComponent = /** @class */ (function () {
         var _this = this;
         var modal = this.modalService.open(__WEBPACK_IMPORTED_MODULE_4__edit_profile_modal_edit_profile_modal_component__["a" /* EditProfileModalComponent */]);
         modal.componentInstance.user = this.user;
+        modal.result.then(function () {
+            _this.getUser();
+        }, function () {
+            modal.close();
+        });
+    };
+    UserComponent.prototype.openCreateCarModal = function () {
+        var _this = this;
+        var modal = this.modalService.open(__WEBPACK_IMPORTED_MODULE_5__car_modal_car_modal_component__["a" /* CarModalComponent */]);
+        modal.componentInstance.title = 'Create car';
         modal.result.then(function () {
             _this.getUser();
         }, function () {
@@ -1293,16 +1376,6 @@ var UserComponent = /** @class */ (function () {
             modal.close();
         });
     };
-    UserComponent.prototype.openCreateCarModal = function () {
-        var _this = this;
-        var modal = this.modalService.open(__WEBPACK_IMPORTED_MODULE_5__car_modal_car_modal_component__["a" /* CarModalComponent */]);
-        modal.componentInstance.title = 'Create car';
-        modal.result.then(function () {
-            _this.getUser();
-        }, function () {
-            modal.close();
-        });
-    };
     UserComponent.prototype.isOwner = function () {
         return this.apiService.currentUser ? this.apiService.currentUser.id == this.user.id : false;
     };
@@ -1311,7 +1384,12 @@ var UserComponent = /** @class */ (function () {
         this.apiService.getItem('users', this.route.snapshot.paramMap.get('id'))
             .subscribe(function (response) {
             console.log(response);
-            response ? _this.user = response : _this.error = _this.apiService.errorLog.pop();
+            if (response) {
+                _this.user = response;
+                _this.connectStripeUrl = "https://connect.stripe.com/oauth/authorize?response_type=code&client_id=" + _this.clientId + "&scope=read_write&state=http://127.0.0.1:8000/angular/profile/" + _this.user.id;
+            }
+            else
+                _this.error = _this.apiService.errorLog.pop();
         });
     };
     UserComponent.prototype.deleteCar = function (id) {

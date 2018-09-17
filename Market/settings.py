@@ -126,7 +126,7 @@ LOGOUT_REDIRECT_URL = '/'
 
 LOGIN_REDIRECT_URL = '/'
 
-STRIPE_PUBLIC_KEY = os.environ.get("STRIPE_SECRET_KEY", "pk_test_0iZ2ciCzQWinzLyvzEzkuWiE")
+STRIPE_PUBLIC_KEY = os.environ.get("STRIPE_PUBLIC_KEY", "pk_test_0iZ2ciCzQWinzLyvzEzkuWiE")
 
 STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "sk_test_v8wWUdop2kxCHBzLZEUYKJXP")
 

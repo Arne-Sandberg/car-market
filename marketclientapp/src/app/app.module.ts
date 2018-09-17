@@ -17,8 +17,9 @@ import {LoginModalComponent} from './login-modal/login-modal.component';
 import {RegisterModalComponent} from './register-modal/register-modal.component';
 import {EditCommentModalComponent} from './edit-comment-modal/edit-comment-modal.component';
 import {EditProfileModalComponent} from './edit-profile-modal/edit-profile-modal.component';
-import {StripeModalComponent} from './stripe-modal/stripe-modal.component';
+import {CheckoutModalComponent} from './checkout-modal/checkout-modal.component';
 import {CarModalComponent} from './car-modal/car-modal.component';
+import {CheckoutResultModalComponent} from './checkout-result-modal/checkout-result-modal.component';
 
 @NgModule({
   declarations: [
@@ -32,8 +33,9 @@ import {CarModalComponent} from './car-modal/car-modal.component';
     RegisterModalComponent,
     EditCommentModalComponent,
     EditProfileModalComponent,
-    StripeModalComponent,
+    CheckoutModalComponent,
     CarModalComponent,
+    CheckoutResultModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -48,16 +50,18 @@ import {CarModalComponent} from './car-modal/car-modal.component';
     RegisterModalComponent,
     EditCommentModalComponent,
     EditProfileModalComponent,
-    StripeModalComponent,
+    CheckoutModalComponent,
     CarModalComponent,
+    CheckoutResultModalComponent,
   ],
   entryComponents: [
     LoginModalComponent,
     RegisterModalComponent,
     EditCommentModalComponent,
     EditProfileModalComponent,
-    StripeModalComponent,
+    CheckoutModalComponent,
     CarModalComponent,
+    CheckoutResultModalComponent,
   ],
   providers: [ApiService],
   bootstrap: [AppComponent]

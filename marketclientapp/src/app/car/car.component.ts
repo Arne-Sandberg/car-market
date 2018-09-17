@@ -3,7 +3,8 @@ import {ApiService} from '../api.service';
 import {ActivatedRoute} from "@angular/router";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {EditCommentModalComponent} from "../edit-comment-modal/edit-comment-modal.component";
-import {StripeModalComponent} from "../stripe-modal/stripe-modal.component";
+import {CheckoutModalComponent} from "../checkout-modal/checkout-modal.component";
+import {CheckoutResultModalComponent} from "../checkout-result-modal/checkout-result-modal.component";
 
 @Component({
   selector: 'app-car',
@@ -35,13 +36,24 @@ export class CarComponent implements OnInit {
   }
 
   public openStripeModal(): void {
-    let modal = this.modalService.open(StripeModalComponent);
-    modal.componentInstance.email = this.apiService.currentUser.email;
-    modal.componentInstance.car = this.car;
-    modal.result.then(() => {
-      this.getCar();
+    let checkoutModal = this.modalService.open(CheckoutModalComponent);
+    checkoutModal.componentInstance.email = this.apiService.currentUser.email;
+    checkoutModal.componentInstance.car = this.car;
+    checkoutModal.result.then((result) => {
+      if (result) {
+        let resultModal = this.modalService.open(CheckoutResultModalComponent);
+        if (result == 'success') {
+          this.getCar();
+          resultModal.componentInstance.message =
+            `Successfully purchased ${this.car.brand} - ${this.car.car_model} - ${this.car.car_type}.`;
+        }
+        else if (result == 'error') {
+          resultModal.componentInstance.message =
+            `Error occurred while purchasing ${this.car.brand} - ${this.car.car_model} - ${this.car.car_type}.`;
+        }
+      }
     }, () => {
-      modal.close();
+      checkoutModal.close();
     });
   }
 

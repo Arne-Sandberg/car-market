@@ -9,11 +9,11 @@ import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {ApiService} from "../api.service";
 
 @Component({
-  selector: 'app-stripe-modal',
-  templateUrl: './stripe-modal.component.html',
-  styleUrls: ['./stripe-modal.component.css']
+  selector: 'app-checkout-modal',
+  templateUrl: './checkout-modal.component.html',
+  styleUrls: ['./checkout-modal.component.css']
 })
-export class StripeModalComponent implements OnInit {
+export class CheckoutModalComponent implements OnInit {
   @ViewChild(StripeCardComponent) card: StripeCardComponent;
   @Input() email: string;
   @Input() car: any;
@@ -57,9 +57,7 @@ export class StripeModalComponent implements OnInit {
         formData.append('stripe_email', result.token.card.name);
         this.apiService.createItem('checkout', formData).subscribe((result: any) => {
           console.log(result);
-          this.activeModal.close();
-          alert(result ? `Successfully purchased ${this.car.brand} - ${this.car.car_model} - ${this.car.car_type}.`
-            : 'Something went wrong. Try again.');
+          this.activeModal.close(result ? 'success' : 'error');
         });
       }
     });

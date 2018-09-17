@@ -16,9 +16,14 @@
                                 profile</a>
                             <a href="{% url 'edit_password' %}" class="list-group-item list-group-item-action">Change
                                 password</a>
-                            <a href="{% url 'create_car' %}" class="list-group-item list-group-item-action">Create
-                                car</a>
-                            <a href="{% url 'logout' %}" class="list-group-item list-group-item-action">Log out</a>
+                            {% if user.stripe_user_id %}
+                                <a href="{% url 'create_car' %}" class="list-group-item list-group-item-action">Create
+                                    car</a>
+                            {% else %}
+                                <a href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_DQaOCFCjDd2o48wUjD5fLPQlm6vkG51j&scope=read_write"
+                                   class="list-group-item list-group-item-action">
+                                    Connect stripe account</a>
+                            {% endif %}
                         </div>
                     </div>
                 {% endif %}
